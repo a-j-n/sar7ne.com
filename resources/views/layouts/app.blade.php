@@ -13,6 +13,10 @@
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
+
+        <link rel="manifest" href="/manifest.json">
+        <meta name="theme-color" content="#0d6efd">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     </head>
     <body class="min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased">
         <div class="min-h-screen pb-20">
