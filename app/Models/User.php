@@ -87,7 +87,9 @@ class User extends Authenticatable
             return $this->avatar_url;
         }
 
-        return Storage::disk('public')->url($this->avatar_url);
+        $disk = config('filesystems.default', 'public');
+
+        return Storage::disk($disk)->url($this->avatar_url);
     }
 
     /**

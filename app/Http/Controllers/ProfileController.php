@@ -51,11 +51,13 @@ class ProfileController extends Controller
             'display_name' => $validated['display_name'] ?? $user->display_name,
         ];
 
+        $disk = config('filesystems.default', 'public');
+
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $avatarPath = $request->file('avatar')->store('avatars', $disk);
 
             if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
-                Storage::disk('public')->delete($user->avatar_url);
+                Storage::disk($disk)->delete($user->avatar_url);
             }
 
             $updates['avatar_url'] = $avatarPath;
