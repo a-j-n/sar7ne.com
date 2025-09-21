@@ -12,6 +12,7 @@ class Message extends Model
     use HasFactory;
 
     public const STATUS_UNREAD = 'unread';
+
     public const STATUS_READ = 'read';
 
     /**

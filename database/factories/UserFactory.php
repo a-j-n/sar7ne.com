@@ -18,7 +18,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $displayName = $this->faker->name();
-        $username = Str::slug($displayName . Str::random(4));
+        $username = Str::slug($displayName.Str::random(4));
 
         return [
             'username' => $username,

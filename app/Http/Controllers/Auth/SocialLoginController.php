@@ -62,7 +62,7 @@ class SocialLoginController extends Controller
         $provider = Str::lower($provider);
 
         if (! in_array($provider, self::SUPPORTED_PROVIDERS, true)) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException;
         }
 
         return $provider;

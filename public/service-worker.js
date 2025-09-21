@@ -19,25 +19,12 @@ self.addEventListener('fetch', event => {
     })
   );
 });
-{
-  "name": "Sar7ne",
-  "short_name": "Sar7ne",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0d6efd",
-  "description": "A Laravel-based PWA app.",
-  "icons": [
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    }
-  ]
-}
-
+// Basic activate handler to clean old caches
+self.addEventListener('activate', event => {
+  const currentCache = 'sar7ne-v1';
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== currentCache).map(k => caches.delete(k)))
+    )
+  );
+});

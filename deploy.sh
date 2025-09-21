@@ -12,4 +12,4 @@ php artisan config:clear;
 php artisan clear;
 php artisan route:clear;
 sudo chmod -R 777 storage public bootstrap/cache;
-php artisan app:set-telegram-commands ;
+#php artisan app:set-telegram-commands ;
