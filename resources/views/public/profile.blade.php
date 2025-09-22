@@ -14,7 +14,7 @@
         <section class="flex flex-col gap-6 rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-xl md:flex-row md:items-center md:text-left">
             <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" class="mx-auto h-28 w-28 rounded-3xl object-cover md:mx-0" />
             <div class="flex-1 space-y-2">
-                <h1 class="text-3xl font-semibold">@{{ $user->username }}</h1>
+                <h1 class="text-3xl font-semibold">{{ "@".$user->username }}</h1>
                 @if ($user->display_name)
                     <p class="text-sm text-slate-300">{{ $user->display_name }}</p>
                 @endif
