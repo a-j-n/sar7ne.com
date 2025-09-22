@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Auth\EmailLoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\InboxMessageController;
@@ -15,7 +19,16 @@ Route::pattern('username', '[a-z0-9_]+');
 
 Route::get('/', ExploreController::class)->name('explore');
 
-Route::view('/login', 'auth.login')->name('login');
+Route::get('/login', [EmailLoginController::class, 'show'])->name('login');
+Route::post('/login', [EmailLoginController::class, 'login'])->name('login.attempt');
+
+Route::get('/register', [RegisterController::class, 'show'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->middleware('guest')->name('password.request');
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest')->name('password.email');
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->middleware('guest')->name('password.reset');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('guest')->name('password.update');
 
 Route::controller(SocialLoginController::class)->group(function () {
     Route::get('/auth/{provider}/redirect', 'redirect')->name('oauth.redirect');
