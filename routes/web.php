@@ -56,3 +56,6 @@ Route::get('/p/{user:username}', [PublicProfileController::class, 'show'])->name
 Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'store'])
     ->middleware('throttle:message-submission')
     ->name('profiles.message');
+
+// Privacy Policy
+Route::view('/privacy', 'public.privacy')->name('privacy');
