@@ -13,3 +13,6 @@ php artisan clear;
 php artisan route:clear;
 sudo chmod -R 777 storage public bootstrap/cache;
 #php artisan app:set-telegram-commands ;
+yarn install ;
+yarn build ;
+sudo systemctl restart php-fpm;
