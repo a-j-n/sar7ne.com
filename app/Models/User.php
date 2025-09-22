@@ -27,6 +27,7 @@ class User extends Authenticatable
         'provider_id',
         'provider_type',
         'last_login_at',
+        'gender',
     ];
 
     /**

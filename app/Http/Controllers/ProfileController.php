@@ -29,6 +29,7 @@ class ProfileController extends Controller
             'display_name' => ['nullable', 'string', 'max:60'],
             'bio' => ['nullable', 'string', 'max:280'],
             'avatar' => ['nullable', 'image', 'max:2048'],
+            'gender' => ['nullable', 'in:male,female,non-binary,other,prefer_not_to_say'],
         ]);
 
         $normalizedUsername = UsernameGenerator::normalize($validated['username']);
@@ -49,6 +50,7 @@ class ProfileController extends Controller
             'username' => $normalizedUsername,
             'bio' => $validated['bio'] ?? null,
             'display_name' => $validated['display_name'] ?? $user->display_name,
+            'gender' => $validated['gender'] ?? null,
         ];
 
         $disk = config('filesystems.default', 'public');

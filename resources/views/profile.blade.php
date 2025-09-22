@@ -54,6 +54,27 @@
                     <p class="text-xs text-slate-400">Square PNG/JPG, up to 2MB.</p>
                 </div>
 
+                <div class="space-y-2">
+                    <label for="gender" class="text-xs uppercase tracking-wide text-slate-400">Gender</label>
+                    <select id="gender" name="gender" class="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none">
+                        @php
+                            $genders = [
+                                'male' => 'Male',
+                                'female' => 'Female',
+                                'non-binary' => 'Non-binary',
+                                'other' => 'Other',
+                                'prefer_not_to_say' => 'Prefer not to say',
+                            ];
+                            $current = old('gender', $user->gender);
+                        @endphp
+                        <option value="" {{ $current === null || $current === '' ? 'selected' : '' }}>— Not specified —</option>
+                        @foreach ($genders as $key => $label)
+                            <option value="{{ $key }}" {{ $current === $key ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-slate-400">Optional — choose how you'd like to describe your gender.</p>
+                </div>
+
                 <div class="flex justify-end">
                     <button type="submit" class="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-slate-200">Save changes</button>
                 </div>
