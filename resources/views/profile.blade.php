@@ -2,6 +2,11 @@
 
 @section('title', 'Profile · sar7ne')
 
+@section('meta_description', $user->bio ?? 'Manage your profile and settings on sar7ne.')
+@section('meta_image', $user->avatarUrl())
+@section('og_type', 'profile')
+@section('canonical', route('profile'))
+
 @section('content')
     <div class="space-y-10">
         <section class="flex flex-col gap-6 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl md:flex-row md:items-center">
@@ -80,5 +85,9 @@
                 </div>
             </form>
         </section>
+
+        <div class="mt-8 text-center text-xs text-slate-400">
+            <a href="{{ route('privacy') }}" class="hover:text-white">Privacy</a>
+        </div>
     </div>
 @endsection

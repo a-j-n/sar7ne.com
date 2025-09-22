@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Inbox · sar7ne')
+@section('meta_description', 'Your sar7ne inbox — view and manage anonymous messages you have received.')
+@section('og_type', 'website')
+@section('canonical', route('inbox'))
 
 @section('content')
     <div class="space-y-8">

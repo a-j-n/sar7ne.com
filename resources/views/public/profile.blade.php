@@ -2,10 +2,16 @@
 
 @section('title', '@'.$user->username.' · sar7ne')
 
+@section('meta_description', $user->bio ?? 'Send an anonymous message and make someone’s day on sar7ne.')
+@section('meta_image', $user->avatarUrl())
+@section('og_title', '@'.$user->username.' · sar7ne')
+@section('og_type', 'profile')
+@section('canonical', url()->current())
+
 @section('content')
     @php
         $messageRoute = route('profiles.message', $user);
-        if (Route::currentRouteName() === 'profiles.show.subdomain') {
+        if (request()->routeIs('profiles.show.subdomain')) {
             $messageRoute = route('profiles.message.subdomain', ['username' => $user->username]);
         }
     @endphp
@@ -35,5 +41,16 @@
 
             <p class="mt-3 text-center text-[11px] tracking-wide text-slate-500">We rate-limit to keep spam away. Be nice ✌️</p>
         </section>
+
+        {{-- JSON-LD for the public profile to help search engines understand this is a person/profile --}}
+        <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Person',
+            'name' => $user->display_name ?? '@'.$user->username,
+            'url' => url()->current(),
+            'image' => $user->avatarUrl(),
+        ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}
+        </script>
     </div>
 @endsection

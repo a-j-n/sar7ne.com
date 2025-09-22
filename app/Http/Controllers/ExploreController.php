@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ExploreController extends Controller
@@ -15,7 +16,10 @@ class ExploreController extends Controller
     {
         $term = Str::of($request->query('q', ''))->trim();
 
+        $select = ['id', 'username', 'display_name', 'avatar_url', 'bio', 'provider_type'];
+
         $baseQuery = User::query()
+            ->select($select)
             ->withCount([
                 'receivedMessages as unread_messages_count' => fn ($query) => $query->where('status', Message::STATUS_UNREAD),
                 'receivedMessages as total_messages_count',
@@ -35,10 +39,10 @@ class ExploreController extends Controller
             $trending = collect();
             $featured = $search;
         } else {
-            $trending = (clone $baseQuery)
+            $trending = Cache::remember('explore:trending', 60, fn () => (clone $baseQuery)
                 ->orderByDesc('total_messages_count')
                 ->limit(6)
-                ->get();
+                ->get());
 
             $featured = (clone $baseQuery)
                 ->inRandomOrder()

@@ -3,6 +3,10 @@
 
 @section('title', 'Privacy Policy')
 
+@section('meta_description', 'Privacy policy for sar7ne — how we collect, use, and protect user data.')
+@section('og_type', 'article')
+@section('canonical', route('privacy'))
+
 @section('content')
     <article class="prose max-w-none text-slate-100">
         <h1>Privacy Policy</h1>
@@ -39,4 +43,3 @@
         <p>We may update this Privacy Policy from time to time. We will post any changes on this page with an updated effective date.</p>
     </article>
 @endsection
-
