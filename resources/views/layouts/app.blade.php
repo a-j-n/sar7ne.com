@@ -48,6 +48,9 @@
                         @else
                             <a href="{{ route('login') }}" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">Sign in</a>
                         @endauth
+
+                        <!-- Privacy policy link -->
+                        <a href="{{ route('privacy') }}" class="ml-3 text-xs text-slate-400 hover:text-white">Privacy</a>
                     </div>
                 </div>
             </header>
