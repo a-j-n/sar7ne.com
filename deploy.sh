@@ -15,3 +15,5 @@ sudo chmod -R 777 storage public bootstrap/cache;
 #php artisan app:set-telegram-commands ;
 yarn install ;
 yarn build ;
+php artisan config:clear;
+php artisan cache:clear
