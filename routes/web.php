@@ -75,6 +75,7 @@ Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'sto
 Route::view('/privacy', 'public.privacy')->name('privacy');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
+Route::get('/theme/{theme}', [\App\Http\Controllers\ThemeController::class, 'switchTheme'])->name('theme.switch');
 
 Route::get('/_debug/locale', function (\Illuminate\Http\Request $request) {
     return response()->json([

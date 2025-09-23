@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}" class="{{ request()->cookie('theme', 'dark') === 'dark' ? 'dark' : '' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -83,7 +83,7 @@
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
     </head>
-    <body class="min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased">
+    <body class="@php $theme = request()->cookie('theme', 'dark'); echo $theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-white font-sans text-slate-900 antialiased'; @endphp">
         <div class="min-h-screen pb-20">
             <header class="border-b border-white/5 bg-gradient-to-r from-white/5 via-white/0 to-white/5 py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
@@ -92,6 +92,7 @@
                         <span>sar7ne</span>
                     </a>
                     <div class="flex items-center gap-3 text-sm text-slate-300">
+                        @include('partials.theme-switcher')
                         @include('partials.language-switcher')
                         @auth
                             <span class="hidden text-sm font-medium sm:inline">{{ auth()->user()?->username }}</span>
