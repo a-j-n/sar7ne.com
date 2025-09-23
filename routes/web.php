@@ -58,7 +58,7 @@ Route::post('/logout', function (Request $request) {
 $profileDomain = config('app.profile_domain_root');
 
 if ($profileDomain) {
-    Route::domain('{username}.'.$profileDomain)->group(function () {
+    Route::domain('{username.'.$profileDomain)->group(function () {
         Route::get('/', [PublicProfileController::class, 'showByUsername'])->name('profiles.show.subdomain');
         Route::post('/', [PublicMessageController::class, 'storeByUsername'])
             ->middleware('throttle:message-submission')
@@ -75,3 +75,12 @@ Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'sto
 Route::view('/privacy', 'public.privacy')->name('privacy');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
+
+Route::get('/_debug/locale', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'app_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'cookie_locale' => $request->cookie('locale'),
+    ]);
+})->name('debug.locale');
+

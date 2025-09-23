@@ -11,8 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Ensure the SetLocale middleware runs for web requests before other web middleware
-        $middleware->prependToGroup('web', \App\Http\Middleware\SetLocale::class);
+        // Ensure the SetLocale middleware runs for web requests after cookie/session middleware
+        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocale::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
