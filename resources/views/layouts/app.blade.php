@@ -18,13 +18,13 @@
         <meta property="og:description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
         <meta property="og:type" content="@yield('og_type', 'website')">
         <meta property="og:url" content="@yield('canonical', url()->current())">
-        <meta property="og:image" content="@yield('meta_image', asset('favicon.svg'))">
+        <meta property="og:image" content="@yield('meta_image', asset('favicon.ico'))">
 
         {{-- Twitter --}}
         <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
         <meta name="twitter:title" content="@yield('og_title', trim(strip_tags(View::yieldContent('title'))))">
         <meta name="twitter:description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
-        <meta name="twitter:image" content="@yield('meta_image', asset('favicon.svg'))">
+        <meta name="twitter:image" content="@yield('meta_image', asset('favicon.ico'))">
 
         {{-- Structured data (JSON-LD) --}}
         @php
@@ -55,9 +55,9 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+{{--        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))--}}
             @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
+{{--        @endif--}}
 
         <link rel="manifest" href="/manifest.json">
         <meta name="theme-color" content="#0d6efd">

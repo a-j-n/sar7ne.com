@@ -7,7 +7,9 @@ self.addEventListener('install', event => {
         '/favicon.ico',
         '/favicon.svg',
         '/apple-touch-icon.png'
-      ]);
+      ]).catch(error => {
+        console.error('Failed to cache resources:', error);
+      });
     })
   );
 });

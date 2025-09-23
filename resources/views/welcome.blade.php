@@ -16,12 +16,12 @@
         <meta property="og:description" content="Send and receive kind anonymous messages for creators, friends, and communities.">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ config('app.url', url('/')) }}">
-        <meta property="og:image" content="{{ asset('favicon.svg') }}">
+        <meta property="og:image" content="{{ asset('favicon.ico') }}">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="sar7ne — anonymous messages">
         <meta name="twitter:description" content="Send and receive kind anonymous messages for creators, friends, and communities.">
-        <meta name="twitter:image" content="{{ asset('favicon.svg') }}">
+        <meta name="twitter:image" content="{{ asset('favicon.ico') }}">
 
         {{-- Structured data --}}
         @php
