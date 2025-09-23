@@ -34,7 +34,7 @@ return [
     'send_anonymous_message' => 'أرسل رسالة مجهولة',
     'identity_notice' => 'هويتك مش هتتشارك. خليك لطيف.',
     'textarea_placeholder' => 'اكتب حاجة لطيفة...',
-    'send_anonymously' => 'أرسل مجهولًا',
+    'send_anonymously' => 'أرسل كمجهولًا',
     'rate_limit_notice' => 'بنحد الرسائل عشان نمنع السبام. خليك لطيف ✌️',
     'drop_anonymous_message' => 'اكتب رسالة مجهولة وخلّي يومهم أحسن.',
 

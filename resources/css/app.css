@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Import Google Cairo font */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
@@ -9,4 +12,9 @@
 
 body, html, .font-sans {
     font-family: 'Maple Mono', monospace !important;
+}
+
+/* Utility class for Cairo font */
+.font-cairo, .font-cairo body, .font-cairo.html {
+    font-family: 'Cairo', sans-serif !important;
 }

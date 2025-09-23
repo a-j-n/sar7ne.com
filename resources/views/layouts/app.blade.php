@@ -112,7 +112,11 @@
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
     </head>
-    <body class="@php $theme = request()->cookie('theme', 'dark'); echo $theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased'; @endphp">
+    <body class="@php
+        $theme = request()->cookie('theme', 'dark');
+        $isArabic = app()->getLocale() === 'ar';
+        echo ($theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased') . ($isArabic ? ' font-cairo' : '');
+    @endphp">
         <div class="min-h-screen pb-20">
             <header class="border-b {{ request()->cookie('theme', 'dark') === 'dark' ? 'border-white/5' : 'border-slate-200' }} {{ request()->cookie('theme', 'dark') === 'dark' ? 'bg-[#05070d]/90' : 'bg-gray-50' }} py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
