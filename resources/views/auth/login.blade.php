@@ -16,6 +16,17 @@
         @endif
 
         <div class="space-y-4">
+
+
+            <a href="{{ route('oauth.redirect', ['provider' => 'twitter']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-6 py-4 text-sm font-medium text-white transition hover:bg-white/20">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.608 1.794-1.574 2.163-2.723-.949.564-2.005.974-3.127 1.195-.897-.959-2.178-1.555-3.594-1.555-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.574-.666 2.476 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.317 0-.626-.03-.927-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.396 0-.788-.023-1.175-.067 2.179 1.397 4.768 2.212 7.548 2.212 9.054 0 14-7.496 14-13.986 0-.21-.005-.423-.014-.634.961-.695 1.797-1.562 2.457-2.549z"/>
+                </svg>
+                Continue with X (Twitter)
+            </a>
+
+            <div class="text-center text-xs uppercase tracking-wide text-slate-400">or continue with</div>
+
             <form method="POST" action="{{ route('login.attempt') }}" class="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-6">
                 @csrf
                 <div class="text-left">
@@ -41,16 +52,12 @@
                 </div>
             </form>
 
-            <div class="text-center text-xs uppercase tracking-wide text-slate-400">or continue with</div>
-            <a href="{{ route('oauth.redirect', ['provider' => 'twitter']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-6 py-4 text-sm font-medium text-white transition hover:bg-white/20">
-                <svg class="h-5 w-5" viewBox="0 0 1200 1227" fill="currentColor" aria-hidden="true"><path d="M714.163 0c-1.654 0-3.308.408-4.775 1.203-1.466.796-2.678 1.957-3.513 3.373L534.627 323.01 230.79 86.363c-1.36-1.048-3.02-1.622-4.726-1.618-1.707.003-3.363.584-4.717 1.637L14.441 243.498c-1.451 1.077-2.52 2.574-3.03 4.264-.509 1.69-.431 3.506.22 5.151l182.678 463.13L4.627 1189.57c-.483 1.57-.492 3.25-.028 4.826.464 1.577 1.39 2.977 2.659 3.992l206.31 166.62c1.474 1.145 3.306 1.76 5.183 1.733 1.877-.028 3.689-.691 5.12-1.836l307.399-245.13 204.176 245.13c1.092 1.309 2.538 2.289 4.155 2.796 1.617.507 3.349.51 4.968.01l230.92-74.59c1.76-.58 3.237-1.807 4.14-3.438.902-1.63 1.228-3.55.92-5.398l-69.14-413.475 253.02-326.076c1.219-1.663 1.85-3.705 1.794-5.78-.056-2.076-.806-4.062-2.12-5.679L715.43 3.8c-1.492-1.732-3.626-2.791-5.873-2.849-0.13-.003-0.263-.003-0.394-.003Z"/></svg>
-                Continue with X (Twitter)
-            </a>
 
-            <a href="{{ route('oauth.redirect', ['provider' => 'facebook']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#0866ff]/80 px-6 py-4 text-sm font-medium text-white transition hover:bg-[#0866ff]">
-                <svg class="h-5 w-5" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S274.43 0 243.24 0c-73.22 0-121.05 44.38-121.05 124.72v70.62H56.89V288h65.3v224h100.2V288z"/></svg>
-                Continue with Facebook
-            </a>
+{{--            hidden for now--}}
+{{--            <a href="{{ route('oauth.redirect', ['provider' => 'facebook']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#0866ff]/80 px-6 py-4 text-sm font-medium text-white transition hover:bg-[#0866ff]">--}}
+{{--                <svg class="h-5 w-5" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S274.43 0 243.24 0c-73.22 0-121.05 44.38-121.05 124.72v70.62H56.89V288h65.3v224h100.2V288z"/></svg>--}}
+{{--                Continue with Facebook--}}
+{{--            </a>--}}
         </div>
 
         <p class="text-center text-xs text-slate-400">By continuing you agree to our respectful messaging guidelines.</p>
