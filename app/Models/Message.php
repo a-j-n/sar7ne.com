@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Message extends Model
 {
     /** @use HasFactory<\Database\Factories\MessageFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public const STATUS_UNREAD = 'unread';
 
@@ -47,5 +48,12 @@ class Message extends Model
     public function markUnread(): void
     {
         $this->forceFill(['status' => self::STATUS_UNREAD])->save();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
     }
 }
