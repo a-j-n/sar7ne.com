@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
         <title>@yield('title', 'sar7ne')</title>
 
         {{-- SEO meta defaults and overridable sections --}}
-        <meta name="description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
+        <meta name="description" content="@yield('meta_description', __('messages.meta_description'))">
         <meta name="robots" content="@yield('meta_robots', 'index, follow')">
         <link rel="canonical" href="@yield('canonical', url()->current())">
 
@@ -92,16 +92,17 @@
                         <span>sar7ne</span>
                     </a>
                     <div class="flex items-center gap-3 text-sm text-slate-300">
+                        @include('partials.language-switcher')
                         @auth
-                            <span class="hidden text-sm font-medium sm:inline">{{ auth()->user()->username }}</span>
+                            <span class="hidden text-sm font-medium sm:inline">{{ auth()->user()?->username }}</span>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
                                 <button type="submit" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">
-                                    Log out
+                                    {{ __('messages.logout') }}
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">Sign in</a>
+                            <a href="{{ route('login') }}" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">{{ __('messages.login') }}</a>
                         @endauth
                     </div>
                 </div>
@@ -118,7 +119,7 @@
             @if ($errors->any())
                 <div class="mx-auto mt-4 w-full max-w-2xl px-4">
                     <div class="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-                        <span class="font-semibold">We found some issues:</span>
+                        <span class="font-semibold">{{ __('messages.we_found_some_issues') }}</span>
                         <ul class="mt-2 list-disc space-y-1 pl-5">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -137,9 +138,9 @@
             <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
                 @php
                     $navItems = [
-                        ['label' => 'Explore', 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => 'Explore sar7ne'],
-                        ['label' => 'Inbox', 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => 'View your inbox'],
-                        ['label' => 'Profile', 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile'), 'icon' => 'profile', 'aria' => 'View your profile'],
+                        ['label' => __('messages.explore'), 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => __('messages.explore')],
+                        ['label' => __('messages.inbox'), 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
+                        ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile'), 'icon' => 'profile', 'aria' => __('messages.profile')],
                     ];
                 @endphp
 
@@ -148,13 +149,13 @@
                         <span class="inline-flex h-9 w-9 items-center justify-center rounded-full {{ $item['active'] ? 'bg-white/15 text-white' : 'bg-white/5 text-slate-300' }}">
                             @switch($item['icon'])
                                 @case('explore')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>Explore</title><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
                                     @break
                                 @case('inbox')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>Inbox</title><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M3 13h3l2 3h8l2-3h3"/><path d="m7 8 5 4 5-4"/></svg>
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M3 13h3l2 3h8l2-3h3"/><path d="m7 8 5 4 5-4"/></svg>
                                     @break
                                 @case('profile')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>Profile</title><circle cx="12" cy="8" r="4"/><path d="M6 20a6 6 0 0 1 12 0"/></svg>
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><circle cx="12" cy="8" r="4"/><path d="M6 20a6 6 0 0 1 12 0"/></svg>
                                     @break
                             @endswitch
                         </span>

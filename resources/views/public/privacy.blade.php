@@ -1,18 +1,17 @@
 {{-- filepath: resources/views/public/privacy.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy')
+@section('title', __('messages.privacy'))
 
-@section('meta_description', 'Privacy policy for sar7ne — how we collect, use, and protect user data.')
-@section('og_type', 'article')
-@section('canonical', route('privacy'))
+@section('meta_description', __('messages.privacy_description'))
 
 @section('content')
     <article class="prose max-w-none text-slate-100">
-        <h1>Privacy Policy</h1>
-        <p>Last updated: September 22, 2025</p>
+        <h1>{{ __('messages.privacy') }}</h1>
 
-        <p>This Privacy Policy explains how {{ env('APP_NAME', 'our application') }} collects, uses, and discloses information when you use our website or services. By using {{ env('APP_NAME', 'our application') }}, you agree to the collection and use of information in accordance with this policy.</p>
+        <p>{{ __('messages.privacy_description') }}</p>
+
+        <p>{{ __('messages.privacy_description') }}</p>
 
         <h2>Information We Collect</h2>
         <ul>

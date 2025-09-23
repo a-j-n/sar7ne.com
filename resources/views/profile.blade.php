@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Profile · sar7ne')
+@section('title', __('messages.profile').' · sar7ne')
 
-@section('meta_description', $user->bio ?? 'Manage your profile and settings on sar7ne.')
+@section('meta_description', $user->bio ?? __('messages.customise_world_sees_you'))
 @section('meta_image', $user->avatarUrl())
 @section('og_type', 'profile')
 @section('canonical', route('profile'))
@@ -16,20 +16,20 @@
                 @if ($user->display_name)
                     <p class="text-sm text-slate-300">{{ $user->display_name }}</p>
                 @endif
-                <p class="text-xs text-slate-400">Joined {{ $user->created_at->format('M Y') }} · {{ $user->total_messages_count }} messages received</p>
+                <p class="text-xs text-slate-400">{{ __('messages.joined', ['date' => $user->created_at->format('M Y')]) }} · {{ __('messages.messages_received', ['count' => $user->total_messages_count]) }}</p>
                 <div class="flex flex-wrap gap-3 text-xs text-slate-300">
-                    <span class="rounded-full border border-white/10 px-3 py-1">Provider: {{ ucfirst($user->provider_type) }}</span>
+                    <span class="rounded-full border border-white/10 px-3 py-1">{{ __('messages.provider_label') }}: {{ ucfirst($user->provider_type ?? '') }}</span>
                     @if ($url = $user->subdomainUrl())
                         <a href="{{ $url }}" class="rounded-full border border-white/10 px-3 py-1 transition hover:border-white/30" target="_blank" rel="noreferrer">{{ $url }}</a>
                     @endif
-                    <a href="{{ route('profiles.show', $user) }}" class="rounded-full border border-white/10 px-3 py-1 transition hover:border-white/30">Public profile preview</a>
+                    <a href="{{ route('profiles.show', $user) }}" class="rounded-full border border-white/10 px-3 py-1 transition hover:border-white/30">{{ __('messages.public_profile_preview') }}</a>
                 </div>
             </div>
         </section>
 
         <section class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
-            <h2 class="text-lg font-semibold">Profile settings</h2>
-            <p class="mt-1 text-xs text-slate-400">Customise how the world sees you on sar7ne.</p>
+            <h2 class="text-lg font-semibold">{{ __('messages.profile_settings') }}</h2>
+            <p class="mt-1 text-xs text-slate-400">{{ __('messages.customise_world_sees_you') }}</p>
 
             <form class="mt-6 space-y-6" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
@@ -37,57 +37,57 @@
 
                 <div class="grid gap-4 md:grid-cols-2">
                     <div class="space-y-2">
-                        <label for="username" class="text-xs uppercase tracking-wide text-slate-400">Username</label>
+                        <label for="username" class="text-xs uppercase tracking-wide text-slate-400">{{ __('messages.username_label') }}</label>
                         <input id="username" name="username" type="text" value="{{ old('username', $user->username) }}" required pattern="^[A-Za-z0-9_]+$" class="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none" />
-                        <p class="text-xs text-slate-400">Lowercase letters, numbers, underscores only.</p>
+                        <p class="text-xs text-slate-400">{{ __('messages.not_specified') }}</p>
                     </div>
                     <div class="space-y-2">
-                        <label for="display_name" class="text-xs uppercase tracking-wide text-slate-400">Display name</label>
+                        <label for="display_name" class="text-xs uppercase tracking-wide text-slate-400">{{ __('messages.display_name_label') }}</label>
                         <input id="display_name" name="display_name" type="text" value="{{ old('display_name', $user->display_name) }}" class="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none" />
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="bio" class="text-xs uppercase tracking-wide text-slate-400">Bio</label>
+                    <label for="bio" class="text-xs uppercase tracking-wide text-slate-400">{{ __('messages.bio_label') }}</label>
                     <textarea id="bio" name="bio" rows="4" maxlength="280" class="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none">{{ old('bio', $user->bio) }}</textarea>
-                    <p class="text-xs text-slate-400">Share a short vibe for your visitors (max 280 characters).</p>
+                    <p class="text-xs text-slate-400">{{ __('messages.bio_help', ['max' => 280]) }}</p>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="avatar" class="text-xs uppercase tracking-wide text-slate-400">Avatar</label>
+                    <label for="avatar" class="text-xs uppercase tracking-wide text-slate-400">{{ __('messages.avatar_label') }}</label>
                     <input id="avatar" name="avatar" type="file" accept="image/*" class="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none" />
-                    <p class="text-xs text-slate-400">Square PNG/JPG, up to 2MB.</p>
+                    <p class="text-xs text-slate-400">{{ __('messages.avatar_help', ['size' => '2MB']) }}</p>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="gender" class="text-xs uppercase tracking-wide text-slate-400">Gender</label>
+                    <label for="gender" class="text-xs uppercase tracking-wide text-slate-400">{{ __('messages.gender_label') }}</label>
                     <select id="gender" name="gender" class="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm focus:border-white/40 focus:outline-none">
                         @php
                             $genders = [
-                                'male' => 'Male',
-                                'female' => 'Female',
-                                'non-binary' => 'Non-binary',
-                                'other' => 'Other',
-                                'prefer_not_to_say' => 'Prefer not to say',
+                                'male' => __('messages.gender_male'),
+                                'female' => __('messages.gender_female'),
+                                'non-binary' => __('messages.gender_non_binary'),
+                                'other' => __('messages.gender_other'),
+                                'prefer_not_to_say' => __('messages.gender_prefer_not'),
                             ];
                             $current = old('gender', $user->gender);
                         @endphp
-                        <option value="" {{ $current === null || $current === '' ? 'selected' : '' }}>— Not specified —</option>
+                        <option value="" {{ $current === null || $current === '' ? 'selected' : '' }}>{{ __('messages.not_specified') }}</option>
                         @foreach ($genders as $key => $label)
                             <option value="{{ $key }}" {{ $current === $key ? 'selected' : '' }}>{{ $label }}</option>
                         @endforeach
                     </select>
-                    <p class="text-xs text-slate-400">Optional — choose how you'd like to describe your gender.</p>
+                    <p class="text-xs text-slate-400">{{ __('messages.optional_choose_gender') }}</p>
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" class="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-slate-200">Save changes</button>
+                    <button type="submit" class="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-slate-200">{{ __('messages.save_changes') }}</button>
                 </div>
             </form>
         </section>
 
         <div class="mt-8 text-center text-xs text-slate-400">
-            <a href="{{ route('privacy') }}" class="hover:text-white">Privacy</a>
+            <a href="{{ route('privacy') }}" class="hover:text-white">{{ __('messages.privacy') }}</a>
         </div>
     </div>
 @endsection

@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\InboxMessageController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicMessageController;
 use App\Http\Controllers\PublicProfileController;
@@ -72,3 +73,5 @@ Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'sto
 
 // Privacy Policy
 Route::view('/privacy', 'public.privacy')->name('privacy');
+
+Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');

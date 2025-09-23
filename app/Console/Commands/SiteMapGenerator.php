@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class SiteMapGenerator extends Command
@@ -33,14 +32,14 @@ class SiteMapGenerator extends Command
 
         // Add homepage
         $sitemap .= '    <url>'.PHP_EOL;
-        $sitemap .= '        <loc>' . URL::to('/') . '</loc>'.PHP_EOL;
+        $sitemap .= '        <loc>'.URL::to('/').'</loc>'.PHP_EOL;
         $sitemap .= '    </url>'.PHP_EOL;
 
         // Add user profiles
         $users = User::all();
         foreach ($users as $user) {
             $sitemap .= '    <url>'.PHP_EOL;
-            $sitemap .= '        <loc>' . URL::to('/profile/' . $user->username) . '</loc>'.PHP_EOL;
+            $sitemap .= '        <loc>'.URL::to('/profile/'.$user->username).'</loc>'.PHP_EOL;
             $sitemap .= '    </url>'.PHP_EOL;
         }
 

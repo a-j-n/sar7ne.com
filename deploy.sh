@@ -57,6 +57,6 @@ yarn build
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
-
+art sitemap:generate
 # Log deployment completion
 echo "Deployment completed successfully."

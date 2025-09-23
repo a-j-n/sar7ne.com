@@ -1,0 +1,29 @@
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | Define the locales available in the application. The array keys are the
+    | locale short codes used by the application (e.g. 'ar', 'en'). Each entry
+    | may include a human friendly name and direction to help the UI.
+    |
+    */
+
+    'available' => [
+        'ar' => [
+            'name' => 'العربية',
+            'dir' => 'rtl',
+            'locale' => 'ar_EG', // informative
+        ],
+        'en' => [
+            'name' => 'English',
+            'dir' => 'ltr',
+            'locale' => 'en_US',
+        ],
+    ],
+
+    'default' => env('APP_LOCALE', 'ar'),
+];

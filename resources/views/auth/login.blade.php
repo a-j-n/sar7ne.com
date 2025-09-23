@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Sign in · sar7ne')
+@section('title', __('messages.sign_in_title'))
 
 @section('content')
     <div class="mx-auto max-w-lg space-y-6">
         <div class="rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-xl">
-            <h1 class="text-2xl font-semibold">Join sar7ne</h1>
-            <p class="mt-2 text-sm text-slate-300">Sign in with email or a social account to start receiving anonymous messages.</p>
+            <h1 class="text-2xl font-semibold">{{ __('messages.join_sar7ne') }}</h1>
+            <p class="mt-2 text-sm text-slate-300">{{ __('messages.auth_description') }}</p>
         </div>
 
         @if (session('authError'))
@@ -22,22 +22,22 @@
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.608 1.794-1.574 2.163-2.723-.949.564-2.005.974-3.127 1.195-.897-.959-2.178-1.555-3.594-1.555-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.574-.666 2.476 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.317 0-.626-.03-.927-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.396 0-.788-.023-1.175-.067 2.179 1.397 4.768 2.212 7.548 2.212 9.054 0 14-7.496 14-13.986 0-.21-.005-.423-.014-.634.961-.695 1.797-1.562 2.457-2.549z"/>
                 </svg>
-                Continue with X (Twitter)
+                {{ __('messages.continue_with', ['provider' => 'Twitter']) }}
             </a>
 
-            <div class="text-center text-xs uppercase tracking-wide text-slate-400">or continue with</div>
+            <div class="text-center text-xs uppercase tracking-wide text-slate-400">{{ __('messages.or_continue_with') }}</div>
 
             <form method="POST" action="{{ route('login.attempt') }}" class="space-y-3 rounded-2xl border border-white/10 bg-white/5 p-6">
                 @csrf
                 <div class="text-left">
-                    <label for="email" class="mb-1 block text-xs font-medium text-slate-300">Email</label>
-                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-slate-400 outline-none focus:border-white/30" placeholder="you@example.com">
+                    <label for="email" class="mb-1 block text-xs font-medium text-slate-300">{{ __('messages.email_label') }}</label>
+                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-slate-400 outline-none focus:border-white/30" placeholder="{{ __('messages.email_placeholder', ['example' => 'you@example.com']) }}">
                     @error('email')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="text-left">
-                    <label for="password" class="mb-1 block text-xs font-medium text-slate-300">Password</label>
+                    <label for="password" class="mb-1 block text-xs font-medium text-slate-300">{{ __('messages.password_label') }}</label>
                     <input id="password" name="password" type="password" required autocomplete="current-password" class="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-slate-400 outline-none focus:border-white/30" placeholder="••••••••">
                     @error('password')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
@@ -46,9 +46,9 @@
                 <div class="flex items-center justify-between">
                     <label class="flex items-center gap-2 text-xs text-slate-300">
                         <input type="checkbox" name="remember" value="1" {{ old('remember') ? 'checked' : '' }} class="h-4 w-4 rounded border-white/20 bg-black/20">
-                        Remember me
+                        {{ __('messages.remember_me') }}
                     </label>
-                    <button type="submit" class="rounded-xl bg-white/90 px-4 py-2 text-xs font-medium text-black transition hover:bg-white">Sign in with Email</button>
+                    <button type="submit" class="rounded-xl bg-white/90 px-4 py-2 text-xs font-medium text-black transition hover:bg-white">{{ __('messages.sign_in_with_email') }}</button>
                 </div>
             </form>
 
@@ -60,7 +60,7 @@
 {{--            </a>--}}
         </div>
 
-        <p class="text-center text-xs text-slate-400">By continuing you agree to our respectful messaging guidelines.</p>
-        <p class="text-center text-xs text-slate-400">New here? <a class="text-white underline" href="{{ route('register') }}">Create an account</a> · <a class="text-white underline" href="{{ route('password.request') }}">Forgot password?</a></p>
+        <p class="text-center text-xs text-slate-400">{{ __('messages.respectful_guidelines') }}</p>
+        <p class="text-center text-xs text-slate-400">{{ __('messages.new_here') }} <a class="text-white underline" href="{{ route('register') }}">{{ __('messages.create_account') }}</a> · <a class="text-white underline" href="{{ route('password.request') }}">{{ __('messages.forgot_password') }}</a></p>
     </div>
 @endsection

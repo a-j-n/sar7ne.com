@@ -1,0 +1,93 @@
+<?php
+
+return [
+    'welcome' => 'Welcome to our website',
+    'login' => 'Login',
+    'register' => 'Register',
+    'logout' => 'Logout',
+    'home' => 'Home',
+    'profile' => 'Profile',
+    'explore' => 'Explore',
+    'inbox' => 'Inbox',
+
+    // New UI translations
+    'language' => 'Language',
+    'meta_description' => 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.',
+
+    // Auth / login
+    'sign_in_title' => 'Sign in · sar7ne',
+    'join_sar7ne' => 'Join sar7ne',
+    'auth_description' => 'Sign in with email or a social account to start receiving anonymous messages.',
+    'continue_with' => 'Continue with :provider',
+    'or_continue_with' => 'or continue with',
+    'sign_in_with_email' => 'Sign in with Email',
+    'email_label' => 'Email',
+    'email_placeholder' => 'you@example.com',
+    'password_label' => 'Password',
+    'remember_me' => 'Remember me',
+    'respectful_guidelines' => 'By continuing you agree to our respectful messaging guidelines.',
+    'new_here' => 'New here?',
+    'create_account' => 'Create an account',
+    'forgot_password' => 'Forgot password?',
+
+    // Public profile / messaging
+    'send_anonymous_message' => 'Send an anonymous message',
+    'identity_notice' => "Your identity won't be shared. Keep it kind.",
+    'textarea_placeholder' => 'Write something thoughtful...',
+    'send_anonymously' => 'Send anonymously',
+    'rate_limit_notice' => 'We rate-limit to keep spam away. Be nice ✌️',
+    'drop_anonymous_message' => 'Drop an anonymous message and make their day.',
+
+    // Explore
+    'homepage_discover_title' => 'Discover anonymous vibes',
+    'browse_profiles_desc' => 'Browse creators, friends, and trending profiles on sar7ne.',
+    'search_creators' => 'Search creators',
+    'search_by_username' => 'Search by username',
+    'clear' => 'Clear',
+    'search' => 'Search',
+    'trending_profiles' => 'Trending profiles',
+    'picked_by_engagement' => 'Picked by engagement',
+    'view_profile' => 'View profile',
+    'message' => 'Message',
+    'search_results' => 'Search results',
+    'featured_creators' => 'Featured creators',
+    'refreshed_on_each_visit' => 'Refreshed on each visit',
+    'no_profiles_found' => 'No profiles found — try another search.',
+    'anonymous_vibes_waiting' => 'Anonymous vibes waiting to be discovered.',
+    'visit_profile' => 'Visit profile',
+
+    // Layout / misc
+    'we_found_some_issues' => 'We found some issues:',
+
+    // Profile settings
+    'profile_settings' => 'Profile settings',
+    'customise_world_sees_you' => 'Customise how the world sees you on sar7ne.',
+    'joined' => 'Joined :date',
+    'messages_received' => ':count messages received',
+    'provider_label' => 'Provider',
+    'public_profile_preview' => 'Public profile preview',
+    'username_label' => 'Username',
+    'display_name_label' => 'Display name',
+    'bio_label' => 'Bio',
+    'bio_help' => 'Share a short vibe for your visitors (max :max characters).',
+    'avatar_label' => 'Avatar',
+    'avatar_help' => 'Square PNG/JPG, up to :size.',
+    'gender_label' => 'Gender',
+    'gender_male' => 'Male',
+    'gender_female' => 'Female',
+    'gender_non_binary' => 'Non-binary',
+    'gender_other' => 'Other',
+    'gender_prefer_not' => 'Prefer not to say',
+    'not_specified' => '— Not specified —',
+    'optional_choose_gender' => "Optional — choose how you'd like to describe your gender.",
+    'save_changes' => 'Save changes',
+    'privacy' => 'Privacy',
+
+    // Remaining small UI bits
+    'powered_by' => 'powered by :app',
+    'register_description' => "Sign up with your email. We'll generate a username for you.",
+    'create_account_button' => 'Create Account',
+    'create_account_heading' => 'Create your account',
+    'already_have_account' => 'Already have an account? :link',
+    'privacy_description' => 'Privacy policy for sar7ne — how we collect, use, and protect user data.',
+];
