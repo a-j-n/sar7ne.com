@@ -13,6 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Ensure the SetLocale middleware runs for web requests after cookie/session middleware
         $middleware->appendToGroup('web', \App\Http\Middleware\SetLocale::class);
+        // Force HTTPS and www. subdomain
+        $middleware->prependToGroup('web', \App\Http\Middleware\ForceHttpsAndWww::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -1,6 +1,17 @@
 The plan for the next update
- 1- let's enhance our ui in dark and light mode system ,
- 2- let's and option for massage's to be public on user profile
- 3- in login user profile let's make info,setting tabs
- 4- in setting tab we will set the defult language insted of the navbar
- 5- in setting tab we will give him the option to accept the anonymous massages or not and handel it in public pofile
+ - force all traffic to https with www. subdomain
+ - change the profile link to have the 2 options (sarah.com/username) and (sarah.com/p/username)
+ - login with google and tiktok option
+ - let's enhance our ui in dark and light mode system ,
+ - add social media links in user profile in very smart way it will show in public profile with icons user will have the option to add it or not and be public or private
+ - add photo upload option sending message in public and private message
+ - let's and option for message's to be public on user profile
+ - in login user profile let's make info,setting tabs
+ - in setting tab we will set the defult language insted of the navbar
+ - in setting tab we will give him the option to accept the anonymous messages or not and handel it in public pofile
+ - in setting tab we will give him the option to delete his account and all the data related to it (will be soft delete and after 30 days hard delete)
+ - in setting tab we will give him the option to download all his data related to his account
+ - info tab will have the user info and public profile link and option to copy it
+ - the profile card in the profile page will have the option to copy the public profile link
+ -
+

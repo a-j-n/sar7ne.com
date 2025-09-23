@@ -71,6 +71,12 @@ Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'sto
     ->middleware('throttle:message-submission')
     ->name('profiles.message');
 
+// Add /{user:username} route for public profiles (must be after all other specific routes)
+Route::get('/{user:username}', [PublicProfileController::class, 'show'])->name('profiles.show.short');
+Route::post('/{user:username}/messages', [PublicMessageController::class, 'store'])
+    ->middleware('throttle:message-submission')
+    ->name('profiles.message.short');
+
 // Privacy Policy
 Route::view('/privacy', 'public.privacy')->name('privacy');
 

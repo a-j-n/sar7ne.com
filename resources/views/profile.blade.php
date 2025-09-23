@@ -23,6 +23,16 @@
                         <a href="{{ $url }}" class="rounded-full border border-white/10 px-3 py-1 transition hover:border-white/30" target="_blank" rel="noreferrer">{{ $url }}</a>
                     @endif
                     <a href="{{ route('profiles.show', $user) }}" class="rounded-full border border-white/10 px-3 py-1 transition hover:border-white/30">{{ __('messages.public_profile_preview') }}</a>
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2">
+                            <input type="text" readonly value="{{ url('/' . $user->username) }}" class="w-40 rounded border border-white/10 bg-white/10 px-2 py-1 text-xs text-slate-300" id="profile-link-short">
+                            <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('profile-link-short').value)" class="rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20">Copy</button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="text" readonly value="{{ route('profiles.show', $user) }}" class="w-40 rounded border border-white/10 bg-white/10 px-2 py-1 text-xs text-slate-300" id="profile-link-p">
+                            <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('profile-link-p').value)" class="rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20">Copy</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
