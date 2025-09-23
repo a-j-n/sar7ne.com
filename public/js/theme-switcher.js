@@ -1,18 +1,65 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('theme-toggle');
-    if (!btn) return;
+    const trigger = document.getElementById('theme-dialog-trigger');
+    const dialog = document.getElementById('theme-dialog');
+    if (!trigger || !dialog) return;
 
-    function currentTheme() {
-        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    const overlay = dialog.querySelector('[data-dialog-overlay]');
+    const closeButtons = Array.from(dialog.querySelectorAll('[data-dialog-close]'));
+    const choices = Array.from(dialog.querySelectorAll('.theme-choice'));
+
+    let lastFocused = null;
+
+    function openDialog() {
+        lastFocused = document.activeElement;
+        dialog.classList.remove('hidden');
+        dialog.setAttribute('aria-hidden', 'false');
+
+        // focus first focusable element inside dialog
+        const focusable = getFocusableElements(dialog);
+        if (focusable.length) focusable[0].focus();
+
+        document.addEventListener('keydown', handleKeyDown);
     }
 
-    function applyTheme(theme) {
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+    function closeDialog() {
+        dialog.classList.add('hidden');
+        dialog.setAttribute('aria-hidden', 'true');
+        document.removeEventListener('keydown', handleKeyDown);
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+            lastFocused.focus();
         }
-        btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeDialog();
+            return;
+        }
+
+        if (e.key === 'Tab') {
+            // focus trap
+            const focusable = getFocusableElements(dialog);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+    }
+
+    function getFocusableElements(container) {
+        const selectors = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        return Array.from(container.querySelectorAll(selectors)).filter(el => el.offsetParent !== null);
     }
 
     function isSystemDark() {
@@ -33,42 +80,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    btn.addEventListener('click', function (e) {
+    // Open dialog on trigger click
+    trigger.addEventListener('click', function (e) {
         e.preventDefault();
-        const next = currentTheme() === 'dark' ? 'light' : 'dark';
-
-        // Apply immediately for instant UX
-        applyTheme(next);
-
-        // Navigate to server route to persist cookie
-        // Build URL relative to site root
-        const url = '/theme/' + encodeURIComponent(next);
-        window.location.href = url;
+        openDialog();
     });
 
-    // Attach handlers to theme-choice links
-    const choices = Array.from(document.querySelectorAll('.theme-choice'));
+    // Close on overlay click
+    if (overlay) {
+        overlay.addEventListener('click', function () {
+            closeDialog();
+        });
+    }
+
+    // Close on close buttons
+    closeButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            closeDialog();
+        });
+    });
+
+    // Choice handlers
     choices.forEach(function (el) {
         el.addEventListener('click', function (e) {
             e.preventDefault();
             const theme = el.dataset.theme;
+            const href = el.dataset.href || el.getAttribute('data-href') || null;
+
             applyThemeImmediate(theme);
-            // navigate to server route to persist cookie
-            window.location.href = el.href;
+
+            // update visual selection state inside dialog
+            choices.forEach(c => c.classList.remove('font-semibold', 'bg-slate-100', 'dark:bg-slate-800'));
+            el.classList.add('font-semibold', 'bg-slate-100', 'dark:bg-slate-800');
+
+            // close dialog then navigate to persist on server
+            closeDialog();
+            if (href) {
+                // use location.assign to preserve history behavior
+                window.location.assign(href);
+            }
         });
     });
 
-    // If cookie is 'system' we also want to respond to OS changes while the page is open
+    // Listen for system preference changes if cookie set to system
     try {
         const cookieTheme = (document.cookie || '').split(';').map(s => s.trim()).find(s => s.startsWith('theme='));
         const value = cookieTheme ? decodeURIComponent(cookieTheme.split('=')[1]) : null;
         if (value === 'system') {
-            // listen for changes
             if (window.matchMedia) {
                 const mq = window.matchMedia('(prefers-color-scheme: dark)');
-                mq.addEventListener?.('change', e => {
-                    applyThemeImmediate('system');
-                });
+                mq.addEventListener?.('change', () => applyThemeImmediate('system'));
             }
         }
     } catch (err) {

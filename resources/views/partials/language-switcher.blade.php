@@ -6,10 +6,15 @@
     @endphp
 
     <!-- Trigger Button -->
-    <button id="lang-toggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="lang-dialog" class="inline-flex items-center gap-2 rounded px-2 py-1 text-xs bg-transparent text-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-white/20">
+    <button id="lang-toggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="lang-dialog" class="inline-flex items-center justify-center rounded p-2 bg-transparent text-slate-200 hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-white/20" aria-label="Change language">
         <span class="sr-only">{{ __('messages.language') }}</span>
-        <span>{{ $currentName }}</span>
-        <svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="M6 8l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- Globe icon (removed xmlns attribute to avoid linter warning) -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5">
+            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2.05 12H21.95" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M12 2.05a15.9 15.9 0 010 19.9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M7 4.5c1.5 1 3.5 1.5 5 1.5s3.5-.5 5-1.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
     </button>
 
     <!-- Dialog (initially hidden) -->
