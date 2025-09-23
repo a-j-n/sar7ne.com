@@ -85,7 +85,7 @@ class User extends Authenticatable
         }
 
         if (Str::startsWith($this->avatar_url, ['http://', 'https://'])) {
-            return $this->avatar_url;
+            return secure_url($this->avatar_url);
         }
 
         $disk = config('filesystems.default', 'public');
