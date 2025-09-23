@@ -53,16 +53,18 @@ class ProfileController extends Controller
             'gender' => $validated['gender'] ?? null,
         ];
 
-        $disk = config('filesystems.default', 'public');
-
+        $disk = config('filesystems.default', 'spaces');
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', $disk);
-
-            if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
-                Storage::disk($disk)->delete($user->avatar_url);
+            $avatarPath = $request->file('avatar')->store('avatars');
+            if ($avatarPath && $avatarPath !== '0') {
+                if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
+                    Storage::disk($disk)->delete($user->avatar_url);
+                }
+                // Store the full URL for Spaces
+                $updates['avatar_url'] = Storage::disk($disk)->url($avatarPath);
+            } else {
+                return back()->withErrors(['avatar' => 'Avatar upload failed. Please try again or check your storage configuration.'])->withInput();
             }
-
-            $updates['avatar_url'] = $avatarPath;
         }
 
         $user->fill($updates)->save();

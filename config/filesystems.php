@@ -51,14 +51,18 @@ return [
             'driver' => 's3',
             'key' => env('DO_SPACES_KEY'),
             'secret' => env('DO_SPACES_SECRET'),
-            'region' => env('DO_SPACES_REGION', 'nyc3'),
+            'region' => env('DO_SPACES_REGION', 'fra1'),
             'bucket' => env('DO_SPACES_BUCKET'),
             'url' => env('DO_SPACES_CDN'),
-            'endpoint' => env('DO_SPACES_ENDPOINT', 'https://nyc3.digitaloceanspaces.com'),
+            'endpoint' => env('DO_SPACES_ENDPOINT', 'https://fra1.digitaloceanspaces.com'),
             'visibility' => 'public',
-            'use_path_style_endpoint' => false,
-            'throw' => false,
+            'use_path_style_endpoint' => env('DO_USE_PATH_STYLE_ENDPOINT', false),
+            'throw' => true,
             'report' => false,
+            'headers' => [
+                'Cache-Control' => 'max-age=31536000, public',
+                'visibility' => 'public',
+            ],
         ],
 
         's3' => [
