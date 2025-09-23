@@ -47,8 +47,8 @@ php artisan view:clear
 php artisan clear
 
 # Set permissions
-sudo chmod -R 775 storage public bootstrap/cache
-
+sudo chmod -R 775  public bootstrap/cache
+sudo chmod -R 777 storage
 # Install and build frontend assets
 yarn install --frozen-lockfile
 yarn build
