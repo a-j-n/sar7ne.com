@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Auth\EmailLoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\InboxMessageController;

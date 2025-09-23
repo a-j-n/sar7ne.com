@@ -16,3 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+// Register the new SiteMapGenerator command
+// \App\Console\Commands\SiteMapGenerator::class

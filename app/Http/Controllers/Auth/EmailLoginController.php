@@ -24,6 +24,7 @@ class EmailLoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+
             return redirect()->intended(route('inbox'));
         }
 
@@ -32,4 +33,3 @@ class EmailLoginController extends Controller
             ->with('authError', 'The provided credentials do not match our records.');
     }
 }
-

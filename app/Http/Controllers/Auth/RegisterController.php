@@ -39,4 +39,3 @@ class RegisterController extends Controller
         return redirect()->intended(route('inbox'));
     }
 }
-

@@ -23,3 +23,4 @@ yarn-error.log
 /.zed
 
 public/icon*.png
+public/sitemap.xml

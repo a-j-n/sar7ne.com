@@ -24,4 +24,3 @@ class PasswordResetLinkController extends Controller
             : back()->withErrors(['email' => __($status)]);
     }
 }
-
