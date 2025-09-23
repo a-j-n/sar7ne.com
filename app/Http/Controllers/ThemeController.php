@@ -11,7 +11,7 @@ class ThemeController extends Controller
 {
     public function switchTheme(string $theme, Request $request): RedirectResponse
     {
-        $available = ['light', 'dark'];
+        $available = ['light', 'dark', 'system'];
 
         if (! in_array($theme, $available, true)) {
             return redirect()->back();
@@ -25,4 +25,3 @@ class ThemeController extends Controller
         return redirect()->back()->withCookie($cookie);
     }
 }
-

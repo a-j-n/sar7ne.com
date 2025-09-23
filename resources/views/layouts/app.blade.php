@@ -42,6 +42,35 @@
         @endphp
         <script type="application/ld+json">{!! json_encode($__siteStructuredData, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE) !!}</script>
 
+        {{-- Early theme script: apply theme on first paint to avoid flicker --}}
+        <script>
+            (function() {
+                try {
+                    var cookie = (document.cookie || '').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('theme=') === 0});
+                    var theme = cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+
+                    if (!theme) {
+                        // default to system if no cookie
+                        theme = 'system';
+                    }
+
+                    if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else if (theme === 'light') {
+                        document.documentElement.classList.remove('dark');
+                    } else if (theme === 'system') {
+                        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                            document.documentElement.classList.add('dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                        }
+                    }
+                } catch (e) {
+                    // ignore
+                }
+            })();
+        </script>
+
         @if (!empty(env('GOOGLE_TAG_ID')))
             <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_TAG_ID') }}"></script>
             <script>
@@ -83,15 +112,15 @@
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
     </head>
-    <body class="@php $theme = request()->cookie('theme', 'dark'); echo $theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-white font-sans text-slate-900 antialiased'; @endphp">
+    <body class="@php $theme = request()->cookie('theme', 'dark'); echo $theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased'; @endphp">
         <div class="min-h-screen pb-20">
-            <header class="border-b border-white/5 bg-gradient-to-r from-white/5 via-white/0 to-white/5 py-4">
+            <header class="border-b {{ request()->cookie('theme', 'dark') === 'dark' ? 'border-white/5' : 'border-slate-200' }} {{ request()->cookie('theme', 'dark') === 'dark' ? 'bg-[#05070d]/90' : 'bg-gray-50' }} py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
                     <a href="{{ route('explore') }}" class="flex items-center gap-2 text-lg font-semibold tracking-tight">
                         <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-sm font-bold uppercase">S7</span>
                         <span>sar7ne</span>
                     </a>
-                    <div class="flex items-center gap-3 text-sm text-slate-300">
+                    <div class="flex items-center gap-3 text-sm {{ request()->cookie('theme', 'dark') === 'dark' ? 'text-slate-300' : 'text-slate-600' }}">
                         @include('partials.theme-switcher')
                         @include('partials.language-switcher')
                         @auth
@@ -135,7 +164,7 @@
             </main>
         </div>
 
-        <nav class="fixed inset-x-0 bottom-0 border-t border-white/10 bg-[#05070d]/90 backdrop-blur">
+        <nav class="fixed inset-x-0 bottom-0 border-t {{ request()->cookie('theme', 'dark') === 'dark' ? 'border-white/10' : 'border-slate-200' }} {{ request()->cookie('theme', 'dark') === 'dark' ? 'bg-[#05070d]/90' : 'bg-gray-50' }} backdrop-blur">
             <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
                 @php
                     $navItems = [

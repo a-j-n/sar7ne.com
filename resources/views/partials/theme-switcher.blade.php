@@ -1,18 +1,16 @@
 <div>
-    @php $theme = request()->cookie('theme', 'dark'); @endphp
+    @php $theme = request()->cookie('theme', 'system'); @endphp
 
-    <button id="theme-toggle" aria-pressed="{{ $theme === 'dark' ? 'true' : 'false' }}" class="rounded px-2 py-1 text-xs bg-transparent text-slate-200 focus:outline-none focus:ring-2 focus:ring-white/20" title="Toggle theme">
-        <span class="sr-only">{{ __('messages.language') }}</span>
-        @if ($theme === 'dark')
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        @else
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        @endif
-    </button>
+    <div class="inline-flex items-center gap-2">
+        <a href="{{ route('theme.switch', 'light') }}" data-theme="light" class="theme-choice px-2 py-1 text-xs {{ $theme === 'light' ? 'font-semibold' : 'text-slate-300' }}" aria-current="{{ $theme === 'light' ? 'true' : 'false' }}">Light</a>
+        <a href="{{ route('theme.switch', 'system') }}" data-theme="system" class="theme-choice px-2 py-1 text-xs {{ $theme === 'system' ? 'font-semibold' : 'text-slate-300' }}" aria-current="{{ $theme === 'system' ? 'true' : 'false' }}">System</a>
+        <a href="{{ route('theme.switch', 'dark') }}" data-theme="dark" class="theme-choice px-2 py-1 text-xs {{ $theme === 'dark' ? 'font-semibold' : 'text-slate-300' }}" aria-current="{{ $theme === 'dark' ? 'true' : 'false' }}">Dark</a>
+    </div>
 
     <noscript>
         <div class="mt-2">
             <a href="{{ route('theme.switch', 'light') }}" class="inline-block px-2 py-1 text-xs text-slate-300">Light</a>
+            <a href="{{ route('theme.switch', 'system') }}" class="inline-block px-2 py-1 text-xs text-slate-300">System</a>
             <a href="{{ route('theme.switch', 'dark') }}" class="inline-block px-2 py-1 text-xs text-slate-300">Dark</a>
         </div>
     </noscript>
