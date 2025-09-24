@@ -35,6 +35,26 @@ class InboxMessageController extends Controller
         return back()->with('status', 'Message deleted.');
     }
 
+    public function togglePublic(Request $request, Message $message): RedirectResponse
+    {
+        $this->authorizeMessage($request, $message);
+
+        $user = $request->user();
+        if (! $user->allow_public_messages) {
+            return back()->withErrors(['public' => __('messages.public_messages_disabled')]);
+        }
+
+        $validated = $request->validate([
+            'is_public' => ['required', 'boolean'],
+        ]);
+
+        $message->forceFill([
+            'is_public' => (bool) $validated['is_public'],
+        ])->save();
+
+        return back()->with('status', __('messages.message_privacy_updated'));
+    }
+
     protected function authorizeMessage(Request $request, Message $message): void
     {
         abort_if($message->receiver_id !== $request->user()->id, 403);

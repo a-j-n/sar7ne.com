@@ -8,6 +8,24 @@
 
 @theme {
     --font-sans: 'Maple Mono', monospace;
+    
+    /* 🎨 Core Brand Palette (Bold & Playful) */
+    --color-brand-orange: #FF5E1A;
+    --color-sunshine-yellow: #FFD93D;
+    --color-vivid-pink: #FF4D6D;
+    --color-electric-blue: #2D9CDB;
+    --color-neon-mint: #2EC4B6;
+    
+    /* 🌗 Neutrals (Modern & Clean) */
+    --color-dark-charcoal: #1A1A1A;
+    --color-soft-white: #FFFFFF;
+    --color-cool-gray: #F3F4F6;
+    --color-warm-gray: #9CA3AF;
+    
+    /* ✨ Highlight Gradients */
+    --gradient-orange-pink: linear-gradient(90deg, #FF5E1A, #FF4D6D);
+    --gradient-blue-mint: linear-gradient(90deg, #2D9CDB, #2EC4B6);
+    --gradient-brand-glow: linear-gradient(135deg, #FF5E1A 0%, #FF4D6D 50%, #FFD93D 100%);
 }
 
 body, html, .font-sans {
@@ -17,4 +35,134 @@ body, html, .font-sans {
 /* Utility class for Cairo font */
 .font-cairo, .font-cairo body, .font-cairo.html {
     font-family: 'Cairo', sans-serif !important;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* Enhanced animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(241 245 249);
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: rgb(15 23 42);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(148 163 184);
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgb(71 85 105);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(100 116 139);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgb(51 65 85);
+}
+
+/* 🎨 Brand Color Utilities */
+.bg-brand-orange { background-color: var(--color-brand-orange); }
+.bg-sunshine-yellow { background-color: var(--color-sunshine-yellow); }
+.bg-vivid-pink { background-color: var(--color-vivid-pink); }
+.bg-electric-blue { background-color: var(--color-electric-blue); }
+.bg-neon-mint { background-color: var(--color-neon-mint); }
+
+.text-brand-orange { color: var(--color-brand-orange); }
+.text-sunshine-yellow { color: var(--color-sunshine-yellow); }
+.text-vivid-pink { color: var(--color-vivid-pink); }
+.text-electric-blue { color: var(--color-electric-blue); }
+.text-neon-mint { color: var(--color-neon-mint); }
+
+.border-brand-orange { border-color: var(--color-brand-orange); }
+.border-electric-blue { border-color: var(--color-electric-blue); }
+.border-neon-mint { border-color: var(--color-neon-mint); }
+
+/* ✨ Brand Gradients */
+.bg-gradient-orange-pink { background: var(--gradient-orange-pink); }
+.bg-gradient-blue-mint { background: var(--gradient-blue-mint); }
+.bg-gradient-brand-glow { background: var(--gradient-brand-glow); }
+
+/* 🔥 Brand Button Styles */
+.btn-brand-primary {
+    background: var(--gradient-orange-pink);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 94, 26, 0.3);
+}
+
+.btn-brand-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 94, 26, 0.4);
+}
+
+.btn-brand-secondary {
+    background: var(--gradient-blue-mint);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 156, 219, 0.3);
+}
+
+.btn-brand-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(45, 156, 219, 0.4);
+}
+
+/* 💫 Brand Glow Effects */
+.glow-brand-orange {
+    box-shadow: 0 0 20px rgba(255, 94, 26, 0.3);
+}
+
+.glow-neon-mint {
+    box-shadow: 0 0 20px rgba(46, 196, 182, 0.3);
+}
+
+/* 🌈 Brand Card Styles */
+.card-brand-gradient {
+    background: linear-gradient(135deg, rgba(255, 94, 26, 0.1) 0%, rgba(255, 77, 109, 0.1) 50%, rgba(255, 217, 61, 0.1) 100%);
+    border: 1px solid rgba(255, 94, 26, 0.2);
+}
+
+.dark .card-brand-gradient {
+    background: linear-gradient(135deg, rgba(255, 94, 26, 0.15) 0%, rgba(255, 77, 109, 0.15) 50%, rgba(255, 217, 61, 0.15) 100%);
+    border: 1px solid rgba(255, 94, 26, 0.3);
 }

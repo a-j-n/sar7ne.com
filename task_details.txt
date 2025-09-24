@@ -1,80 +1,108 @@
 Enhanced Task Details for Next Update
 ====================================
 
-1. Force all traffic to HTTPS with www. subdomain
+[✅] 1.  Force all traffic to HTTPS with www. subdomain
    - Implement middleware or web server rules to redirect all HTTP requests to HTTPS.
    - Ensure all requests are redirected to the www. subdomain (e.g., sar7ne.com → www.sar7ne.com).
    - Update application URLs and config to use HTTPS and www.
    - Test with and without www. and HTTP to confirm redirection.
 
-2. Change the profile link to have two options (sar7ne.com/username) and (sar7ne.com/p/username)
-   - Update routing to support both /username and /p/username for public profiles.
-   - Ensure both routes resolve to the same user profile view.
-   - Update UI to display and allow copying both link formats.
-   - Add tests for both routes.
+[]  2. Change the profile link to have two options (sar7ne.com/username) and (sar7ne.com/p/username)
+       - Update routing to support both /username and /p/username for public profiles.
+       - Ensure both routes resolve to the same user profile view.
+       - Update UI to display and allow copying both link formats.
+       - Add tests for both routes.
 
-3. Login with Google and TikTok option
-   - Integrate Socialite for Google and TikTok authentication.
-   - Add login buttons for Google and TikTok on the login page.
-   - Handle user creation and linking for social logins.
-   - Add error handling and user feedback for failed logins.
-   - Test login and account linking flows.
+[]    3. Login with Google and TikTok option
+       - Integrate Socialite for Google and TikTok authentication.
+       - Add login buttons for Google and TikTok on the login page.
+       - Handle user creation and linking for social logins.
+       - Add error handling and user feedback for failed logins.
+       - Test login and account linking flows.
 
-4. Enhance UI in dark and light mode system
+[] 4. Enhance UI in dark and light mode system
    - Audit all pages for dark/light mode compatibility.
-   - Improve color contrast, backgrounds, and component styles for both modes.
+   - Improve color contrast, backgrounds, and component styles for all modes.
    - Add a theme switcher with icon and dialog (shadcn Dialog).
    - Test UI in both modes on all major pages.
 
-5. Add social media links in user profile (smart, public/private, icons)
+[] 5. Add social media links in user profile (smart, public/private, icons)
    - Allow users to add/edit social media links in profile settings.
    - Let users choose which links are public or private.
    - Display public links with platform icons on public profile.
    - Support major platforms (Twitter/X, Instagram, TikTok, YouTube, etc.).
    - Validate URLs and handle missing/invalid links.
 
-6. Add photo upload option when sending message (public/private)
+[] 6. Add photo upload option when sending message (public/private)
    - Allow users to attach a photo when sending a message (public and private).
    - Validate file type and size.
    - Store uploaded photos securely and link to messages.
    - Display photo in message view if present.
    - Add tests for photo upload and display.
 
-7. Option for messages to be public on user profile
+[] 7. Option for messages to be public on user profile
    - Add a setting for users to allow/disallow public messages.
    - Let users mark individual messages as public/private.
    - Display public messages on the user's public profile.
    - Add moderation and privacy controls.
 
-8. In login user profile, create info and setting tabs
+[] 8. In login user profile, create info and setting tabs
    - Redesign profile page with tabbed navigation: Info, Settings.
    - Info tab: user info, public profile link, copy option.
    - Settings tab: language, anonymous message toggle, account deletion, data download, etc.
 
-9. In settings tab, set default language (not in navbar)
+[] 9. In settings tab, set default language (not in navbar)
    - Move language selection to settings tab.
    - Save user preference and apply on login.
    - Remove language switcher from navbar.
 
-10. In settings tab, option to accept anonymous messages
+[] 10. In settings tab, option to accept anonymous messages
     - Add toggle to accept/reject anonymous messages.
     - Enforce this setting in public profile and message sending logic.
 
-11. In settings tab, option to delete account and all related data (soft delete, hard delete after 30 days)
+[] 11. In settings tab, option to delete account and all related data (soft delete, hard delete after 30 days)
     - Add account deletion option with confirmation.
     - Soft delete user and related data immediately.
     - Schedule hard delete after 30 days (queue/job).
     - Notify user of deletion timeline.
 
-12. In settings tab, option to download all user data
+[] 12. In settings tab, option to download all user data
     - Add button to request/download all user data (GDPR-style export).
     - Generate and email/download a zip or JSON file with all user-related data.
 
-13. Info tab: user info, public profile link, copy option
+[] 13. Info tab: user info, public profile link, copy option
     - Display user details and public profile link.
     - Add copy-to-clipboard button for the link.
 
-14. Profile card in profile page: copy public profile link
+[] 14. Profile card in profile page: copy public profile link
     - Add copy button to profile card for public profile link.
     - Show feedback on successful copy.
 
+🎨 Core Brand Palette (Bold & Playful)
+	•	🔥 Brand Orange: #FF5E1A (اللون الأساسي – طاقة وحيوية)
+	•	💛 Sunshine Yellow: #FFD93D (مبهج – للتأكيد أو CTA hover)
+	•	💖 Vivid Pink: #FF4D6D (يلفت الانتباه – تنسيقات أو عناصر fun)
+	•	💙 Electric Blue: #2D9CDB (مودرن – للـ links والأزرار الثانوية)
+	•	💚 Neon Mint: #2EC4B6 (refreshing – للإشعارات أو success states)
+
+⸻
+
+🌗 Neutrals (Modern & Clean)
+	•	Dark Charcoal: #1A1A1A (Text في light mode / Background في dark mode)
+	•	Soft White: #FFFFFF (Background رئيسي في light mode)
+	•	Cool Gray: #F3F4F6 (Cards, inputs, neutral sections)
+	•	Warm Gray: #9CA3AF (Secondary text)
+
+⸻
+
+✨ Highlight Gradients (Catchy UI)
+
+تقدر تستخدم gradients في الأزرار أو الـ backgrounds علشان يبان مودرن:
+	•	Orange → Pink: linear-gradient(90deg, #FF5E1A, #FF4D6D)
+	•	Blue → Mint: linear-gradient(90deg, #2D9CDB, #2EC4B6)
+
+⸻
+
+🖌 Example Mood
+	•	Light Mode: أبيض كـ background مع Cards فاتحة وحدود رمادية ناعمة، والأزرار الأساسية Orange/Gradient.
+	•	Dark Mode: خلفية Charcoal مع نص أبيض، والأزرار Orange متوهجة أو Gradient Orange→Pink.

@@ -13,7 +13,10 @@ class ProfileController extends Controller
 {
     public function show(Request $request): View
     {
-        $user = $request->user()->loadCount(['receivedMessages as total_messages_count']);
+        $user = $request->user()->loadCount([
+            'receivedMessages as total_messages_count',
+            'publicMessages as public_messages_count',
+        ]);
 
         return view('profile', [
             'user' => $user,
@@ -30,6 +33,7 @@ class ProfileController extends Controller
             'bio' => ['nullable', 'string', 'max:280'],
             'avatar' => ['nullable', 'image', 'max:2048'],
             'gender' => ['nullable', 'in:male,female,non-binary,other,prefer_not_to_say'],
+            'allow_public_messages' => ['sometimes', 'boolean'],
         ]);
 
         $normalizedUsername = UsernameGenerator::normalize($validated['username']);
@@ -51,6 +55,7 @@ class ProfileController extends Controller
             'bio' => $validated['bio'] ?? null,
             'display_name' => $validated['display_name'] ?? $user->display_name,
             'gender' => $validated['gender'] ?? null,
+            'allow_public_messages' => (bool) ($validated['allow_public_messages'] ?? false),
         ];
 
         $disk = config('filesystems.default', 'spaces');

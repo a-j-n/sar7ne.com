@@ -7,7 +7,7 @@
 
 @section('content')
     <div class="space-y-8">
-        <section class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
+<section class="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-6 shadow-xl">
             <h1 class="text-2xl font-semibold">Your inbox</h1>
             <p class="mt-2 text-sm text-slate-300">Anonymous messages you’ve received. You have <span class="font-semibold text-white">{{ $unreadCount }}</span> unread.</p>
         </section>
@@ -25,6 +25,22 @@
                         </span>
                     </div>
                     <div class="mt-6 flex flex-wrap gap-3 text-xs">
+                        <form method="POST" action="{{ route('inbox.messages.toggle-public', $message) }}">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="is_public" value="{{ $message->is_public ? 0 : 1 }}">
+                            <button class="rounded-xl border border-white/10 px-4 py-2 text-white transition hover:border-white/30">
+                                {{ $message->is_public ? __('messages.make_private') : __('messages.make_public') }}
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ route('inbox.messages.toggle-public', $message) }}">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="is_public" value="{{ $message->is_public ? 0 : 1 }}">
+                            <button class="rounded-xl border border-white/10 px-4 py-2 text-white transition hover:border-white/30">
+                                {{ $message->is_public ? __('messages.make_private') : __('messages.make_public') }}
+                            </button>
+                        </form>
                         @if ($message->status === 'unread')
                             <form method="POST" action="{{ route('inbox.messages.read', $message) }}">
                                 @csrf

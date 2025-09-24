@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}" class="{{ request()->cookie('theme', 'dark') === 'dark' ? 'dark' : '' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}" class="{{ request()->cookie('theme', 'system') === 'dark' || (request()->cookie('theme', 'system') === 'system' && request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark') ? 'dark' : '' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,9 @@
         <meta name="twitter:description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
         <meta name="twitter:image" content="@yield('meta_image', asset('favicon.ico'))">
 
+        <!-- Hint to browsers about supported color schemes -->
+        <meta name="color-scheme" content="light dark">
+
         {{-- Structured data (JSON-LD) --}}
         @php
             $__siteStructuredData = [
@@ -45,24 +48,43 @@
         {{-- Early theme script: apply theme on first paint to avoid flicker --}}
         <script>
             (function() {
-                try {
-                    var cookie = (document.cookie || '').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('theme=') === 0});
-                    var theme = cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+                function readThemeCookie() {
+                    try {
+                        var cookie = (document.cookie || '').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('theme=') === 0});
+                        return cookie ? decodeURIComponent(cookie.split('=')[1]) : null;
+                    } catch (e) { return null; }
+                }
 
-                    if (!theme) {
-                        // default to system if no cookie
-                        theme = 'system';
-                    }
+                function isSystemDark() {
+                    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
 
-                    if (theme === 'dark') {
-                        document.documentElement.classList.add('dark');
-                    } else if (theme === 'light') {
-                        document.documentElement.classList.remove('dark');
-                    } else if (theme === 'system') {
-                        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                function applyThemeImmediate(theme) {
+                    if (theme === 'system') {
+                        if (isSystemDark()) {
                             document.documentElement.classList.add('dark');
                         } else {
                             document.documentElement.classList.remove('dark');
+                        }
+                    } else if (theme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                }
+
+                try {
+                    var theme = readThemeCookie() || 'system';
+                    applyThemeImmediate(theme);
+
+                    // If theme is system, react to OS changes as early as possible
+                    if (theme === 'system' && window.matchMedia) {
+                        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+                        if (mq.addEventListener) {
+                            mq.addEventListener('change', function(){ applyThemeImmediate('system'); });
+                        } else if (mq.addListener) {
+                            // Safari <14
+                            mq.addListener(function(){ applyThemeImmediate('system'); });
                         }
                     }
                 } catch (e) {
@@ -83,6 +105,9 @@
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
+        <!-- Alpine.js -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 {{--        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))--}}
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -113,30 +138,32 @@
         @stack('head')
     </head>
     <body class="@php
-        $theme = request()->cookie('theme', 'dark');
+        $theme = request()->cookie('theme', 'system');
+        $isSystemDark = request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark';
+        $isDark = $theme === 'dark' || ($theme === 'system' && $isSystemDark);
         $isArabic = app()->getLocale() === 'ar';
-        echo ($theme === 'dark' ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased') . ($isArabic ? ' font-cairo' : '');
+        echo ($isDark ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased') . ($isArabic ? ' font-cairo' : '');
     @endphp">
         <div class="min-h-screen pb-20">
-            <header class="border-b {{ request()->cookie('theme', 'dark') === 'dark' ? 'border-white/5' : 'border-slate-200' }} {{ request()->cookie('theme', 'dark') === 'dark' ? 'bg-[#05070d]/90' : 'bg-gray-50' }} py-4">
+            <header class="border-b border-gray-200 dark:border-white/20 bg-white dark:bg-black py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
-                    <a href="{{ route('explore') }}" class="flex items-center gap-2 text-lg font-semibold tracking-tight">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-sm font-bold uppercase">S7</span>
-                        <span>sar7ne</span>
+                    <a href="{{ route('explore') }}" class="flex items-center gap-3">
+                        <img src="{{ asset('Sar7ne-logo.png') }}" alt="sar7ne" width="28" height="28" class="h-7 w-7" />
+                        <span class="sr-only">sar7ne</span>
                     </a>
-                    <div class="flex items-center gap-3 text-sm {{ request()->cookie('theme', 'dark') === 'dark' ? 'text-slate-300' : 'text-slate-600' }}">
+                    <div class="flex items-center gap-3 text-sm text-black dark:text-white">
                         @include('partials.theme-switcher')
                         @include('partials.language-switcher')
                         @auth
                             <span class="hidden text-sm font-medium sm:inline">{{ auth()->user()?->username }}</span>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">
+                                <button type="submit" class="rounded-full px-3 py-1 text-xs font-medium bg-slate-900/5 text-slate-900 hover:bg-slate-900/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition">
                                     {{ __('messages.logout') }}
                                 </button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white transition hover:bg-white/20">{{ __('messages.login') }}</a>
+                            <a href="{{ route('login') }}" class="rounded-full px-3 py-1 text-xs font-medium bg-slate-900/5 text-slate-900 hover:bg-slate-900/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 transition">{{ __('messages.login') }}</a>
                         @endauth
                     </div>
                 </div>
@@ -144,7 +171,7 @@
 
             @if (session('status'))
                 <div class="mx-auto mt-4 w-full max-w-2xl px-4">
-                    <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+                    <div class="rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-200">
                         {{ session('status') }}
                     </div>
                 </div>
@@ -152,7 +179,7 @@
 
             @if ($errors->any())
                 <div class="mx-auto mt-4 w-full max-w-2xl px-4">
-                    <div class="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                    <div class="rounded-xl border border-red-300 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-200">
                         <span class="font-semibold">{{ __('messages.we_found_some_issues') }}</span>
                         <ul class="mt-2 list-disc space-y-1 pl-5">
                             @foreach ($errors->all() as $error)
@@ -163,12 +190,12 @@
                 </div>
             @endif
 
-            <main class="mx-auto w-full max-w-4xl px-4 py-8">
+            <main class="mx-auto w-full max-w-4xl px-4 py-8 text-slate-900 dark:text-slate-100">
                 @yield('content')
             </main>
         </div>
 
-        <nav class="fixed inset-x-0 bottom-0 border-t {{ request()->cookie('theme', 'dark') === 'dark' ? 'border-white/10' : 'border-slate-200' }} {{ request()->cookie('theme', 'dark') === 'dark' ? 'bg-[#05070d]/90' : 'bg-gray-50' }} backdrop-blur">
+        <nav class="fixed inset-x-0 bottom-0 border-t border-gray-200 dark:border-white/20 bg-white/95 dark:bg-black/95 backdrop-blur-lg">
             <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
                 @php
                     $navItems = [
@@ -178,22 +205,47 @@
                     ];
                 @endphp
 
-                @foreach ($navItems as $item)
-                    <a href="{{ $item['href'] }}" aria-label="{{ $item['aria'] }}" class="flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium {{ $item['active'] ? 'text-white' : 'text-slate-400 hover:text-white' }}">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full {{ $item['active'] ? 'bg-white/15 text-white' : 'bg-white/5 text-slate-300' }}">
+                @foreach ($navItems as $index => $item)
+                    <a href="{{ $item['href'] }}" aria-label="{{ $item['aria'] }}" class="relative flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-all duration-200 {{ $item['active'] ? 'text-brand-orange' : 'text-gray-600 hover:text-brand-orange dark:text-gray-400 dark:hover:text-brand-orange' }}">
+                        <!-- Active indicator -->
+                        @if($item['active'])
+                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-orange-pink rounded-full glow-brand-orange"></div>
+                        @endif
+                        
+                        <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-2xl transition-all duration-200 {{ $item['active'] ? 'bg-gradient-orange-pink text-white scale-110 glow-brand-orange' : 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-400 hover:bg-brand-orange/10 hover:text-brand-orange dark:hover:bg-brand-orange/20 hover:scale-105' }}">
+                            @if ($index === 1)
+                                <img src="{{ asset('Sar7ne-logo.png') }}" alt="sar7ne" class="h-5 w-5 rounded-sm"/>
+                            @endif
                             @switch($item['icon'])
                                 @case('explore')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
                                     @break
                                 @case('inbox')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M3 13h3l2 3h8l2-3h3"/><path d="m7 8 5 4 5-4"/></svg>
+                                    @if ($index !== 1)
+                                        <div class="relative">
+                                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                            </svg>
+                                            @auth
+                                                @if(auth()->user()->unreadMessages()->count() > 0)
+                                                    <div class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full flex items-center justify-center">
+                                                        <span class="text-xs text-white font-bold">{{ min(auth()->user()->unreadMessages()->count(), 9) }}</span>
+                                                    </div>
+                                                @endif
+                                            @endauth
+                                        </div>
+                                    @endif
                                     @break
                                 @case('profile')
-                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><title>{{ $item['aria'] }}</title><circle cx="12" cy="8" r="4"/><path d="M6 20a6 6 0 0 1 12 0"/></svg>
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
                                     @break
                             @endswitch
                         </span>
-                        {{ $item['label'] }}
+                        <span class="text-xs font-medium">{{ $item['label'] }}</span>
                     </a>
                 @endforeach
             </div>

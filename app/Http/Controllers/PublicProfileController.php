@@ -2,24 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Contracts\View\View;
+// Controller no longer serves views; routes now point to Livewire component.
+// Keeping file placeholder in case other actions are added later.
 
-class PublicProfileController extends Controller
-{
-    public function show(User $user): View
-    {
-        $user->loadCount(['receivedMessages as total_messages_count']);
-
-        return view('public.profile', [
-            'user' => $user,
-        ]);
-    }
-
-    public function showByUsername(string $username): View
-    {
-        $user = User::whereRaw('lower(username) = ?', [strtolower($username)])->firstOrFail();
-
-        return $this->show($user);
-    }
-}
+class PublicProfileController extends Controller {}

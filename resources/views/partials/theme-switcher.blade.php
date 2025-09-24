@@ -1,63 +1,116 @@
-<div>
+<div x-data="{ open: false }" class="relative">
     @php $theme = request()->cookie('theme', 'system'); @endphp
 
-    <!-- Trigger Button (shadcn style) -->
+    <!-- Trigger Button -->
     <button
-        id="theme-dialog-trigger"
+        @click="open = !open"
         type="button"
-        aria-haspopup="dialog"
-        aria-controls="theme-dialog"
-        class="inline-flex items-center justify-center p-2 rounded-md bg-transparent text-slate-200 hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-white/20"
+        class="inline-flex items-center justify-center h-9 w-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-900 transition-all duration-200"
         aria-label="Change theme"
     >
         <span class="sr-only">Change theme</span>
-        <!-- Sun / Moon combined icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="h-5 w-5">
-            <mask id="moon-mask">
-                <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                <circle cx="14" cy="10" r="6" fill="black" />
-            </mask>
-            <g mask="url(#moon-mask)">
-                <circle cx="12" cy="12" r="5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-            <path d="M12 1v2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M12 21v2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M4.22 4.22l1.42 1.42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M18.36 18.36l1.42 1.42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M1 12h2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M21 12h2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M4.22 19.78l1.42-1.42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M18.36 5.64l1.42-1.42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+        <!-- Dynamic icon based on current theme -->
+        @if($theme === 'light')
+            <!-- Sun icon -->
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        @elseif($theme === 'dark')
+            <!-- Moon icon -->
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+        @else
+            <!-- System/Auto icon -->
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+        @endif
     </button>
 
-    <!-- Dialog (hidden by default) -->
-    <div id="theme-dialog" class="fixed inset-0 z-50 hidden" aria-hidden="true">
-        <div class="absolute inset-0 bg-black/50" data-dialog-overlay></div>
-
-        <div class="fixed inset-0 flex items-end sm:items-center justify-center p-4">
-            <div role="dialog" aria-modal="true" aria-labelledby="theme-dialog-title" class="w-full max-w-sm rounded-lg bg-white dark:bg-slate-900 shadow-lg ring-1 ring-black/5 p-4">
-                <div class="flex items-center justify-between">
-                    <h3 id="theme-dialog-title" class="text-sm font-semibold">Select Theme</h3>
-                    <button type="button" data-dialog-close aria-label="Close" class="text-slate-500 hover:text-slate-900 dark:hover:text-white">✕</button>
-                </div>
-
-                <div class="mt-4 flex flex-col gap-2">
-                    <button type="button" data-theme="light" data-href="{{ route('theme.switch', 'light') }}" class="theme-choice text-left px-3 py-2 rounded-md {{ $theme === 'light' ? 'font-semibold bg-slate-100 dark:bg-slate-800' : 'text-slate-500' }}">Light</button>
-                    <button type="button" data-theme="system" data-href="{{ route('theme.switch', 'system') }}" class="theme-choice text-left px-3 py-2 rounded-md {{ $theme === 'system' ? 'font-semibold bg-slate-100 dark:bg-slate-800' : 'text-slate-500' }}">System</button>
-                    <button type="button" data-theme="dark" data-href="{{ route('theme.switch', 'dark') }}" class="theme-choice text-left px-3 py-2 rounded-md {{ $theme === 'dark' ? 'font-semibold bg-slate-100 dark:bg-slate-800' : 'text-slate-500' }}">Dark</button>
-                </div>
-
-                <noscript>
-                    <div class="mt-4 flex gap-2">
-                        <a href="{{ route('theme.switch', 'light') }}" class="inline-block px-3 py-2 text-xs text-slate-300">Light</a>
-                        <a href="{{ route('theme.switch', 'system') }}" class="inline-block px-3 py-2 text-xs text-slate-300">System</a>
-                        <a href="{{ route('theme.switch', 'dark') }}" class="inline-block px-3 py-2 text-xs text-slate-300">Dark</a>
-                    </div>
-                </noscript>
+    <!-- Dropdown Menu -->
+    <div 
+        x-show="open" 
+        @click.away="open = false"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
+        class="absolute right-0 top-full mt-2 w-48 rounded-2xl bg-white dark:bg-slate-800 shadow-xl ring-1 ring-black/5 dark:ring-white/10 border border-slate-200 dark:border-white/10 backdrop-blur-sm z-50"
+        style="display: none;"
+    >
+        <div class="p-2">
+            <div class="px-3 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                {{ __('Theme') }}
             </div>
+            
+            <!-- Light Theme Option -->
+            <a href="{{ route('theme.switch', 'light') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-colors {{ $theme === 'light' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 font-medium' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10' }}">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full {{ $theme === 'light' ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-slate-100 dark:bg-white/10' }}">
+                    <svg class="h-3.5 w-3.5 {{ $theme === 'light' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="font-medium">{{ __('Light') }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ __('Always light theme') }}</div>
+                </div>
+                @if($theme === 'light')
+                    <svg class="h-4 w-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                @endif
+            </a>
+
+            <!-- System Theme Option -->
+            <a href="{{ route('theme.switch', 'system') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-colors {{ $theme === 'system' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 font-medium' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10' }}">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full {{ $theme === 'system' ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-slate-100 dark:bg-white/10' }}">
+                    <svg class="h-3.5 w-3.5 {{ $theme === 'system' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="font-medium">{{ __('System') }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ __('Follow system preference') }}</div>
+                </div>
+                @if($theme === 'system')
+                    <svg class="h-4 w-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                @endif
+            </a>
+
+            <!-- Dark Theme Option -->
+            <a href="{{ route('theme.switch', 'dark') }}" 
+               class="flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-colors {{ $theme === 'dark' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 font-medium' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10' }}">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full {{ $theme === 'dark' ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-slate-100 dark:bg-white/10' }}">
+                    <svg class="h-3.5 w-3.5 {{ $theme === 'dark' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="font-medium">{{ __('Dark') }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ __('Always dark theme') }}</div>
+                </div>
+                @if($theme === 'dark')
+                    <svg class="h-4 w-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                @endif
+            </a>
         </div>
     </div>
 
-    <script src="{{ asset('js/theme-switcher.js') }}" defer></script>
+    <!-- Fallback for no JavaScript -->
+    <noscript>
+        <div class="absolute right-0 top-full mt-2 flex gap-1 rounded-lg bg-white dark:bg-slate-800 p-1 shadow-lg">
+            <a href="{{ route('theme.switch', 'light') }}" class="px-2 py-1 text-xs {{ $theme === 'light' ? 'font-semibold' : '' }}">Light</a>
+            <a href="{{ route('theme.switch', 'system') }}" class="px-2 py-1 text-xs {{ $theme === 'system' ? 'font-semibold' : '' }}">System</a>
+            <a href="{{ route('theme.switch', 'dark') }}" class="px-2 py-1 text-xs {{ $theme === 'dark' ? 'font-semibold' : '' }}">Dark</a>
+        </div>
+    </noscript>
 </div>

@@ -5,20 +5,22 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialLoginController;
-use App\Http\Controllers\ExploreController;
-use App\Http\Controllers\InboxController;
 use App\Http\Controllers\InboxMessageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicMessageController;
 use App\Http\Controllers\PublicProfileController;
+use App\Livewire\Explore as ExplorePage;
+use App\Livewire\Inbox as InboxPage;
+use App\Livewire\Profile\Settings as ProfileSettingsPage;
+use App\Livewire\PublicProfile as PublicProfilePage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('username', '[a-z0-9_]+');
 
-Route::get('/', ExploreController::class)->name('explore');
+Route::get('/', ExplorePage::class)->name('explore');
 
 Route::get('/login', [EmailLoginController::class, 'show'])->name('login');
 Route::post('/login', [EmailLoginController::class, 'login'])->name('login.attempt');
@@ -37,13 +39,15 @@ Route::controller(SocialLoginController::class)->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/inbox', [InboxController::class, 'index'])->name('inbox');
+    Route::get('/inbox', InboxPage::class)->name('inbox');
     Route::patch('/inbox/{message}/read', [InboxMessageController::class, 'markRead'])->name('inbox.messages.read');
     Route::patch('/inbox/{message}/unread', [InboxMessageController::class, 'markUnread'])->name('inbox.messages.unread');
+    Route::put('/inbox/{message}/public', [InboxMessageController::class, 'togglePublic'])->name('inbox.messages.toggle-public');
     Route::delete('/inbox/{message}', [InboxMessageController::class, 'destroy'])->name('inbox.messages.destroy');
 
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile', ProfileSettingsPage::class)->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/settings', [ProfileController::class, 'update'])->name('profile.settings.update');
 });
 
 Route::post('/logout', function (Request $request) {
@@ -66,13 +70,13 @@ if ($profileDomain) {
     });
 }
 
-Route::get('/p/{user:username}', [PublicProfileController::class, 'show'])->name('profiles.show');
+Route::get('/p/{user:username}', PublicProfilePage::class)->name('profiles.show');
 Route::post('/p/{user:username}/messages', [PublicMessageController::class, 'store'])
     ->middleware('throttle:message-submission')
     ->name('profiles.message');
 
 // Add /{user:username} route for public profiles (must be after all other specific routes)
-Route::get('/{user:username}', [PublicProfileController::class, 'show'])->name('profiles.show.short');
+Route::get('/{user:username}', PublicProfilePage::class)->name('profiles.show.short');
 Route::post('/{user:username}/messages', [PublicMessageController::class, 'store'])
     ->middleware('throttle:message-submission')
     ->name('profiles.message.short');
@@ -90,4 +94,3 @@ Route::get('/_debug/locale', function (\Illuminate\Http\Request $request) {
         'cookie_locale' => $request->cookie('locale'),
     ]);
 })->name('debug.locale');
-

@@ -80,6 +80,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function persistTheme(theme) {
+        try {
+            // Persist cookie for 1 year, path=/ so it applies to whole site
+            const expires = new Date();
+            expires.setFullYear(expires.getFullYear() + 1);
+            document.cookie = 'theme=' + encodeURIComponent(theme) + '; expires=' + expires.toUTCString() + '; path=/';
+        } catch (e) {
+            // ignore
+        }
+    }
+
     // Open dialog on trigger click
     trigger.addEventListener('click', function (e) {
         e.preventDefault();
@@ -108,16 +119,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const href = el.dataset.href || el.getAttribute('data-href') || null;
 
             applyThemeImmediate(theme);
+            persistTheme(theme);
 
             // update visual selection state inside dialog
             choices.forEach(c => c.classList.remove('font-semibold', 'bg-slate-100', 'dark:bg-slate-800'));
             el.classList.add('font-semibold', 'bg-slate-100', 'dark:bg-slate-800');
 
-            // close dialog then navigate to persist on server
+            // Close dialog. Server persistence optional; UI already updated.
             closeDialog();
             if (href) {
-                // use location.assign to preserve history behavior
-                window.location.assign(href);
+                // still hit server route to keep backend cookie in sync (no-op if same)
+                fetch(href, { credentials: 'same-origin' }).catch(() => {});
             }
         });
     });

@@ -31,6 +31,8 @@ class PublicMessageController extends Controller
             'receiver_id' => $user->id,
             'sender_ip' => $request->ip(),
             'message_text' => $validated['message_text'],
+            'status' => Message::STATUS_UNREAD,
+            'is_public' => false,
         ]);
 
         return back()->with('status', 'Message delivered anonymously.');

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'provider_type',
         'last_login_at',
         'gender',
+        'allow_public_messages',
     ];
 
     /**
@@ -48,6 +49,7 @@ class User extends Authenticatable
     {
         return [
             'last_login_at' => 'datetime',
+            'allow_public_messages' => 'boolean',
         ];
     }
 
@@ -57,6 +59,16 @@ class User extends Authenticatable
     public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id')->latest();
+    }
+
+    /**
+     * Only public, approved messages.
+     */
+    public function publicMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->where('is_public', true)
+            ->latest();
     }
 
     /**

@@ -24,6 +24,7 @@ class Message extends Model
         'receiver_id',
         'message_text',
         'status',
+        'is_public',
     ];
 
     /**
@@ -54,6 +55,7 @@ class Message extends Model
     {
         return [
             'deleted_at' => 'datetime',
+            'is_public' => 'boolean',
         ];
     }
 }
