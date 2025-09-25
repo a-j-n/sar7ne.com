@@ -98,4 +98,10 @@ return [
     'create_account_heading' => 'أنشئ حسابك',
     'already_have_account' => 'هل لديك حساب؟ :link',
     'privacy_description' => 'سياسة الخصوصية لـ sar7ne — كيف نجمع ونستخدم ونحمي بيانات المستخدمين.',
+
+    // New features for public profile
+    'share_profile' => 'شارك الملف',
+    'attach_image' => 'أرفق صورة',
+    'link_copied' => 'تم نسخ الرابط!',
+    'copy_link' => 'انسخ الرابط',
 ];

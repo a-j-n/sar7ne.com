@@ -136,22 +136,25 @@
 
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
+        
+        {{-- Livewire Styles --}}
+        @livewireStyles
     </head>
     <body class="@php
         $theme = request()->cookie('theme', 'system');
         $isSystemDark = request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark';
         $isDark = $theme === 'dark' || ($theme === 'system' && $isSystemDark);
         $isArabic = app()->getLocale() === 'ar';
-        echo ($isDark ? 'min-h-screen bg-[#05070d] font-sans text-slate-100 antialiased' : 'min-h-screen bg-gray-50 font-sans text-slate-900 antialiased') . ($isArabic ? ' font-cairo' : '');
+        echo 'min-h-screen bg-secondary text-primary font-sans antialiased' . ($isArabic ? ' font-cairo' : '');
     @endphp">
         <div class="min-h-screen pb-20">
-            <header class="border-b border-gray-200 dark:border-white/20 bg-white dark:bg-black py-4">
+            <header class="border-b border-primary bg-primary py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
                     <a href="{{ route('explore') }}" class="flex items-center gap-3">
                         <img src="{{ asset('Sar7ne-logo.png') }}" alt="sar7ne" width="28" height="28" class="h-7 w-7" />
                         <span class="sr-only">sar7ne</span>
                     </a>
-                    <div class="flex items-center gap-3 text-sm text-black dark:text-white">
+                    <div class="flex items-center gap-3 text-sm text-primary">
                         @include('partials.theme-switcher')
                         @include('partials.language-switcher')
                         @auth
@@ -190,12 +193,13 @@
                 </div>
             @endif
 
-            <main class="mx-auto w-full max-w-4xl px-4 py-8 text-slate-900 dark:text-slate-100">
+            <main class="mx-auto w-full max-w-4xl px-4 py-8 text-primary">
                 @yield('content')
+                {{ $slot ?? '' }}
             </main>
         </div>
 
-        <nav class="fixed inset-x-0 bottom-0 border-t border-gray-200 dark:border-white/20 bg-white/95 dark:bg-black/95 backdrop-blur-lg">
+        <nav class="fixed inset-x-0 bottom-0 border-t border-primary bg-primary/95 backdrop-blur-lg">
             <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
                 @php
                     $navItems = [
@@ -250,5 +254,8 @@
                 @endforeach
             </div>
         </nav>
+        
+        {{-- Livewire Scripts --}}
+        @livewireScripts
     </body>
 </html>

@@ -98,4 +98,10 @@ return [
     'create_account_heading' => 'Create your account',
     'already_have_account' => 'Already have an account? :link',
     'privacy_description' => 'Privacy policy for sar7ne — how we collect, use, and protect user data.',
+
+    // New features for public profile
+    'share_profile' => 'Share profile',
+    'attach_image' => 'Attach image',
+    'link_copied' => 'Link copied!',
+    'copy_link' => 'Copy link',
 ];

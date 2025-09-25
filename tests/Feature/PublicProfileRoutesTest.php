@@ -21,3 +21,26 @@ it('shows the public profile at /{username}', function () {
     $response->assertSee('@testuser2');
 });
 
+it('can send a message with image to public profile', function () {
+    $user = User::factory()->create(['username' => 'testuser3']);
+    
+    // Create a fake image file
+    $image = \Illuminate\Http\UploadedFile::fake()->image('test.jpg', 100, 100);
+    
+    $response = $this->post("/testuser3/messages", [
+        'message_text' => 'Test message with image',
+        'image' => $image,
+    ]);
+    
+    $response->assertRedirect();
+    
+    // Check that message was created with image
+    $this->assertDatabaseHas('messages', [
+        'receiver_id' => $user->id,
+        'message_text' => 'Test message with image',
+    ]);
+    
+    $message = \App\Models\Message::where('receiver_id', $user->id)->first();
+    expect($message->image_path)->not->toBeNull();
+});
+

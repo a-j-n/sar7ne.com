@@ -9,20 +9,52 @@
 @theme {
     --font-sans: 'Maple Mono', monospace;
     
-    /* 🎨 Core Brand Palette (Bold & Playful) */
-    --color-brand-orange: #FF5E1A;
-    --color-sunshine-yellow: #FFD93D;
-    --color-vivid-pink: #FF4D6D;
-    --color-electric-blue: #2D9CDB;
-    --color-neon-mint: #2EC4B6;
+    /* 🎨 Brand Colors */
+    --brand-orange: #FF5E1A;
+    --brand-yellow: #FFD93D;
+    --brand-pink: #FF4D6D;
+    --brand-blue: #2D9CDB;
+    --brand-mint: #2EC4B6;
     
-    /* 🌗 Neutrals (Modern & Clean) */
-    --color-dark-charcoal: #1A1A1A;
-    --color-soft-white: #FFFFFF;
-    --color-cool-gray: #F3F4F6;
-    --color-warm-gray: #9CA3AF;
+    /* 🌞 Light Mode Colors */
+    --light-bg-primary: #FFFFFF;
+    --light-bg-secondary: #F8FAFC;
+    --light-bg-tertiary: #F1F5F9;
+    --light-bg-accent: #EFF6FF;
     
-    /* ✨ Highlight Gradients */
+    --light-text-primary: #0F172A;
+    --light-text-secondary: #334155;
+    --light-text-tertiary: #64748B;
+    --light-text-muted: #94A3B8;
+    
+    --light-border-primary: #E2E8F0;
+    --light-border-secondary: #CBD5E1;
+    --light-border-accent: #DBEAFE;
+    
+    --light-hover: #F1F5F9;
+    --light-active: #E2E8F0;
+    --light-focus: #DBEAFE;
+    
+    /* 🌙 Dark Mode Colors */
+    --dark-bg-primary: #0F172A;
+    --dark-bg-secondary: #1E293B;
+    --dark-bg-tertiary: #334155;
+    --dark-bg-accent: #1E3A8A;
+    
+    --dark-text-primary: #F8FAFC;
+    --dark-text-secondary: #E2E8F0;
+    --dark-text-tertiary: #CBD5E1;
+    --dark-text-muted: #94A3B8;
+    
+    --dark-border-primary: #475569;
+    --dark-border-secondary: #64748B;
+    --dark-border-accent: #3B82F6;
+    
+    --dark-hover: #374151;
+    --dark-active: #4B5563;
+    --dark-focus: #1E3A8A;
+    
+    /* ✨ Gradients */
     --gradient-orange-pink: linear-gradient(90deg, #FF5E1A, #FF4D6D);
     --gradient-blue-mint: linear-gradient(90deg, #2D9CDB, #2EC4B6);
     --gradient-brand-glow: linear-gradient(135deg, #FF5E1A 0%, #FF4D6D 50%, #FFD93D 100%);
@@ -165,4 +197,82 @@ body, html, .font-sans {
 .dark .card-brand-gradient {
     background: linear-gradient(135deg, rgba(255, 94, 26, 0.15) 0%, rgba(255, 77, 109, 0.15) 50%, rgba(255, 217, 61, 0.15) 100%);
     border: 1px solid rgba(255, 94, 26, 0.3);
+}
+
+/* 🎯 Proper Light/Dark Mode System */
+
+/* Text Colors */
+.text-primary { color: var(--light-text-primary); }
+.text-secondary { color: var(--light-text-secondary); }
+.text-tertiary { color: var(--light-text-tertiary); }
+.text-muted { color: var(--light-text-muted); }
+
+.dark .text-primary { color: var(--dark-text-primary); }
+.dark .text-secondary { color: var(--dark-text-secondary); }
+.dark .text-tertiary { color: var(--dark-text-tertiary); }
+.dark .text-muted { color: var(--dark-text-muted); }
+
+/* Background Colors */
+.bg-primary { background-color: var(--light-bg-primary); }
+.bg-secondary { background-color: var(--light-bg-secondary); }
+.bg-tertiary { background-color: var(--light-bg-tertiary); }
+.bg-accent { background-color: var(--light-bg-accent); }
+
+.dark .bg-primary { background-color: var(--dark-bg-primary); }
+.dark .bg-secondary { background-color: var(--dark-bg-secondary); }
+.dark .bg-tertiary { background-color: var(--dark-bg-tertiary); }
+.dark .bg-accent { background-color: var(--dark-bg-accent); }
+
+/* Border Colors */
+.border-primary { border-color: var(--light-border-primary); }
+.border-secondary { border-color: var(--light-border-secondary); }
+.border-accent { border-color: var(--light-border-accent); }
+
+.dark .border-primary { border-color: var(--dark-border-primary); }
+.dark .border-secondary { border-color: var(--dark-border-secondary); }
+.dark .border-accent { border-color: var(--dark-border-accent); }
+
+/* Interactive States */
+.hover-bg { background-color: var(--light-hover); }
+.active-bg { background-color: var(--light-active); }
+.focus-bg { background-color: var(--light-focus); }
+
+.dark .hover-bg { background-color: var(--dark-hover); }
+.dark .active-bg { background-color: var(--dark-active); }
+.dark .focus-bg { background-color: var(--dark-focus); }
+
+/* Brand Colors (same in both modes) */
+.text-brand-orange { color: var(--brand-orange); }
+.text-brand-mint { color: var(--brand-mint); }
+.text-brand-blue { color: var(--brand-blue); }
+.text-brand-pink { color: var(--brand-pink); }
+
+.bg-brand-orange { background-color: var(--brand-orange); }
+.bg-brand-mint { background-color: var(--brand-mint); }
+.bg-brand-blue { background-color: var(--brand-blue); }
+.bg-brand-pink { background-color: var(--brand-pink); }
+
+.border-brand-orange { border-color: var(--brand-orange); }
+.border-brand-mint { border-color: var(--brand-mint); }
+
+/* Form Elements with Proper Contrast */
+.form-input {
+    background-color: var(--light-bg-primary);
+    border-color: var(--light-border-secondary);
+    color: var(--light-text-primary);
+}
+
+.dark .form-input {
+    background-color: var(--dark-bg-secondary);
+    border-color: var(--dark-border-primary);
+    color: var(--dark-text-primary);
+}
+
+.form-input:focus {
+    border-color: var(--brand-orange);
+    box-shadow: 0 0 0 3px rgba(255, 94, 26, 0.1);
+}
+
+.dark .form-input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 94, 26, 0.2);
 }

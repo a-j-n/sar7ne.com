@@ -23,6 +23,7 @@ class Message extends Model
         'sender_ip',
         'receiver_id',
         'message_text',
+        'image_path',
         'status',
         'is_public',
     ];
@@ -49,6 +50,14 @@ class Message extends Model
     public function markUnread(): void
     {
         $this->forceFill(['status' => self::STATUS_UNREAD])->save();
+    }
+
+    /**
+     * Get the full URL for the message image.
+     */
+    public function imageUrl(): ?string
+    {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 
     protected function casts(): array
