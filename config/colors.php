@@ -21,33 +21,34 @@ return [
 
     'light_mode' => [
         // Backgrounds - Light and airy
+        // Backgrounds - True dark theme
         'bg' => [
-            'primary' => '#FFFFFF',      // Pure white for main content
-            'secondary' => '#F8FAFC',    // Very light gray for subtle sections
-            'tertiary' => '#F1F5F9',     // Light gray for cards/containers
-            'accent' => '#EFF6FF',       // Light blue tint for special areas
+            'primary' => '#0F172A',      // Very dark blue-gray for main content
+            'secondary' => '#1E293B',    // Slightly lighter for sections
+            'tertiary' => '#334155',     // Medium dark for cards/containers
+            'accent' => '#1E3A8A',       // Dark blue for special areas
         ],
 
-        // Text colors - Dark for good contrast on light backgrounds
+        // Text colors - Light for good contrast on dark backgrounds
         'text' => [
-            'primary' => '#0F172A',      // Very dark for main text
-            'secondary' => '#334155',    // Medium dark for secondary text
-            'tertiary' => '#64748B',     // Gray for less important text
-            'muted' => '#94A3B8',        // Light gray for placeholders
+            'primary' => '#F8FAFC',      // Very light for main text
+            'secondary' => '#E2E8F0',    // Light gray for secondary text
+            'tertiary' => '#CBD5E1',     // Medium gray for less important text
+            'muted' => '#94A3B8',        // Darker gray for placeholders
         ],
 
-        // Borders - Subtle but visible
+        // Borders - Visible but not harsh
         'border' => [
-            'primary' => '#E2E8F0',      // Light gray borders
-            'secondary' => '#CBD5E1',    // Slightly darker for emphasis
-            'accent' => '#DBEAFE',       // Light blue for special borders
+            'primary' => '#475569',      // Medium gray borders
+            'secondary' => '#64748B',    // Lighter for emphasis
+            'accent' => '#3B82F6',       // Blue accent borders
         ],
 
         // Interactive elements
         'interactive' => [
-            'hover' => '#F1F5F9',        // Light hover state
-            'active' => '#E2E8F0',       // Pressed state
-            'focus' => '#DBEAFE',        // Focus ring background
+            'hover' => '#374151',        // Lighter hover state
+            'active' => '#4B5563',       // Pressed state
+            'focus' => '#1E3A8A',        // Focus ring background
         ],
     ],
 
