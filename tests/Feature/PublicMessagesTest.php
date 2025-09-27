@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Support\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 it('allows recipient to toggle message public/private', function (): void {
     $user = User::factory()->create([
@@ -64,15 +64,20 @@ it('shows only public messages on public profile when enabled', function (): voi
         'is_public' => true,
     ]);
 
-    $html = $this->get(route('profiles.show', $user))->getContent();
-    $section = Str::between($html, '<!-- PUBLIC_MESSAGES_START -->', '<!-- PUBLIC_MESSAGES_END -->');
-    // ensure section exists
-    expect($section)->not->toBe('');
-    // match only list item contents
-    preg_match_all('/<li[^>]*>(.*?)<\\/li>/si', $section, $matches);
-    $items = implode("\n", array_map(fn ($s) => trim(strip_tags($s)), $matches[1] ?? []));
-    expect($items)->toContain($publicText);
-    expect($items)->not()->toContain($privateText);
+    $response = $this->get(route('profiles.show', $user));
+
+    $response->assertOk();
+    $response->assertSee('data-section="public-messages"', false);
+    $response->assertSee($publicText);
+    $response->assertDontSee($privateText);
+
+    $crawler = new Crawler($response->getContent());
+    $publicSection = $crawler->filter('[data-section="public-messages"]');
+    expect($publicSection->count())->toBe(1);
+
+    $messageCards = $publicSection->filter('article');
+    expect($messageCards->count())->toBe(1);
+    expect($messageCards->text())->toContain($publicText);
 });
 
 it('hides public messages section when user disabled it', function (): void {
@@ -88,6 +93,12 @@ it('hides public messages section when user disabled it', function (): void {
         'is_public' => true,
     ]);
 
-    $html = $this->get(route('profiles.show', $user))->getContent();
-    expect($html)->not->toContain($publicText);
+    $response = $this->get(route('profiles.show', $user));
+
+    $response->assertOk();
+    $response->assertDontSee('data-section="public-messages"', false);
+    $response->assertDontSee($publicText);
+
+    $crawler = new Crawler($response->getContent());
+    expect($crawler->filter('[data-section="public-messages"]').count())->toBe(0);
 });
