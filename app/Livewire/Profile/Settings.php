@@ -43,7 +43,7 @@ class Settings extends Component
         $this->bio = $user->bio;
         $this->gender = $user->gender;
         $this->allow_public_messages = (bool) ($user->allow_public_messages ?? true);
-        
+
         // Initialize social links
         $this->social_links = [
             'twitter' => $user->social_twitter ?? '',
@@ -54,7 +54,7 @@ class Settings extends Component
             'github' => $user->social_github ?? '',
             'website' => $user->social_website ?? '',
         ];
-        
+
         $this->social_visibility = [
             'twitter' => (bool) ($user->social_twitter_public ?? false),
             'instagram' => (bool) ($user->social_instagram_public ?? false),
@@ -88,13 +88,13 @@ class Settings extends Component
 
         $normalizedUsername = UsernameGenerator::normalize($this->username);
         if ($normalizedUsername === '') {
-            $this->addError('username', 'Usernames must contain letters or numbers.');
+            $this->addError('username', __('messages.username_must_contain_letters_numbers'));
 
             return;
         }
 
         if ($normalizedUsername !== $user->username && $user->newQuery()->where('username', $normalizedUsername)->exists()) {
-            $this->addError('username', 'That username is already taken.');
+            $this->addError('username', __('messages.username_already_taken'));
 
             return;
         }
@@ -132,7 +132,7 @@ class Settings extends Component
                 }
                 $updates['avatar_url'] = Storage::disk($disk)->url($avatarPath);
             } else {
-                $this->addError('avatar', 'Avatar upload failed. Please try again or check your storage configuration.');
+                $this->addError('avatar', __('messages.avatar_upload_failed'));
 
                 return;
             }

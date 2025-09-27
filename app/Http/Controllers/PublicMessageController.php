@@ -42,6 +42,6 @@ class PublicMessageController extends Controller
             'is_public' => false,
         ]);
 
-        return back()->with('status', 'Message delivered anonymously.');
+        return back()->with('status', __('messages.message_delivered_anonymously'));
     }
 }

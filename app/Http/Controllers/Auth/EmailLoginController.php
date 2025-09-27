@@ -30,6 +30,6 @@ class EmailLoginController extends Controller
 
         return back()
             ->withInput($request->only('email', 'remember'))
-            ->with('authError', 'The provided credentials do not match our records.');
+            ->with('authError', __('messages.credentials_do_not_match'));
     }
 }

@@ -92,7 +92,7 @@ return [
     'privacy' => 'Privacy',
 
     // Remaining small UI bits
-    'powered_by' => 'powered by :app',
+
     'register_description' => "Sign up with your email. We'll generate a username for you.",
     'create_account_button' => 'Create Account',
     'create_account_heading' => 'Create your account',
@@ -104,4 +104,12 @@ return [
     'attach_image' => 'Attach image',
     'link_copied' => 'Link copied!',
     'copy_link' => 'Copy link',
+
+    // Error messages
+    'username_must_contain_letters_numbers' => 'Usernames must contain letters or numbers.',
+    'username_already_taken' => 'That username is already taken.',
+    'avatar_upload_failed' => 'Avatar upload failed. Please try again or check your storage configuration.',
+    'profile_updated_successfully' => 'Profile updated successfully.',
+    'message_delivered_anonymously' => 'Message delivered anonymously.',
+    'credentials_do_not_match' => 'The provided credentials do not match our records.',
 ];

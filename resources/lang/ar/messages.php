@@ -92,7 +92,7 @@ return [
     'privacy' => 'الخصوصية',
 
     // Remaining small UI bits
-    'powered_by' => 'مقدم من :app',
+
     'register_description' => 'سجّل باستخدام بريدك الإلكتروني. هنولّد اسم مستخدم ليك تلقائيًا.',
     'create_account_button' => 'إنشاء حساب',
     'create_account_heading' => 'أنشئ حسابك',
@@ -104,4 +104,12 @@ return [
     'attach_image' => 'أرفق صورة',
     'link_copied' => 'تم نسخ الرابط!',
     'copy_link' => 'انسخ الرابط',
+
+    // Error messages
+    'username_must_contain_letters_numbers' => 'يجب أن يحتوي اسم المستخدم على حروف أو أرقام.',
+    'username_already_taken' => 'اسم المستخدم هذا مُستخدم بالفعل.',
+    'avatar_upload_failed' => 'فشل في رفع الصورة. حاول مرة أخرى أو تحقق من إعدادات التخزين.',
+    'profile_updated_successfully' => 'تم تحديث الملف بنجاح.',
+    'message_delivered_anonymously' => 'تم إرسال الرسالة كمجهول.',
+    'credentials_do_not_match' => 'بيانات الاعتماد المقدمة لا تطابق سجلاتنا.',
 ];

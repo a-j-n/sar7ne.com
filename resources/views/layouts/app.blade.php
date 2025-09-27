@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}" class="{{ request()->cookie('theme', 'system') === 'dark' || (request()->cookie('theme', 'system') === 'system' && request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark') ? 'dark' : '' }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}" class="{{ request()->cookie('theme', 'dark') === 'dark' || (request()->cookie('theme', 'dark') === 'system' && request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark') ? 'dark' : '' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -74,7 +74,7 @@
                 }
 
                 try {
-                    var theme = readThemeCookie() || 'system';
+                    var theme = readThemeCookie() || 'dark';
                     applyThemeImmediate(theme);
 
                     // If theme is system, react to OS changes as early as possible
@@ -155,7 +155,7 @@
                         <span class="sr-only">sar7ne</span>
                     </a>
                     <div class="flex items-center gap-3 text-sm text-primary">
-                        @include('partials.theme-switcher')
+                        {{-- @include('partials.theme-switcher') --}}
                         @include('partials.language-switcher')
                         @auth
                             <span class="hidden text-sm font-medium sm:inline">{{ auth()->user()?->username }}</span>

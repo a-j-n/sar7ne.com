@@ -40,13 +40,13 @@ class ProfileController extends Controller
 
         if ($normalizedUsername === '') {
             return back()
-                ->withErrors(['username' => 'Usernames must contain letters or numbers.'])
+                ->withErrors(['username' => __('messages.username_must_contain_letters_numbers')])
                 ->withInput();
         }
 
         if ($normalizedUsername !== $user->username && $user->newQuery()->where('username', $normalizedUsername)->exists()) {
             return back()
-                ->withErrors(['username' => 'That username is already taken.'])
+                ->withErrors(['username' => __('messages.username_already_taken')])
                 ->withInput();
         }
 
@@ -68,12 +68,12 @@ class ProfileController extends Controller
                 // Store the full URL for Spaces
                 $updates['avatar_url'] = Storage::disk($disk)->url($avatarPath);
             } else {
-                return back()->withErrors(['avatar' => 'Avatar upload failed. Please try again or check your storage configuration.'])->withInput();
+                return back()->withErrors(['avatar' => __('messages.avatar_upload_failed')])->withInput();
             }
         }
 
         $user->fill($updates)->save();
 
-        return back()->with('status', 'Profile updated successfully.');
+        return back()->with('status', __('messages.profile_updated_successfully'));
     }
 }
