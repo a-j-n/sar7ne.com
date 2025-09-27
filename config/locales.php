@@ -16,7 +16,7 @@ return [
         'ar' => [
             'name' => 'العربية',
             'dir' => 'rtl',
-            'locale' => 'ar_EG', // informative
+            'locale' => 'ar_EG',
         ],
         'en' => [
             'name' => 'English',
@@ -25,5 +25,12 @@ return [
         ],
     ],
 
-    'default' => env('APP_LOCALE', 'ar'),
+    'aliases' => [
+        'ar_EG' => 'ar',
+        'ar-eg' => 'ar',
+        'en_US' => 'en',
+        'en-us' => 'en',
+    ],
+
+    'default' => env('APP_LOCALE', 'ar_EG'),
 ];

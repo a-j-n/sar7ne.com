@@ -78,9 +78,9 @@ return [
     |
     */
 
-    'locale' => 'ar', // Set Arabic as the default language
+    'locale' => env('APP_LOCALE', 'ar_EG'),
 
-    'fallback_locale' => 'en', // Fallback to English if translation is missing
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 

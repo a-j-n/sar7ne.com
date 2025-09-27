@@ -11,10 +11,28 @@ class SetLocale
     public function handle($request, Closure $next)
     {
         $available = array_keys(config('locales.available', ['ar' => []]));
-        $default = config('locales.default', config('app.locale'));
+        $aliases = config('locales.aliases', []);
+
+        $normalize = static function (?string $value) use ($aliases) {
+            if (! $value) {
+                return null;
+            }
+
+            if (isset($aliases[$value])) {
+                return $aliases[$value];
+            }
+
+            $lower = str_replace('-', '_', strtolower($value));
+
+            return $aliases[$lower] ?? $value;
+        };
+
+        $default = $normalize(config('locales.default', config('app.locale'))) ?? 'ar';
 
         // Prefer session, then cookie, then app/default
-        $locale = Session::get('locale') ?: $request->cookie('locale') ?: $default;
+        $locale = $normalize(Session::get('locale'))
+            ?: $normalize($request->cookie('locale'))
+            ?: $default;
 
         // Validate allowed locales
         if (! in_array($locale, $available, true)) {

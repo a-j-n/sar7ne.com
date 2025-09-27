@@ -22,7 +22,7 @@
             <!-- Enhanced Search Form -->
             <div class="mt-8">
                 <div class="relative">
-                    <div class="flex gap-3 rounded-2xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/10 p-2 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm">
+                    <div class="flex gap-3 rounded-2xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 p-2 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm">
                         <div class="flex-1 flex items-center gap-3">
                             <div class="pl-3">
                                 <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             @if(!empty($q))
-                                <button wire:click="$set('q', '')" class="inline-flex items-center gap-1 rounded-xl px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
+                                <button wire:click="$set('q', '')" class="inline-flex items-center gap-1 rounded-xl px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
                                     <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
@@ -66,7 +66,7 @@
 
         @if($users->isEmpty())
             <x-ui.card class="text-center" padding="p-12">
-                <div class="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center mb-4">
+                <div class="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center mb-4">
                     <svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
@@ -77,10 +77,10 @@
         @else
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($users as $user)
-                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-white/20 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="relative">
-                                <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-white/10 group-hover:border-brand-orange/40 transition-colors" />
+                                <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-slate-700/60 group-hover:border-brand-orange/40 transition-colors" />
                                 <div class="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-green-500 border-2 border-white dark:border-slate-900"></div>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -100,7 +100,7 @@
                         @endif
                         
                         <div class="flex gap-2">
-                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-white/10 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-brand-orange/40 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
+                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700/60 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-brand-orange/40 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>

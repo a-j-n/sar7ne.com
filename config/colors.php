@@ -12,75 +12,66 @@ return [
     */
 
     'brand' => [
-        'orange' => '#FF5E1A',
-        'yellow' => '#FFD93D', 
-        'pink' => '#FF4D6D',
-        'blue' => '#2D9CDB',
+        'orange' => '#FF6B3D',
+        'yellow' => '#FFE066',
+        'pink' => '#FF5D8F',
+        'blue' => '#3A86FF',
         'mint' => '#2EC4B6',
     ],
 
     'light_mode' => [
-        // Backgrounds - Light and airy
-        // Backgrounds - True dark theme
         'bg' => [
-            'primary' => '#0F172A',      // Very dark blue-gray for main content
-            'secondary' => '#1E293B',    // Slightly lighter for sections
-            'tertiary' => '#334155',     // Medium dark for cards/containers
-            'accent' => '#1E3A8A',       // Dark blue for special areas
+            'primary' => '#FFFFFF',      // Canvas
+            'secondary' => '#F5F7FB',    // Section backgrounds
+            'tertiary' => '#EBF1FF',     // Cards
+            'accent' => '#DEE8FF',       // Highlights
         ],
 
-        // Text colors - Light for good contrast on dark backgrounds
         'text' => [
-            'primary' => '#F8FAFC',      // Very light for main text
-            'secondary' => '#E2E8F0',    // Light gray for secondary text
-            'tertiary' => '#CBD5E1',     // Medium gray for less important text
-            'muted' => '#94A3B8',        // Darker gray for placeholders
+            'primary' => '#0F172A',      // Headings / body
+            'secondary' => '#334155',    // Subtext
+            'tertiary' => '#4A607A',     // Muted body
+            'muted' => '#7B8AA6',        // Placeholder
         ],
 
-        // Borders - Visible but not harsh
         'border' => [
-            'primary' => '#475569',      // Medium gray borders
-            'secondary' => '#64748B',    // Lighter for emphasis
-            'accent' => '#3B82F6',       // Blue accent borders
+            'primary' => '#E2E8F0',      // Dividers
+            'secondary' => '#CBD5E1',    // Component borders
+            'accent' => '#B7C5EB',       // Focus accents
         ],
 
-        // Interactive elements
         'interactive' => [
-            'hover' => '#374151',        // Lighter hover state
-            'active' => '#4B5563',       // Pressed state
-            'focus' => '#1E3A8A',        // Focus ring background
+            'hover' => '#EDF2FF',        // Hover surfaces
+            'active' => '#DCE6FF',       // Active states
+            'focus' => '#B4C6FF',        // Focus ring
         ],
     ],
 
     'dark_mode' => [
-        // Backgrounds - True dark theme
         'bg' => [
-            'primary' => '#0F172A',      // Very dark blue-gray for main content
-            'secondary' => '#1E293B',    // Slightly lighter for sections
-            'tertiary' => '#334155',     // Medium dark for cards/containers
-            'accent' => '#1E3A8A',       // Dark blue for special areas
+            'primary' => '#0F172A',      // Canvas
+            'secondary' => '#1B2537',    // Section backgrounds
+            'tertiary' => '#253044',     // Cards
+            'accent' => '#32405A',       // Highlights
         ],
 
-        // Text colors - Light for good contrast on dark backgrounds
         'text' => [
-            'primary' => '#F8FAFC',      // Very light for main text
-            'secondary' => '#E2E8F0',    // Light gray for secondary text
-            'tertiary' => '#CBD5E1',     // Medium gray for less important text
-            'muted' => '#94A3B8',        // Darker gray for placeholders
+            'primary' => '#F8FAFC',      // Headings / body
+            'secondary' => '#D8E2F2',    // Subtext
+            'tertiary' => '#AEBED8',     // Muted body
+            'muted' => '#7C8BA7',        // Placeholder
         ],
 
-        // Borders - Visible but not harsh
         'border' => [
-            'primary' => '#475569',      // Medium gray borders
-            'secondary' => '#64748B',    // Lighter for emphasis
-            'accent' => '#3B82F6',       // Blue accent borders
+            'primary' => '#2E3A52',      // Dividers
+            'secondary' => '#3B4965',    // Component borders
+            'accent' => '#4C5D83',       // Focus accents
         ],
 
-        // Interactive elements
         'interactive' => [
-            'hover' => '#374151',        // Lighter hover state
-            'active' => '#4B5563',       // Pressed state
-            'focus' => '#1E3A8A',        // Focus ring background
+            'hover' => '#1D2940',        // Hover surfaces
+            'active' => '#28344E',       // Active states
+            'focus' => '#3E4F78',        // Focus ring
         ],
     ],
 

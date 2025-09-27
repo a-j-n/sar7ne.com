@@ -66,7 +66,7 @@
                     </div>
                     
                     <!-- Status Badge -->
-                    <span class="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium {{ $message->status === 'unread' ? 'bg-brand-orange/20 text-brand-orange border border-brand-orange/30' : 'bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-400' }}">
+                    <span class="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium {{ $message->status === 'unread' ? 'bg-brand-orange/20 text-brand-orange border border-brand-orange/30' : 'bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300' }}">
                         @if($message->status === 'unread')
                             <svg class="h-3 w-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 2L3 7v11a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V7l-7-5z"/>
@@ -140,7 +140,7 @@
             </x-ui.card>
         @empty
             <x-ui.card class="text-center" padding="p-12">
-                <div class="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center mb-4">
+                <div class="mx-auto h-16 w-16 rounded-full bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center mb-4">
                     <svg class="h-8 w-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                     </svg>

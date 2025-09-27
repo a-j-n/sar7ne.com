@@ -2,7 +2,7 @@
     <!-- Profile Header Card -->
     <x-ui.card class="flex flex-col gap-6 md:flex-row md:items-center" padding="p-8">
         <div class="relative">
-            <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" class="h-28 w-28 rounded-3xl object-cover border-2 border-slate-200 dark:border-white/10" />
+            <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" class="h-28 w-28 rounded-3xl object-cover border-2 border-slate-200 dark:border-slate-700/60" />
             <div class="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 flex items-center justify-center">
                 <svg class="h-4 w-4 text-black" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -73,14 +73,14 @@
                         <div class="grid gap-4 md:grid-cols-2">
                             <div class="space-y-2">
                                 <label class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.username_label') }}</label>
-                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/60">
                                     <span class="text-sm text-slate-900 dark:text-white font-mono">{{ "@".$user->username }}</span>
                                 </div>
                             </div>
                             @if($user->display_name)
                             <div class="space-y-2">
                                 <label class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.display_name_label') }}</label>
-                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/60">
                                     <span class="text-sm text-slate-900 dark:text-white">{{ $user->display_name }}</span>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                         @if($user->bio)
                         <div class="space-y-2 mt-4">
                             <label class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.bio_label') }}</label>
-                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/60">
                                 <p class="text-sm text-slate-900 dark:text-white">{{ $user->bio }}</p>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                         <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('Profile Links') }}</h3>
                         <div class="space-y-4">
                             <!-- Short Link -->
-                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 border border-emerald-200 dark:border-emerald-500/30">
+                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-950/40 dark:to-blue-950/40 border border-emerald-200 dark:border-emerald-700/40">
                                 <div class="flex-1">
                                     <label class="text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-300 font-medium">{{ __('Short Link') }}</label>
                                     <div class="mt-1 font-mono text-sm text-slate-900 dark:text-white">{{ url('/' . $user->username) }}</div>
@@ -110,7 +110,7 @@
                             </div>
 
                             <!-- Full Link -->
-                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-500/30">
+                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/40 dark:to-purple-950/40 border border-blue-200 dark:border-blue-700/40">
                                 <div class="flex-1">
                                     <label class="text-xs uppercase tracking-wide text-blue-700 dark:text-blue-300 font-medium">{{ __('Full Link') }}</label>
                                     <div class="mt-1 font-mono text-sm text-slate-900 dark:text-white">{{ route('profiles.show', $user) }}</div>
@@ -120,7 +120,7 @@
 
                             @if($url = $user->subdomainUrl())
                             <!-- Subdomain Link -->
-                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200 dark:border-purple-500/30">
+                            <div class="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/40 dark:to-pink-950/40 border border-purple-200 dark:border-purple-700/40">
                                 <div class="flex-1">
                                     <label class="text-xs uppercase tracking-wide text-purple-700 dark:text-purple-300 font-medium">{{ __('Custom Domain') }}</label>
                                     <div class="mt-1 font-mono text-sm text-slate-900 dark:text-white">{{ $url }}</div>
@@ -146,6 +146,19 @@
 
             <!-- Settings Tab Content -->
             <x-ui.tab-content value="settings" class="px-8 pb-8">
+                <section class="mb-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-gradient-to-br from-white via-white to-[#f8fbff] dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 p-6 shadow-inner">
+                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                        <div class="max-w-xl space-y-1">
+                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('messages.experience_preferences') }}</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.adjust_theme_language_preferences') }}</p>
+                        </div>
+                        <div class="flex flex-col gap-4 md:flex-row">
+                            @include('partials.theme-switcher')
+                            @include('partials.language-switcher')
+                        </div>
+                    </div>
+                </section>
+
                 <form wire:submit.prevent="save" class="space-y-6">
                     <div>
                         <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('messages.profile_settings') }}</h3>
@@ -179,7 +192,7 @@
 
                         <div class="space-y-2">
                             <label for="avatar" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.avatar_label') }}</label>
-                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/10 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300" />
+                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300" />
                             @error('avatar') <p class="text-xs text-red-500 dark:text-red-400 flex items-center gap-1">
                                 <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -191,7 +204,7 @@
 
                         <div class="space-y-2">
                             <label for="gender" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.gender_label') }}</label>
-                            <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/10 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
+                            <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
                                 <option value="">{{ __('messages.not_specified') }}</option>
                                 <option value="male">{{ __('messages.gender_male') }}</option>
                                 <option value="female">{{ __('messages.gender_female') }}</option>
@@ -204,14 +217,14 @@
                     </div>
 
                     <!-- Social Media Links -->
-                    <div class="border-t border-slate-200 dark:border-white/10 pt-6">
+                    <div class="border-t border-slate-200 dark:border-slate-700/60 pt-6">
                         <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('Social Media Links') }}</h4>
                         <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">{{ __('Add your social media profiles. You can choose which ones to show publicly.') }}</p>
                         
                         <div class="space-y-4">
                             <!-- Twitter -->
-                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-500">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-500">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
                                     </svg>
@@ -229,15 +242,15 @@
                                     <input 
                                         type="checkbox" 
                                         wire:model.defer="social_visibility.twitter"
-                                        class="h-4 w-4 rounded border-slate-300 dark:border-white/10 text-emerald-500 focus:ring-emerald-400"
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400"
                                     />
                                     <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">Public</span>
                                 </label>
                             </div>
 
                             <!-- Instagram -->
-                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-50 dark:bg-pink-900/20 text-pink-500">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-50 dark:bg-pink-950/40 text-pink-500">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987s11.987-5.367 11.987-11.987C24.004 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.418-3.323c.928-.875 2.026-1.365 3.323-1.365s2.448.49 3.323 1.365c.928.875 1.418 2.026 1.418 3.323s-.49 2.448-1.418 3.244c-.875.807-2.026 1.297-3.323 1.297zm7.83-9.606c-.49 0-.928-.367-.928-.857 0-.49.438-.857.928-.857s.928.367.928.857c0 .49-.438.857-.928.857zm-3.323 9.606c-2.079 0-3.77-1.691-3.77-3.77s1.691-3.77 3.77-3.77 3.77 1.691 3.77 3.77-1.691 3.77-3.77 3.77z"/>
                                     </svg>
@@ -255,15 +268,15 @@
                                     <input 
                                         type="checkbox" 
                                         wire:model.defer="social_visibility.instagram"
-                                        class="h-4 w-4 rounded border-slate-300 dark:border-white/10 text-emerald-500 focus:ring-emerald-400"
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400"
                                     />
                                     <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">Public</span>
                                 </label>
                             </div>
 
                             <!-- TikTok -->
-                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-50 dark:bg-slate-900/70 text-gray-800 dark:text-gray-200">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
                                     </svg>
@@ -281,15 +294,15 @@
                                     <input 
                                         type="checkbox" 
                                         wire:model.defer="social_visibility.tiktok"
-                                        class="h-4 w-4 rounded border-slate-300 dark:border-white/10 text-emerald-500 focus:ring-emerald-400"
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400"
                                     />
                                     <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">Public</span>
                                 </label>
                             </div>
 
                             <!-- YouTube -->
-                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                     </svg>
@@ -307,15 +320,15 @@
                                     <input 
                                         type="checkbox" 
                                         wire:model.defer="social_visibility.youtube"
-                                        class="h-4 w-4 rounded border-slate-300 dark:border-white/10 text-emerald-500 focus:ring-emerald-400"
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400"
                                     />
                                     <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">Public</span>
                                 </label>
                             </div>
 
                             <!-- Website -->
-                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500">
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
+                                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                                     </svg>
@@ -333,7 +346,7 @@
                                     <input 
                                         type="checkbox" 
                                         wire:model.defer="social_visibility.website"
-                                        class="h-4 w-4 rounded border-slate-300 dark:border-white/10 text-emerald-500 focus:ring-emerald-400"
+                                        class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400"
                                     />
                                     <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">Public</span>
                                 </label>
@@ -345,8 +358,8 @@
                     <div class="border-t border-slate-200 dark:border-white/10 pt-6">
                         <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('Privacy Settings') }}</h4>
                         <div class="space-y-4">
-                            <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
-                                <input type="checkbox" wire:model.defer="allow_public_messages" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-white/10 bg-white dark:bg-white/10 text-emerald-500 focus:ring-emerald-400">
+                            <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer">
+                                <input type="checkbox" wire:model.defer="allow_public_messages" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400">
                                 <div>
                                     <span class="text-sm font-medium text-slate-900 dark:text-white">{{ __('messages.allow_public_messages') }}</span>
                                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Allow others to see your messages on your public profile') }}</p>
@@ -356,7 +369,7 @@
                     </div>
 
                     <!-- Save Button -->
-                    <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-white/10">
+                    <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700/60">
                         <x-ui.button type="submit" variant="primary" size="lg">
                             <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>

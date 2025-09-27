@@ -8,6 +8,7 @@ use App\Support\UsernameGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -23,13 +24,16 @@ class RegisterController extends Controller
             'password' => ['required', 'min:8', 'max:255', 'confirmed'],
         ]);
 
-        $username = UsernameGenerator::generate();
+        $usernameSeed = Str::before($data['email'], '@') ?: $data['email'];
+
+        $username = UsernameGenerator::generate($usernameSeed);
 
         $user = User::create([
-            'name' => $username,
             'username' => $username,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'provider_type' => 'email',
+            'provider_id' => $data['email'],
         ]);
 
         Auth::login($user, true);

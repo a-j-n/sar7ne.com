@@ -24,6 +24,8 @@ class User extends Authenticatable
         'display_name',
         'avatar_url',
         'bio',
+        'email',
+        'password',
         'provider_id',
         'provider_type',
         'last_login_at',
