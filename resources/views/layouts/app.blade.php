@@ -151,7 +151,8 @@
             <header class="border-b border-primary bg-primary py-4">
                 <div class="mx-auto flex w-full max-w-4xl items-center justify-between px-4">
                     <a href="{{ route('explore') }}" class="flex items-center gap-3">
-                        <img src="{{ asset('Sar7ne-logo.png') }}" alt="sar7ne" width="28" height="28" class="h-7 w-7" />
+                        <img src="{{ asset('light-logo.png') }}" alt="sar7ne" width="112" height="28" class="h-7 w-auto dark:hidden" />
+                        <img src="{{ asset('dark-logo.png') }}" alt="sar7ne" width="112" height="28" class="hidden h-7 w-auto dark:block" />
                         <span class="sr-only">sar7ne</span>
                     </a>
                     <div class="flex items-center gap-3 text-sm text-primary">
@@ -218,7 +219,8 @@
                         
                         <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-2xl transition-all duration-200 {{ $item['active'] ? 'bg-gradient-orange-pink text-white scale-110 glow-brand-orange' : 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-400 hover:bg-brand-orange/10 hover:text-brand-orange dark:hover:bg-brand-orange/20 hover:scale-105' }}">
                             @if ($index === 1)
-                                <img src="{{ asset('Sar7ne-logo.png') }}" alt="sar7ne" class="h-5 w-5 rounded-sm"/>
+                                <img src="{{ asset('light-logo.png') }}" alt="sar7ne" class="h-5 w-auto dark:hidden"/>
+                                <img src="{{ asset('dark-logo.png') }}" alt="sar7ne" class="hidden h-5 w-auto dark:block"/>
                             @endif
                             @switch($item['icon'])
                                 @case('explore')
