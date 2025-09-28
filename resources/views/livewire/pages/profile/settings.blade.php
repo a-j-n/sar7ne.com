@@ -1,44 +1,16 @@
-<div class="space-y-8" wire:ignore.self>
+<div class="space-y-6" wire:ignore.self>
     <!-- Profile Header Card -->
-    <x-ui.card class="flex flex-col gap-6 md:flex-row md:items-center" padding="p-8">
-        <div class="relative">
-            <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" class="h-28 w-28 rounded-3xl object-cover border-2 border-slate-200 dark:border-slate-700/60" />
-            <div class="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 flex items-center justify-center">
-                <svg class="h-4 w-4 text-black" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                </svg>
-            </div>
-        </div>
-        <div class="flex-1 space-y-3">
-            <div class="flex items-center gap-3">
-                <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{{ "@".$user->username }}</h1>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
-                    {{ __('Verified') }}
-                </span>
-            </div>
+    <x-ui.card class="flex flex-col gap-4 md:flex-row md:items-center border border-slate-200 dark:border-slate-700/60 shadow-none" padding="p-4">
+        <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" loading="lazy" class="h-20 w-20 rounded-2xl object-cover" />
+        <div class="flex-1">
+            <h1 class="text-xl font-medium text-slate-900 dark:text-white">{{ "@".$user->username }}</h1>
             @if ($user->display_name)
-                <p class="text-lg text-slate-600 dark:text-slate-300">{{ $user->display_name }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-300">{{ $user->display_name }}</p>
             @endif
-            <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
-                <span class="flex items-center gap-1">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    {{ __('messages.joined', ['date' => $user->created_at->format('M Y')]) }}
-                </span>
-                <span class="flex items-center gap-1">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
-                    {{ __('messages.messages_received', ['count' => $user->total_messages_count]) }}
-                </span>
-                <span class="flex items-center gap-1">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                    {{ __('messages.public_messages_count', ['count' => $user->public_messages_count ?? 0]) }}
-                </span>
+            <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                <span>{{ __('messages.joined', ['date' => $user->created_at->format('M Y')]) }}</span>
+                <span>{{ __('messages.messages_received', ['count' => $user->total_messages_count]) }}</span>
+                <span>{{ __('messages.public_messages_count', ['count' => $user->public_messages_count ?? 0]) }}</span>
             </div>
         </div>
     </x-ui.card>
@@ -167,7 +139,7 @@
                         <div class="grid gap-6 md:grid-cols-2">
                             <x-ui.input 
                                 id="username" 
-                                wire:model.defer="username" 
+                                wire:model.live.debounce.300ms="username" 
                                 :label="__('messages.username_label')"
                                 :error="$errors->first('username')"
                                 required 
@@ -176,14 +148,14 @@
                             
                             <x-ui.input 
                                 id="display_name" 
-                                wire:model.defer="display_name" 
+                                wire:model.live.debounce.300ms="display_name" 
                                 :label="__('messages.display_name_label')"
                             />
                         </div>
 
                         <x-ui.textarea 
                             id="bio" 
-                            wire:model.defer="bio" 
+                            wire:model.live.debounce.300ms="bio" 
                             :label="__('messages.bio_label')"
                             :help="__('messages.bio_help', ['max' => 280])"
                             rows="4" 
@@ -192,7 +164,10 @@
 
                         <div class="space-y-2">
                             <label for="avatar" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.avatar_label') }}</label>
-                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300" />
+                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300" />
+                            @if ($avatar)
+                                <img src="{{ $avatar->temporaryUrl() }}" alt="Avatar preview" loading="lazy" class="mt-3 h-16 w-16 rounded-full object-cover" />
+                            @endif
                             @error('avatar') <p class="text-xs text-red-500 dark:text-red-400 flex items-center gap-1">
                                 <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -204,7 +179,7 @@
 
                         <div class="space-y-2">
                             <label for="gender" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.gender_label') }}</label>
-                            <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
+                            <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
                                 <option value="">{{ __('messages.not_specified') }}</option>
                                 <option value="male">{{ __('messages.gender_male') }}</option>
                                 <option value="female">{{ __('messages.gender_female') }}</option>
@@ -233,7 +208,7 @@
                                     <label class="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">Twitter</label>
                                     <input 
                                         type="url" 
-                                        wire:model.defer="social_links.twitter"
+                                        wire:model.live.debounce.300ms="social_links.twitter"
                                         placeholder="https://twitter.com/username"
                                         class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                                     />
@@ -259,7 +234,7 @@
                                     <label class="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">Instagram</label>
                                     <input 
                                         type="url" 
-                                        wire:model.defer="social_links.instagram"
+                                        wire:model.live.debounce.300ms="social_links.instagram"
                                         placeholder="https://instagram.com/username"
                                         class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                                     />
@@ -285,7 +260,7 @@
                                     <label class="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">TikTok</label>
                                     <input 
                                         type="url" 
-                                        wire:model.defer="social_links.tiktok"
+                                        wire:model.live.debounce.300ms="social_links.tiktok"
                                         placeholder="https://tiktok.com/@username"
                                         class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                                     />
@@ -311,7 +286,7 @@
                                     <label class="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">YouTube</label>
                                     <input 
                                         type="url" 
-                                        wire:model.defer="social_links.youtube"
+                                        wire:model.live.debounce.300ms="social_links.youtube"
                                         placeholder="https://youtube.com/@username"
                                         class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                                     />
@@ -337,7 +312,7 @@
                                     <label class="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">Website</label>
                                     <input 
                                         type="url" 
-                                        wire:model.defer="social_links.website"
+                                        wire:model.live.debounce.300ms="social_links.website"
                                         placeholder="https://yourwebsite.com"
                                         class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                                     />
@@ -359,7 +334,7 @@
                         <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('Privacy Settings') }}</h4>
                         <div class="space-y-4">
                             <label class="flex items-start gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer">
-                                <input type="checkbox" wire:model.defer="allow_public_messages" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400">
+                                <input type="checkbox" wire:model.defer="allow_public_messages" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400">
                                 <div>
                                     <span class="text-sm font-medium text-slate-900 dark:text-white">{{ __('messages.allow_public_messages') }}</span>
                                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ __('Allow others to see your messages on your public profile') }}</p>
@@ -369,13 +344,15 @@
                     </div>
 
                     <!-- Save Button -->
-                    <div class="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700/60">
-                        <x-ui.button type="submit" variant="primary" size="lg">
+                    <div class="flex justify-end items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700/60">
+                        <x-ui.button type="submit" variant="primary" size="lg" wire:loading.attr="disabled" wire:target="save,avatar">
                             <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            {{ __('messages.save_changes') }}
+                            <span wire:loading.remove wire:target="save">{{ __('messages.save_changes') }}</span>
+                            <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
                         </x-ui.button>
+                        <span class="text-xs text-slate-500 dark:text-slate-400" wire:dirty>{{ __('Unsaved changes') }}</span>
                     </div>
                 </form>
             </x-ui.tab-content>

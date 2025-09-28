@@ -25,7 +25,7 @@
             <!-- Enhanced Search Form -->
             <div class="mt-8">
                 <div class="relative">
-                    <div class="flex gap-3 rounded-2xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 p-2 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm" role="search">
+                    <div class="flex gap-3 rounded-2xl border border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/70 p-2 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm" role="search">
                         <div class="flex-1 flex items-center gap-3">
                             <div class="pl-3">
                                 <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
