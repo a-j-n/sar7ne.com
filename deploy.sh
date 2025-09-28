@@ -30,6 +30,7 @@ else
 fi
 
 # Pull the latest changes from the repository
+git reset --hard origin/main
 git pull origin main --no-ff
 git reset --hard origin/main
 
