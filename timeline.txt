@@ -1,0 +1,122 @@
+Sar7ne Project Timeline
+=======================
+
+Note: Times are local. Update dates if you know exact completion times.
+
+Task: Force all traffic to HTTPS with www subdomain
+---------------------------------------------------
+- **Status**: Completed
+- **Created**: 2025-09-29
+- **Completed**: 2025-09-29
+- **Summary**: Redirect HTTP→HTTPS and non-www→www in production; preserve paths and query strings; exclude local/dev hosts.
+- **Acceptance Criteria**:
+  - All HTTP requests redirect to HTTPS with 301.
+  - Non-www domains redirect to www with 301.
+  - Query parameters and paths are preserved.
+  - Local domains (localhost, 127.0.0.1, *.test) are excluded.
+  - Automated tests passing.
+- **Key Changes**:
+  - Middleware: `app/Http/Middleware/ForceHttpsWww.php`
+  - Registered in: `bootstrap/app.php` (prepended to `web` group)
+  - `AppServiceProvider` forces HTTPS in production
+  - `.env.example` updated (`APP_URL=https://www.sar7ne.com`, `PROFILE_DOMAIN_ROOT`)
+- **Tests**:
+  - `tests/Feature/HttpsWwwRedirectTest.php` (HTTP→HTTPS, non-www→www, combined redirect, exclusions, query preservation)
+- **Notes**:
+  - SEO-friendly 301 redirects
+  - Valet/local unaffected
+
+Task: Profile page modern UI/UX enhancements
+-------------------------------------------
+- **Status**: Completed
+- **Created**: 2025-09-29
+- **Completed**: 2025-09-29
+- **Summary**: Major visual and interaction uplift for `/profile` page with gradients, animations, counters, and improved media handling.
+- **Acceptance Criteria**:
+  - Gradient header and avatar ring with glow
+  - Online status indicator appears
+  - Enhanced stats badges and animated share button
+  - Improved message form with drag & drop image and preview
+  - Public messages have redesigned cards, hover/zoom, and staggered animations
+  - Dark/light mode compatible
+- **Key Changes**:
+  - Tailwind v4 styles, brand color system
+  - New CSS animations: slideInLeft/Right, scaleIn, shimmer
+  - JS improvements for previews, counters, modal transitions
+- **Notes**:
+  - Built assets with `yarn build`
+  - Cleared view/config cache for proper rendering
+
+Task: Livewire rendering fix (blank main content)
+------------------------------------------------
+- **Status**: Completed
+- **Created**: 2025-09-29
+- **Completed**: 2025-09-29
+- **Summary**: Pages showed layout without content due to missing Livewire directives and cached views.
+- **Acceptance Criteria**:
+  - `@livewireStyles` present in `<head>`
+  - `@livewireScripts` present before `</body>`
+  - Layout renders `$slot` alongside `@yield('content')`
+  - Clearing caches resolves empty content issue
+- **Key Changes**:
+  - Layout updated to include Livewire directives
+  - Ran `php artisan view:clear` and `php artisan config:clear`
+- **Notes**:
+  - Common issue; always clear caches after layout/config changes
+
+Task: Fix BadMethodCallException in Blade components
+---------------------------------------------------
+- **Status**: Completed
+- **Created**: 2025-09-29
+- **Completed**: 2025-09-29
+- **Summary**: Replaced unsupported `mapWithKeys` usage on `ComponentAttributeBag` to fix label `for` attribute handling.
+- **Acceptance Criteria**:
+  - No runtime exception: `Illuminate\View\ComponentAttributeBag::mapWithKeys does not exist`
+  - Labels set `for` when `id` provided
+- **Files Updated**:
+  - `resources/views/components/ui/input.blade.php`
+  - `resources/views/components/ui/textarea.blade.php`
+- **Change**:
+  - Use conditional Blade: `@if($id) for="{{ $id }}" @endif`
+
+Task: Cleanup unused files and legacy views
+-------------------------------------------
+- **Status**: Completed
+- **Created**: 2025-09-29
+- **Completed**: 2025-09-29
+- **Summary**: Removed legacy/unused Livewire Volt pages, old auth views, legacy controllers, and redundant JS to reduce bundle size and simplify codebase.
+- **Acceptance Criteria**:
+  - All unused files removed safely
+  - No broken routes/components
+  - CSS bundle reduced (~83KB → ~60KB)
+- **Notable Removals**:
+  - Legacy Blade views (old Volt pages, auth views, `inbox.blade.php`, `profile.blade.php`, `welcome.blade.php`)
+  - JS: `theme-switcher.js`, `share-profile.js`
+  - Controllers: `ExploreController.php`, `InboxController.php`
+
+Upcoming: Support both /username and /p/username profile links
+--------------------------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-01
+- **Goal**: Allow profile access via `/{username}` and `/p/{username}` without duplication; prefer named routes.
+- **Acceptance Criteria**:
+  - Both routes resolve to the same controller/component
+  - Canonical URL points to chosen primary path
+  - 301 redirect (if needed) for SEO consistency
+  - Existing links remain functional
+- **Steps**:
+  - Define routes in `routes/web.php` with a shared action
+  - Add route constraints to avoid conflicts with existing top-level pages
+  - Update any generated links to use `route('profile.show', $user)`
+  - Add feature tests for both paths and canonical behavior
+
+Operational Notes
+-----------------
+- **Build tools**: Use Yarn (`yarn install`, `yarn dev`, `yarn build`) per project preference.
+- **Local dev**: Laravel Valet; do not use `php artisan serve`.
+- **Caches**: After layout/config changes, run `php artisan view:clear` and `php artisan config:clear`.
+
+Build an elegant Timeline feature for user posts. Each post can be text, image, or both, 
+but must include a location. If the user opens the Timeline page,
+we prompt for geolocation permission. Posting is blocked until a location is present (current GPS or manually picked). 
+The Timeline is accessible from a fixed bottom navbar button.

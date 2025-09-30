@@ -12,7 +12,7 @@
         <div class="relative">
             <div class="flex items-center gap-3 mb-4">
                 <div class="h-12 w-12 rounded-2xl bg-gradient-orange-pink flex items-center justify-center glow-brand-orange">
-                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-6 w-6 md:hiden text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
@@ -80,7 +80,7 @@
         @else
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($users as $user)
-                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+                    <x-ui.card class="group bg-black hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="relative">
                                 <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-slate-700/60 group-hover:border-brand-orange/40 transition-colors" />

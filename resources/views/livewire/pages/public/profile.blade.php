@@ -54,12 +54,6 @@
                                 {{ __('messages.messages_received', ['count' => $user->total_messages_count]) }}
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50">
-                            <div class="w-2 h-2 rounded-full bg-brand-orange"></div>
-                            <span class="font-medium text-secondary">
-                                {{ __('messages.powered_by', ['app' => config('app.name')]) }}
-                            </span>
-                        </div>
                     </div>
                     
                     <!-- Enhanced Share Button -->
