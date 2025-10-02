@@ -27,4 +27,3 @@ it('shows loading and dirty states on save', function (): void {
         ->call('save')
         ->assertHasNoErrors();
 });
-

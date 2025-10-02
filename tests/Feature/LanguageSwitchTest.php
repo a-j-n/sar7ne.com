@@ -8,4 +8,3 @@ it('sets the locale in session when switching languages', function () {
     $response->assertRedirect();
     $this->assertEquals('en', session('locale'));
 });
-

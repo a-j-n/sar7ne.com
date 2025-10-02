@@ -8,11 +8,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Ensure the SetLocale middleware runs for web requests after cookie/session middleware
-        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocale::class);
+        // Ensure the SetLocaleFromRequest runs for web requests after cookie/session middleware
+        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocaleFromRequest::class);
         // Force HTTPS and www. subdomain
         $middleware->prependToGroup('web', \App\Http\Middleware\ForceHttpsWww::class);
     })

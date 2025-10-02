@@ -159,6 +159,17 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
+## Sail Quick Commands
+
+- Start stack: `docker compose up -d`
+- Stop stack: `docker compose down`
+- App shell: `docker compose exec laravel.test bash`
+- Run tests: `docker compose exec laravel.test php artisan test`
+- Run migrations: `docker compose exec laravel.test php artisan migrate`
+- Queue logs: `docker compose logs -f queue`
+- Vite dev server: `http://localhost:5173`
+- Reverb WebSocket: `ws://localhost:8080`
+
 
 === laravel/v12 rules ===
 

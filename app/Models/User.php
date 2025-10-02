@@ -74,6 +74,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Unread messages count/relation for notification badge.
+     */
+    public function unreadMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->where('status', Message::STATUS_UNREAD);
+    }
+
+    /**
      * Derive the user's initials for avatar placeholders.
      */
     public function initials(): string

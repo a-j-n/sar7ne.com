@@ -13,5 +13,8 @@ The plan for the next update
  - in setting tab we will give him the option to download all his data related to his account
  - info tab will have the user info and public profile link and option to copy it
  - the profile card in the profile page will have the option to copy the public profile link
- -
+ -Build an elegant Timeline feature for user posts. Each post can be text, image, or both, 
+but must include a location. If the user opens the Timeline page,
+we prompt for geolocation permission. Posting is blocked until a location is present (current GPS or manually picked). 
+The Timeline is accessible from a fixed bottom navbar button.
 

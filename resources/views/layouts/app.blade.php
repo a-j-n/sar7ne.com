@@ -18,6 +18,27 @@
         <meta name="description" content="@yield('meta_description', __('messages.meta_description'))">
         <meta name="robots" content="@yield('meta_robots', 'index, follow')">
         <link rel="canonical" href="@yield('canonical', url()->current())">
+        @php
+            $altLocales = config('app.supported_locales', ['en','ar']);
+            $currentUrl = url()->current();
+            $currentQuery = request()->query();
+            $localeParam = config('app.locale_param', 'lang');
+        @endphp
+        {{-- x-default points to default/fallback language --}}
+        @php
+            $defaultLoc = config('app.locale');
+            $qDefault = array_merge($currentQuery, [$localeParam => $defaultLoc]);
+            $hrefDefault = $currentUrl . (count($qDefault) ? ('?' . http_build_query($qDefault)) : '');
+        @endphp
+        <link rel="alternate" hreflang="x-default" href="{{ $hrefDefault }}">
+
+        @foreach ($altLocales as $loc)
+            @php
+                $q = array_merge($currentQuery, [$localeParam => $loc]);
+                $href = $currentUrl . (count($q) ? ('?' . http_build_query($q)) : '');
+            @endphp
+            <link rel="alternate" hreflang="{{ $loc }}" href="{{ $href }}">
+        @endforeach
 
         {{-- Open Graph --}}
         <meta property="og:site_name" content="{{ config('app.name', 'sar7ne') }}">
@@ -25,13 +46,13 @@
         <meta property="og:description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
         <meta property="og:type" content="@yield('og_type', 'website')">
         <meta property="og:url" content="@yield('canonical', url()->current())">
-        <meta property="og:image" content="@yield('meta_image', asset('favicon.ico'))">
+        <meta property="og:image" content="@yield('meta_image', asset('opengraph.png'))">
 
         {{-- Twitter --}}
         <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
         <meta name="twitter:title" content="@yield('og_title', trim(strip_tags(View::yieldContent('title'))))">
         <meta name="twitter:description" content="@yield('meta_description', 'sar7ne — anonymous messaging for creators and friends. Send kind, anonymous messages to people you care about.')">
-        <meta name="twitter:image" content="@yield('meta_image', asset('favicon.ico'))">
+        <meta name="twitter:image" content="@yield('meta_image', asset('opengraph.png'))">
 
         <!-- Hint to browsers about supported color schemes -->
         <meta name="color-scheme" content="light dark">
@@ -117,7 +138,7 @@
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 {{--        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))--}}
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @vite(['resources/css/app.css'])
 {{--        @endif--}}
 
         <link rel="manifest" href="/manifest.json">
@@ -141,11 +162,18 @@
         <meta name="msapplication-TileImage" content="/icon-144x144.png">
         <meta name="msapplication-TileColor" content="#0d6efd">
 
+        {{-- Resource Hints for faster connections --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com">
+        <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
         
         {{-- Livewire Styles --}}
         @livewireStyles
+        {{-- Leaflet is now lazy-loaded on pages that need it --}}
     </head>
     <body class="@php
         $theme = request()->cookie('theme', 'dark');
@@ -206,10 +234,11 @@
         </div>
 
         <nav class="fixed inset-x-0 bottom-0 border-t border-primary bg-primary/95 backdrop-blur-lg">
-            <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
+            <div class="mx-auto grid w-full max-w-4xl grid-cols-4">
                 @php
                     $navItems = [
                         ['label' => __('messages.explore'), 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => __('messages.explore')],
+                       // ['label' => __('messages.timeline'), 'href' => auth()->check() ? route('timeline.index') : route('login'), 'active' => request()->routeIs('timeline.*'), 'icon' => 'timeline', 'aria' => __('messages.timeline')],
                         ['label' => __('messages.inbox'), 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
                         ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile'), 'icon' => 'profile', 'aria' => __('messages.profile')],
                     ];
@@ -231,6 +260,11 @@
                                 @case('explore')
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    @break
+                                @case('timeline')
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h12M3 17h6" />
                                     </svg>
                                     @break
                                 @case('inbox')
@@ -264,5 +298,7 @@
         
         {{-- Livewire Scripts --}}
         @livewireScripts
+        {{-- Reverb / Echo bootstrap (expects window.Echo when configured) --}}
+        @vite(['resources/js/app.js'])
     </body>
 </html>

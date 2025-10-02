@@ -8,4 +8,3 @@ it('sets the theme cookie when switching themes', function () {
     $response->assertRedirect();
     $response->assertCookie('theme');
 });
-

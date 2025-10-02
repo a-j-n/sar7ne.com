@@ -8,4 +8,3 @@ it('sets the locale in session when switching to arabic', function () {
     $response->assertRedirect();
     $this->assertEquals('ar', session('locale'));
 });
-

@@ -80,6 +80,12 @@ return [
 
     'locale' => env('APP_LOCALE', 'ar_EG'),
 
+    // Supported locales for hreflang and locale switching
+    'supported_locales' => ['en', 'ar'],
+
+    // Query parameter name used for locale switching
+    'locale_param' => 'lang',
+
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

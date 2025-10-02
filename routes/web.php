@@ -10,10 +10,12 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicMessageController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\SitemapController;
 use App\Livewire\Explore as ExplorePage;
 use App\Livewire\Inbox as InboxPage;
 use App\Livewire\Profile\Settings as ProfileSettingsPage;
 use App\Livewire\PublicProfile as PublicProfilePage;
+use App\Livewire\Timeline\Index as TimelineIndex;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', ProfileSettingsPage::class)->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/settings', [ProfileController::class, 'update'])->name('profile.settings.update');
+
+    Route::get('/timeline', TimelineIndex::class)->name('timeline.index');
 });
 
 Route::post('/logout', function (Request $request) {
@@ -86,6 +90,9 @@ Route::view('/privacy', 'public.privacy')->name('privacy');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 Route::get('/theme/{theme}', [\App\Http\Controllers\ThemeController::class, 'switchTheme'])->name('theme.switch');
+
+// Sitemap
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 Route::get('/_debug/locale', function (\Illuminate\Http\Request $request) {
     return response()->json([

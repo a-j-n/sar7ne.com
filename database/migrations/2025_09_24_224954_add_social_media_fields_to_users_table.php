@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('social_linkedin')->nullable();
             $table->string('social_github')->nullable();
             $table->string('social_website')->nullable();
-            
+
             // Social media visibility settings
             $table->boolean('social_twitter_public')->default(false);
             $table->boolean('social_instagram_public')->default(false);

@@ -1,9 +1,4 @@
-Sar7ne Project Timeline
-=======================
 
-Note: Times are local. Update dates if you know exact completion times.
-
-Task: Force all traffic to HTTPS with www subdomain
 ---------------------------------------------------
 - **Status**: Completed
 - **Created**: 2025-09-29
@@ -88,35 +83,147 @@ Task: Cleanup unused files and legacy views
 - **Acceptance Criteria**:
   - All unused files removed safely
   - No broken routes/components
-  - CSS bundle reduced (~83KB → ~60KB)
 - **Notable Removals**:
   - Legacy Blade views (old Volt pages, auth views, `inbox.blade.php`, `profile.blade.php`, `welcome.blade.php`)
   - JS: `theme-switcher.js`, `share-profile.js`
   - Controllers: `ExploreController.php`, `InboxController.php`
 
-Upcoming: Support both /username and /p/username profile links
+Task: Support both /username and /p/username profile links
 --------------------------------------------------------------
 - **Status**: Planned
 - **Target**: 2025-10-01
-- **Goal**: Allow profile access via `/{username}` and `/p/{username}` without duplication; prefer named routes.
+- **Summary**: Unify direct profile URLs so `/p/{username}` becomes the canonical path while `/{username}` gracefully redirects, ensuring consistent SEO, analytics, and link sharing without breaking legacy links.
 - **Acceptance Criteria**:
-  - Both routes resolve to the same controller/component
-  - Canonical URL points to chosen primary path
-  - 301 redirect (if needed) for SEO consistency
-  - Existing links remain functional
-- **Steps**:
-  - Define routes in `routes/web.php` with a shared action
-  - Add route constraints to avoid conflicts with existing top-level pages
-  - Update any generated links to use `route('profile.show', $user)`
-  - Add feature tests for both paths and canonical behavior
+  - Both `/p/{username}` and bare `/{username}` resolve to `App\Livewire\Profile\Show`.
+  - Bare `/{username}` issues a 301 redirect to `/p/{username}` with original query strings.
+  - Canonical metadata and Open Graph tags prefer the `/p/{username}` URL.
+  - Route pattern excludes reserved top-level slugs (e.g., `login`, `register`, `timeline`).
+  - All existing profile route helpers continue to work.
+- **Technical Approach**:
+  - Add named route `profile.show` targeting `/p/{user:username}` in `routes/web.php`.
+  - Introduce a constrained fallback route for `/{username}` that validates usernames against a reserved list and redirects using `to_route('profile.show', $user)`.
+  - Centralize username resolution logic in a dedicated `ProfileUsernameConstraint` to avoid route duplication.
+  - Update Livewire navigation/menu components to reference `route('profile.show', $user)` explicitly.
+- **Testing**:
+  - Feature test `tests/Feature/ProfileRoutingTest.php` covering both URL patterns, reserved slug rejection, and redirect behavior.
+  - Browser test ensures canonical `<link rel="canonical">` renders with `/p/{username}`.
+- **Risks & Mitigations**:
+  - Reserved slug collisions: expand the reserved slug test coverage when adding new static pages.
+  - Cache invalidation: run `php artisan route:clear` and `php artisan view:clear` in deployment checklist.
+  - External backlinks: monitor 301 redirect logs to confirm legacy link migration.
 
-Operational Notes
------------------
-- **Build tools**: Use Yarn (`yarn install`, `yarn dev`, `yarn build`) per project preference.
-- **Local dev**: Laravel Valet; do not use `php artisan serve`.
-- **Caches**: After layout/config changes, run `php artisan view:clear` and `php artisan config:clear`.
+Task: Implement Google and TikTok login
+--------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-05
+- **Summary**: Offer seamless social authentication so users can sign up or log in with Google or TikTok while linking accounts to existing profiles securely.
+- **Acceptance Criteria**:
+  - Users can authenticate via Google OAuth 2.0 and TikTok Open Auth without account duplication.
+  - Returning social users map to the same internal `users` record and retain profile data.
+  - Email-less TikTok accounts prompt for verified email before activation.
+  - Admin audit log captures social-provider link events.
+- **Technical Approach**:
+  - Configure Laravel Socialite drivers for Google and TikTok, storing client IDs/secrets in `.env`.
+  - Implement callback controller to create or link users, issuing Sanctum tokens for Livewire sessions.
+  - Add `social_accounts` table via migration to persist provider IDs.
+  - Expand authentication tests to cover social login flows and failure cases.
+- **Dependencies**:
+  - Google Cloud and TikTok developer credentials.
+  - Updated privacy policy covering social sign-in.
 
-Build an elegant Timeline feature for user posts. Each post can be text, image, or both, 
-but must include a location. If the user opens the Timeline page,
-we prompt for geolocation permission. Posting is blocked until a location is present (current GPS or manually picked). 
-The Timeline is accessible from a fixed bottom navbar button.
+Task: Enhance dark and light mode UI system
+------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-07
+- **Summary**: Polish the theming system so both dark and light modes feel cohesive, accessible, and aligned with brand gradients introduced on `/profile`.
+- **Acceptance Criteria**:
+  - Theme tokens defined for typography, backgrounds, surfaces, and component states with WCAG AA contrast.
+  - Toggle respects OS preference and persists per user selection.
+  - Key pages (dashboard, profile, messaging, timeline) share consistent theming and animations.
+  - Visual regression snapshots updated for both modes.
+- **Technical Approach**:
+  - Extend Tailwind v4 config with semantic color tokens and CSS variables.
+  - Audit components in `resources/views/components/ui/` to use variables instead of hard-coded colors.
+  - Add Livewire listener to sync theme selection and store preference per user.
+  - Update assets via `yarn build` and add Percy/Playwright checks if available.
+
+Task: Add configurable social media links to user profiles
+--------------------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-09
+- **Summary**: Allow users to manage branded social links that render elegantly on public profiles when set to visible.
+- **Acceptance Criteria**:
+  - Users can add, edit, reorder, and toggle visibility for supported platforms (Instagram, X, TikTok, YouTube, LinkedIn).
+  - Public profile shows icon-based list with accessible labels only when links are public.
+  - Private links remain hidden from visitors but visible in the dashboard.
+  - Input validation ensures URLs conform to platform patterns.
+- **Technical Approach**:
+  - Extend `profiles` table or create `social_links` relation with privacy flag and display order.
+  - Build Livewire form with dynamic rows and icon previews.
+  - Update public profile view to loop through published links with `wire:key` attributes.
+  - Add feature tests verifying visibility logic and validation errors.
+
+Task: Support photo uploads in public and private messages
+---------------------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-11
+- **Summary**: Let users attach images to messages in both public wall posts and private inbox threads with appropriate moderation safeguards.
+- **Acceptance Criteria**:
+  - Message composer accepts drag-and-drop or file-picker image uploads up to defined size limits.
+  - Images stored in optimized formats and rendered with responsive previews.
+  - Background jobs generate thumbnails and perform basic content validation.
+  - Upload errors surface inline with retry option.
+- **Technical Approach**:
+  - Add `message_attachments` table linked to messages with metadata (path, mime, size).
+  - Use Livewire temporary uploads with validation rules and queued image processing job.
+  - Integrate responsive `<picture>` tags in message cards with lazy loading.
+  - Write feature tests covering upload success, validation failure, and deletion cleanup.
+
+Task: Provide public visibility controls for messages
+---------------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-12
+- **Summary**: Give users granular control over which messages appear on their public profile while keeping private conversations unaffected.
+- **Acceptance Criteria**:
+  - Message composer includes visibility toggle (public/private) defaulting to sender preference.
+  - Public profile only surfaces messages flagged as public and approved by recipient (if required).
+  - Private inbox remains unchanged and secure.
+  - Audit log records visibility changes.
+- **Technical Approach**:
+  - Add `visibility` enum column to messages with values `public`/`private`.
+  - Update Livewire components to respect visibility when listing messages.
+  - Introduce policy checks ensuring only owners can alter visibility after posting.
+  - Implement tests verifying visibility filtering on profile and inbox endpoints.
+
+Task: Introduce profile Info and Settings tabs
+---------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-15
+- **Summary**: Redesign the authenticated profile area with dedicated Info and Settings tabs that consolidate language preferences, messaging controls, account life-cycle actions, and profile link sharing.
+- **Acceptance Criteria**:
+  - Authenticated profile displays Info tab with core details, public profile URL, and copy-to-clipboard action.
+  - Settings tab includes default language selector (relocating the navbar control), anonymous message opt-in toggle, request data download workflow, and delete-account initiation.
+  - Delete-account flow performs soft-delete immediately and schedules hard delete after 30 days with cancellation option.
+  - Profile card on dashboard mirrors the copyable public link control.
+  - All changes surface clear confirmations and emails where appropriate.
+- **Technical Approach**:
+  - Build tabbed Livewire layout with persistent state between refreshes.
+  - Implement queued job for data export (zipped JSON/CSV) and notification upon completion.
+  - Add soft-delete support to relevant models and scheduled command for 30-day purge.
+  - Update localization files for language selector and new settings copy.
+
+Task: Build Timeline feature for geo-tagged posts
+------------------------------------------------
+- **Status**: Planned
+- **Target**: 2025-10-20
+- **Summary**: Launch a Timeline page where users post text and images tied to a location, accessible via a fixed bottom navigation button.
+- **Acceptance Criteria**:
+  - Timeline posts require either current geolocation or manually selected location before publishing.
+  - Geolocation permission prompt triggers on page entry with graceful fallback UI.
+  - Posts support text-only, image-only, or combined content with moderation-friendly storage.
+  - Timeline feed updates in real time and indicates distance from viewer when available.
+- **Technical Approach**:
+  - Create `timeline_posts` table with polymorphic attachments and geospatial columns.
+  - Integrate browser Geolocation API via Livewire/Alpine bridge, with manual picker fallback using Mapbox or Leaflet.
+  - Add bottom navigation component entry linking to Timeline route.
+  - Provide Livewire feature tests ensuring location requirement and visibility rules.

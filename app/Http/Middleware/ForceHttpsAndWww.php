@@ -18,17 +18,19 @@ class ForceHttpsAndWww
         $uri = $request->getRequestUri();
 
         // Match user subdomains, with or without www.
-        if (preg_match('/^(?:www\\.)?([a-zA-Z0-9_-]+)\\.' . preg_quote($baseDomain) . '$/', $host, $matches) && $matches[1] !== 'www') {
+        if (preg_match('/^(?:www\\.)?([a-zA-Z0-9_-]+)\\.'.preg_quote($baseDomain).'$/', $host, $matches) && $matches[1] !== 'www') {
             $username = $matches[1];
-            $redirectUrl = $targetScheme . '://www.' . $baseDomain . '/' . ltrim($username . $uri, '/');
+            $redirectUrl = $targetScheme.'://www.'.$baseDomain.'/'.ltrim($username.$uri, '/');
+
             return redirect()->to($redirectUrl, 301);
         }
 
         // Only prepend www. for the base domain
-        if ($host === $baseDomain || $host === 'www.' . $baseDomain) {
-            $targetHost = 'www.' . $baseDomain;
-            if (!$isSecure || $host !== $targetHost) {
-                $redirectUrl = $targetScheme . '://' . $targetHost . $uri;
+        if ($host === $baseDomain || $host === 'www.'.$baseDomain) {
+            $targetHost = 'www.'.$baseDomain;
+            if (! $isSecure || $host !== $targetHost) {
+                $redirectUrl = $targetScheme.'://'.$targetHost.$uri;
+
                 return redirect()->to($redirectUrl, 301);
             }
         }

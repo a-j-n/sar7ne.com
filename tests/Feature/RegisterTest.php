@@ -7,6 +7,7 @@ use App\Support\UsernameGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
