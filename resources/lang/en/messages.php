@@ -124,6 +124,8 @@ return [
     'save' => 'Save',
     'view_public_profile' => 'View profile',
     'privacy' => 'Privacy',
+    'reduce_motion' => 'Reduce motion (accessibility)',
+    'reduce_motion_help' => 'Minimize animations and transitions for a calmer experience.',
 
     // Remaining small UI bits
 
@@ -138,6 +140,19 @@ return [
     'attach_image' => 'Attach image',
     'link_copied' => 'Link copied!',
     'copy_link' => 'Copy link',
+    // Inbox
+    'inbox_subtitle' => 'Anonymous messages you\'ve received.',
+    'inbox_unread_prefix' => 'You have',
+    'inbox_unread_suffix' => 'unread',
+    'inbox_all_caught_up' => 'All caught up!',
+    'received_at' => 'Received',
+    'public' => 'Public',
+    'mark_as_read' => 'Mark as read',
+    'mark_as_unread' => 'Mark as unread',
+    'delete' => 'Delete',
+    'inbox_empty_title' => 'Your inbox is waiting',
+    'inbox_empty_desc' => 'Share your profile link to start collecting anonymous messages.',
+    'get_profile_link' => 'Get Your Profile Link',
 
     // Error messages
     'username_must_contain_letters_numbers' => 'Usernames must contain letters or numbers.',

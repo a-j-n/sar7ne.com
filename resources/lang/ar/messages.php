@@ -122,6 +122,8 @@ return [
     'avatar_preview_alt' => 'معاينة الصورة',
     'save_changes' => 'احفظ التغييرات',
     'privacy' => 'الخصوصية',
+    'reduce_motion' => 'تقليل الحركة (إتاحة الوصول)',
+    'reduce_motion_help' => 'تقليل التحركات والانتقالات لتجربة أهدأ.',
 
     // Remaining small UI bits
 
@@ -136,6 +138,19 @@ return [
     'attach_image' => 'أرفق صورة',
     'link_copied' => 'تم نسخ الرابط!',
     'copy_link' => 'انسخ الرابط',
+    // Inbox
+    'inbox_subtitle' => 'الرسائل المجهولة التي استلمتها.',
+    'inbox_unread_prefix' => 'لديك',
+    'inbox_unread_suffix' => 'غير مقروءة',
+    'inbox_all_caught_up' => 'كل شيء تمام!',
+    'received_at' => 'تم الاستلام',
+    'public' => 'عام',
+    'mark_as_read' => 'تحديد كمقروء',
+    'mark_as_unread' => 'تحديد كغير مقروء',
+    'delete' => 'حذف',
+    'inbox_empty_title' => 'صندوق الوارد بانتظارك',
+    'inbox_empty_desc' => 'شارك رابط ملفك لتبدأ باستقبال الرسائل المجهولة.',
+    'get_profile_link' => 'احصل على رابط ملفك',
 
     // Error messages
     'username_must_contain_letters_numbers' => 'يجب أن يحتوي اسم المستخدم على حروف أو أرقام.',

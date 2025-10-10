@@ -180,7 +180,8 @@
         $isSystemDark = request()->header('Sec-CH-Prefers-Color-Scheme') === 'dark';
         $isDark = $theme === 'dark' || ($theme === 'system' && $isSystemDark);
         $isArabic = $appLocale === 'ar';
-        echo 'min-h-screen bg-secondary text-primary font-sans antialiased' . ($isArabic ? ' font-cairo' : '');
+        $reduceMotion = auth()->check() ? (bool) auth()->user()->reduce_motion : false;
+        echo 'min-h-screen bg-secondary text-primary font-sans antialiased' . ($isArabic ? ' font-cairo lang-ar' : '') . ($reduceMotion ? ' reduce-motion' : '');
     @endphp">
         <div class="min-h-screen pb-20">
             <header class="border-b border-primary bg-primary py-4">

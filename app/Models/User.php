@@ -52,6 +52,7 @@ class User extends Authenticatable
         return [
             'last_login_at' => 'datetime',
             'allow_public_messages' => 'boolean',
+            'reduce_motion' => 'boolean',
         ];
     }
 

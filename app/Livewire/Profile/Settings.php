@@ -28,6 +28,8 @@ class Settings extends Component
 
     public bool $allow_public_messages = true;
 
+    public bool $reduce_motion = false;
+
     public array $social_links = [];
 
     public array $social_visibility = [];
@@ -44,6 +46,7 @@ class Settings extends Component
         $this->bio = $user->bio;
         $this->gender = $user->gender;
         $this->allow_public_messages = (bool) ($user->allow_public_messages ?? true);
+        $this->reduce_motion = (bool) ($user->reduce_motion ?? false);
 
         // Initialize social links
         $this->social_links = [
@@ -78,6 +81,7 @@ class Settings extends Component
             'bio' => ['nullable', 'string', 'max:280'],
             'gender' => ['nullable', 'in:male,female,non-binary,other,prefer_not_to_say'],
             'allow_public_messages' => ['sometimes', 'boolean'],
+            'reduce_motion' => ['sometimes', 'boolean'],
             'social_links.twitter' => ['nullable', 'url', 'max:255'],
             'social_links.instagram' => ['nullable', 'url', 'max:255'],
             'social_links.tiktok' => ['nullable', 'url', 'max:255'],
@@ -106,6 +110,7 @@ class Settings extends Component
             'display_name' => $this->display_name ?: $user->display_name,
             'gender' => $this->gender ?: null,
             'allow_public_messages' => (bool) $this->allow_public_messages,
+            'reduce_motion' => (bool) $this->reduce_motion,
             // Social links
             'social_twitter' => $this->social_links['twitter'] ?: null,
             'social_instagram' => $this->social_links['instagram'] ?: null,

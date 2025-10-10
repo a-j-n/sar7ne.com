@@ -1,7 +1,6 @@
-@import 'tailwindcss';
-
-/* Import Google Cairo font */
+/* Import Google Cairo font MUST come before other statements */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+@import 'tailwindcss';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -62,6 +61,11 @@
 
 body, html, .font-sans {
     font-family: 'Maple Mono', monospace !important;
+}
+
+/* Use Cairo font when Arabic */
+.font-cairo, .lang-ar, .lang-ar .font-sans {
+    font-family: 'Cairo', sans-serif !important;
 }
 
 /* Utility class for Cairo font */
@@ -150,6 +154,16 @@ body, html, .font-sans {
 /* Force slate text utilities to black inside light cards */
 .text-black-on-white :where([class*="text-slate-"]) {
     color: #000 !important;
+}
+
+/* Accessibility: reduce motion when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 .animate-fade-in-up {
