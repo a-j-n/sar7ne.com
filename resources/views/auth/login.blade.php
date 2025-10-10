@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="mx-auto max-w-lg space-y-6">
-        <div class="rounded-3xl border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 p-8 text-center shadow-xl">
+        <div class="rounded-3xl border border-slate-200 dark:border-slate-700/60 bg-white text-black dark:bg-slate-900/70 p-8 text-center shadow-xl">
             <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.join_sar7ne') }}</h1>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ __('messages.auth_description') }}</p>
         </div>
@@ -18,7 +18,7 @@
         <div class="space-y-4">
 
 
-            <a href="{{ route('oauth.redirect', ['provider' => 'twitter']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 px-6 py-4 text-sm font-medium text-slate-900 dark:text-white transition hover:bg-slate-50 dark:hover:bg-slate-800/70">
+            <a href="{{ route('oauth.redirect', ['provider' => 'twitter']) }}" class="flex items-center justify-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-white text-black dark:bg-slate-900/70 px-6 py-4 text-sm font-medium transition hover:bg-slate-50 dark:hover:bg-slate-800/70">
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.608 1.794-1.574 2.163-2.723-.949.564-2.005.974-3.127 1.195-.897-.959-2.178-1.555-3.594-1.555-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.574-.666 2.476 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.317 0-.626-.03-.927-.086.627 1.956 2.444 3.379 4.6 3.419-1.68 1.319-3.809 2.105-6.102 2.105-.396 0-.788-.023-1.175-.067 2.179 1.397 4.768 2.212 7.548 2.212 9.054 0 14-7.496 14-13.986 0-.21-.005-.423-.014-.634.961-.695 1.797-1.562 2.457-2.549z"/>
                 </svg>
@@ -27,18 +27,18 @@
 
             <div class="text-center text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">{{ __('messages.or_continue_with') }}</div>
 
-            <form method="POST" action="{{ route('login.attempt') }}" class="space-y-3 rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/70 p-6">
+            <form method="POST" action="{{ route('login.attempt') }}" class="space-y-3 rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-white text-black dark:bg-slate-900/70 p-6">
                 @csrf
                 <div class="text-left">
                     <label for="email" class="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">{{ __('messages.email_label') }}</label>
-                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="w-full rounded-xl border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 outline-none focus:border-slate-300 dark:focus:border-slate-500" placeholder="{{ __('messages.email_placeholder', ['example' => 'you@example.com']) }}">
+                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.email_placeholder', ['example' => 'you@example.com']) }}">
                     @error('email')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="text-left">
                     <label for="password" class="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">{{ __('messages.password_label') }}</label>
-                    <input id="password" name="password" type="password" required autocomplete="current-password" class="w-full rounded-xl border border-slate-200 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 outline-none focus:border-slate-300 dark:focus:border-slate-500" placeholder="••••••••">
+                    <input id="password" name="password" type="password" required autocomplete="current-password" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="••••••••">
                     @error('password')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                     @enderror

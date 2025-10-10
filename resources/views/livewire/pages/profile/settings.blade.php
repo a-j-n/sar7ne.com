@@ -187,7 +187,7 @@
 
                         <div class="space-y-2">
                             <label for="avatar" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.avatar_label') }}</label>
-                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300" />
+                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
                             @if ($avatar)
                                 <img src="{{ $avatar->temporaryUrl() }}" alt="{{ __('messages.avatar_preview_alt') }}" loading="lazy" class="mt-3 h-16 w-16 rounded-full object-cover" />
                             @endif

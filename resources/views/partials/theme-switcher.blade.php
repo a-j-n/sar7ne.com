@@ -33,7 +33,7 @@
     <button
         type="button"
         @click="open = !open"
-        class="group flex items-center gap-2 rounded-full border border-secondary dark:border-white/10 bg-white/70 dark:bg-slate-900/80 px-3 py-1.5 text-xs font-semibold text-secondary dark:text-slate-100 shadow-sm hover:shadow-md transition-all duration-200"
+        class="group flex items-center gap-2 rounded-full border border-secondary dark:border-white/10 bg-white/70 text-black dark:bg-slate-900/80 px-3 py-1.5 text-xs font-semibold dark:text-slate-100 shadow-sm hover:shadow-md transition-all duration-200"
         aria-haspopup="true"
         :aria-expanded="open.toString()"
     >
@@ -84,7 +84,7 @@
                     href="{{ route('theme.switch', $option) }}"
                     class="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 transition-all duration-200 {{ $isActive ? 'bg-gradient-orange-pink/10 border-brand-orange/40 shadow-glow glow-brand-orange/30' : 'hover:bg-secondary/80 dark:hover:bg-white/10' }}"
                 >
-                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/70 dark:bg-slate-900/70 shadow-inner">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/70 text-black dark:bg-slate-900/70 shadow-inner">
                         {!! $icons[$option]() !!}
                     </span>
                     <span class="flex flex-col text-left">

@@ -233,14 +233,14 @@
             </main>
         </div>
 
-        <nav class="fixed inset-x-0 bottom-0 border-t border-primary bg-primary/95 backdrop-blur-lg">
-            <div class="mx-auto grid w-full max-w-4xl grid-cols-4">
+        <nav class="fixed inset-x-0 bottom-0 border-t border-primary bg-primary/95 backdrop-blur-lg pb-[env(safe-area-inset-bottom)]">
+            <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
                 @php
                     $navItems = [
                         ['label' => __('messages.explore'), 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => __('messages.explore')],
-                       // ['label' => __('messages.timeline'), 'href' => auth()->check() ? route('timeline.index') : route('login'), 'active' => request()->routeIs('timeline.*'), 'icon' => 'timeline', 'aria' => __('messages.timeline')],
+                       // Timeline feature removed
                         ['label' => __('messages.inbox'), 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
-                        ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile'), 'icon' => 'profile', 'aria' => __('messages.profile')],
+                        ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile*'), 'icon' => 'profile', 'aria' => __('messages.profile')],
                     ];
                 @endphp
 
@@ -262,16 +262,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                     </svg>
                                     @break
-                                @case('timeline')
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h12M3 17h6" />
-                                    </svg>
-                                    @break
+                                {{-- timeline icon removed --}}
                                 @case('inbox')
                                     @if ($index !== 1)
                                         <div class="relative">
-                                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                            <!-- New chat/message icon -->
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                                <path d="M8 10h8M8 14h5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M5 19l3.5-3H18a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                             @auth
                                                 @if(auth()->user()->unreadMessages()->count() > 0)

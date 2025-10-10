@@ -21,7 +21,7 @@
         rows="{{ $rows }}"
         @if($id) id="{{ $id }}" @endif
         {{ $attributes->except(['label', 'error', 'required', 'rows', 'id'])->merge([
-            'class' => 'w-full rounded-xl border border-secondary bg-primary px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-colors resize-vertical ' . $class
+            'class' => 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-colors resize-vertical ' . $class
         ]) }}
     >{{ $slot }}</textarea>
     

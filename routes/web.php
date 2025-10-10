@@ -13,9 +13,9 @@ use App\Http\Controllers\PublicProfileController;
 use App\Http\Controllers\SitemapController;
 use App\Livewire\Explore as ExplorePage;
 use App\Livewire\Inbox as InboxPage;
+use App\Livewire\Profile\Info as ProfileInfoPage;
 use App\Livewire\Profile\Settings as ProfileSettingsPage;
 use App\Livewire\PublicProfile as PublicProfilePage;
-use App\Livewire\Timeline\Index as TimelineIndex;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,11 +47,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/inbox/{message}/public', [InboxMessageController::class, 'togglePublic'])->name('inbox.messages.toggle-public');
     Route::delete('/inbox/{message}', [InboxMessageController::class, 'destroy'])->name('inbox.messages.destroy');
 
-    Route::get('/profile', ProfileSettingsPage::class)->name('profile');
+    Route::get('/profile', ProfileInfoPage::class)->name('profile');
+    Route::get('/profile/info', ProfileInfoPage::class)->name('profile.info');
+    Route::get('/profile/settings', ProfileSettingsPage::class)->name('profile.settings');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/settings', [ProfileController::class, 'update'])->name('profile.settings.update');
 
-    Route::get('/timeline', TimelineIndex::class)->name('timeline.index');
+    // Timeline feature removed
 });
 
 Route::post('/logout', function (Request $request) {

@@ -49,15 +49,7 @@ class SitemapController extends Controller
                 }
             });
 
-        // Timeline listing (single page index)
-        $timelineUrl = route('timeline.index');
-        foreach ($locales as $loc) {
-            $urls[] = [
-                'loc' => $timelineUrl.'?'.$param.'='.$loc,
-                'changefreq' => 'hourly',
-                'priority' => '0.6',
-            ];
-        }
+        // Timeline feature removed
 
         $xml = view('sitemap.xml', ['urls' => $urls])->render();
 

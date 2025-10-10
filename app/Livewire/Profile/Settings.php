@@ -162,7 +162,7 @@ class Settings extends Component
             ];
         });
 
-        return view('livewire/pages/profile/settings', [
+        return view('livewire/pages/profile/settings-page', [
             'user' => $user,
             'total_messages_count' => $counts['total_messages_count'] ?? 0,
             'public_messages_count' => $counts['public_messages_count'] ?? 0,
@@ -170,7 +170,7 @@ class Settings extends Component
             ->with([
                 'meta_description' => $user->bio ?? __('messages.customise_world_sees_you'),
                 'og_type' => 'profile',
-                'canonical' => route('profile'),
+                'canonical' => route('profile.settings'),
             ]);
     }
 }

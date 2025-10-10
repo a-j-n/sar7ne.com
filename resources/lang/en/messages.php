@@ -77,6 +77,10 @@ return [
     'social_tiktok_placeholder' => 'https://tiktok.com/@username',
     'social_youtube' => 'YouTube',
     'social_youtube_placeholder' => 'https://youtube.com/@username',
+    'social_linkedin' => 'LinkedIn',
+    'social_linkedin_placeholder' => 'https://linkedin.com/in/username',
+    'social_github' => 'GitHub',
+    'social_github_placeholder' => 'https://github.com/username',
     'social_website' => 'Website',
     'social_website_placeholder' => 'https://yourwebsite.com',
     'visibility_public' => 'Public',
@@ -90,7 +94,7 @@ return [
     'provider_label' => 'Provider',
     'public_profile_preview' => 'Public profile preview',
     'public_messages' => 'Public messages',
-    'timeline' => 'Timeline',
+    // 'timeline' => 'Timeline', // removed feature
     'allow_public_messages' => 'Allow me to show selected messages on my public profile',
     'allow_public_messages_help' => 'Allow others to see your messages on your public profile.',
     'make_public' => 'Make public',
@@ -152,4 +156,13 @@ return [
     'Always light theme' => 'Always light theme',
     'Always dark theme' => 'Always dark theme',
     'Match your device preference' => 'Match your device preference',
+
+    // Profile info labels/placeholders
+    'display_name' => 'Display name',
+    'display_name_placeholder' => 'e.g. Jane Doe',
+    'username' => 'Username',
+    'username_placeholder' => 'e.g. janedoe',
+    'bio' => 'Bio',
+    'bio_placeholder' => 'Share a short vibe…',
+    'gender' => 'Gender',
 ];

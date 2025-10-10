@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\TimelineAttachment;
+// Timeline feature removed
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,10 +23,7 @@ class GenerateAttachmentThumbnails implements ShouldQueue
             return;
         }
 
-        $att = TimelineAttachment::query()->find($this->attachmentId);
-        if (! $att) {
-            return;
-        }
+        return; // No-op: timeline removed
 
         if (! str_starts_with($att->mime, 'image/')) {
             return;

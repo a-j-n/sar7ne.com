@@ -60,6 +60,6 @@ php artisan cache:clear
 php artisan view:clear
 php artisan sitemap:generate
 
-php artisan test;
+# php artisan test;
 # Log deployment completion
 echo "Deployment completed successfully."

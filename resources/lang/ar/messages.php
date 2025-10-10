@@ -77,6 +77,10 @@ return [
     'social_tiktok_placeholder' => 'https://tiktok.com/@username',
     'social_youtube' => 'يوتيوب',
     'social_youtube_placeholder' => 'https://youtube.com/@username',
+    'social_linkedin' => 'لينكدإن',
+    'social_linkedin_placeholder' => 'https://linkedin.com/in/username',
+    'social_github' => 'جيتهاب',
+    'social_github_placeholder' => 'https://github.com/username',
     'social_website' => 'الموقع',
     'social_website_placeholder' => 'https://yourwebsite.com',
     'visibility_public' => 'عام',
@@ -90,7 +94,7 @@ return [
     'provider_label' => 'المزوِّد',
     'public_profile_preview' => 'معاينة الملف العام',
     'public_messages' => 'الرسائل العامة',
-    'timeline' => 'الخط الزمني',
+    // 'timeline' => 'الخط الزمني', // removed feature
     'allow_public_messages' => 'السماح بعرض رسائل مختارة في ملفي العام',
     'allow_public_messages_help' => 'اسمح للناس يشوفوا رسائلك في ملفك العام.',
     'make_public' => 'اجعلها عامة',
@@ -150,4 +154,12 @@ return [
     'Always light theme' => 'سِمة فاتحة دائمًا',
     'Always dark theme' => 'سِمة داكنة دائمًا',
     'Match your device preference' => 'مطابقة تفضيل جهازك',
+    // Profile info labels/placeholders
+    'display_name' => 'الاسم الظاهر',
+    'display_name_placeholder' => 'مثال: أحمد علي',
+    'username' => 'اسم المستخدم',
+    'username_placeholder' => 'مثال: ahmedali',
+    'bio' => 'نبذة',
+    'bio_placeholder' => 'اكتب نبذة قصيرة…',
+    'gender' => 'النوع',
 ];

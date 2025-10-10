@@ -7,14 +7,14 @@
     @endphp
 
         <!-- Enhanced Profile Header -->
-        <section class="relative overflow-hidden rounded-3xl border border-primary bg-primary shadow-2xl">
+        <section class="relative overflow-hidden rounded-3xl border border-primary bg-primary shadow-2xl animate-fade-in-up">
             <!-- Background Gradient Overlay -->
             <div class="absolute inset-0 bg-gradient-to-br from-brand-orange/5 via-brand-pink/5 to-brand-blue/5 dark:from-brand-orange/10 dark:via-brand-pink/10 dark:to-brand-blue/10"></div>
             
             <!-- Content -->
             <div class="relative flex flex-col gap-8 p-5 sm:p-8 md:p-10 text-center md:flex-row md:items-center md:text-left">
                 <!-- Profile Image with Enhanced Styling -->
-                <div class="relative mx-auto md:mx-0">
+                <div class="relative mx-auto md:mx-0 animate-scale-in">
                     <div class="absolute -inset-2 sm:-inset-3 rounded-3xl bg-gradient-orange-pink opacity-75 blur-lg"></div>
                     <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" 
                          class="relative h-28 w-28 sm:h-32 sm:w-32 md:h-40 md:w-40 rounded-3xl object-cover cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl border-4 border-white/20" 
@@ -26,7 +26,7 @@
                 </div>
                 
                 <!-- Profile Info -->
-                <div class="flex-1 space-y-5">
+                <div class="flex-1 space-y-5 animate-fade-in-up" style="animation-delay: 120ms">
                     <!-- Username with Enhanced Gradient -->
                     <div class="space-y-3">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl font-black  bg-clip-text  leading-tight tracking-tight">
@@ -47,7 +47,7 @@
                     </div>
                     
                     <!-- Stats Row -->
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-sm">
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-sm animate-slide-in-right" style="animation-delay: 200ms">
                         <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50">
                             <div class="w-2 h-2 rounded-full bg-brand-mint"></div>
                             <span class="font-medium text-secondary">

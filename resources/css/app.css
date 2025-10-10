@@ -147,6 +147,11 @@ body, html, .font-sans {
     }
 }
 
+/* Force slate text utilities to black inside light cards */
+.text-black-on-white :where([class*="text-slate-"]) {
+    color: #000 !important;
+}
+
 .animate-fade-in-up {
     animation: fadeInUp 0.5s ease-out;
 }

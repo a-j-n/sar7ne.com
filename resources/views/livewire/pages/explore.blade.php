@@ -3,7 +3,7 @@
 
 <div class="space-y-12">
     <!-- Hero Section -->
-    <x-ui.card padding="p-8" class="relative overflow-hidden card-brand-gradient">
+    <x-ui.card padding="p-8" class="relative overflow-hidden card-brand-gradient animate-fade-in-up">
         <!-- Background decoration -->
         <div class="absolute inset-0 bg-gradient-brand-glow opacity-10"></div>
         <div class="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-brand-orange/20 opacity-60 glow-brand-orange"></div>
@@ -23,7 +23,7 @@
             </div>
 
             <!-- Enhanced Search Form -->
-            <div class="mt-8">
+            <div class="mt-8 animate-slide-in-left">
                 <div class="relative">
                     <div class="flex gap-3 rounded-2xl border border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/70 p-2 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm" role="search">
                         <div class="flex-1 flex items-center gap-3">
@@ -32,7 +32,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
-                            <input type="text" wire:model.live.debounce.300ms="q" placeholder="{{ __('messages.search_by_username') }}" class="w-full bg-transparent px-2 py-3 text-base text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none" />
+                            <input type="text" wire:model.live.debounce.300ms="q" placeholder="{{ __('messages.search_by_username') }}" class="w-full bg-white px-2 py-3 text-base text-black placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 focus:border-emerald-400 border border-slate-300 rounded-xl" />
                         </div>
                         <div class="flex items-center gap-2">
                             @if(!empty($q))
@@ -80,7 +80,7 @@
         @else
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($users as $user)
-                    <x-ui.card class="group bg-black hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+                    <x-ui.card class="group bg-black hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 40 }}ms">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="relative">
                                 <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-slate-700/60 group-hover:border-brand-orange/40 transition-colors" />

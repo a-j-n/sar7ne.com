@@ -19,7 +19,7 @@
             @csrf
             <div class="text-left">
                 <label for="email" class="mb-1 block text-xs font-medium text-slate-300">Email</label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" class="w-full rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white placeholder-slate-400 outline-none focus:border-white/30" placeholder="you@example.com">
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="you@example.com">
                 @error('email')
                     <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                 @enderror
@@ -30,4 +30,3 @@
         <p class="text-center text-xs text-slate-400"><a href="{{ route('login') }}" class="text-white underline">Back to sign in</a></p>
     </div>
 @endsection
-

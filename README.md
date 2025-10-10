@@ -1,6 +1,6 @@
 # Sar7ne
 
-Laravel 12 application with Livewire v3 + Volt, Tailwind v4, and a Timeline feature for geo-tagged posts.
+Laravel 12 application with Livewire v3 + Volt, Tailwind v4.
 
 ## Local Development (no Sail)
 
@@ -31,14 +31,12 @@ Run the app natively without Docker.
 - Pint: `vendor/bin/pint`
 - Tinker: `php artisan tinker`
 
-## Timeline Feature
-- Create posts with text and images; location required (via geolocation or map picker).
-- Real-time updates via Laravel Reverb; new posts prepend instantly.
-- Thumbnails generated asynchronously by a queued job.
+## Features
+Core features documented here. The previous Timeline feature has been removed.
 
 ## Formatting & Testing
 - Format: `vendor/bin/pint`
-- Targeted tests: `php artisan test tests/Feature/Timeline/TimelineFeatureTest.php`
+ 
 
 ## Notes
 - Laravel Sail and Docker config have been removed. Use local services.
