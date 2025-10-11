@@ -55,6 +55,7 @@ return [
     'no_profiles_found' => 'لا توجد ملفات — جرّب بحثًا آخر.',
     'anonymous_vibes_waiting' => 'أجواء مجهولة مستنياك تكتشفها.',
     'visit_profile' => 'زيارة الملف',
+    'posts' => 'المنشورات',
 
     // Layout / misc
     'we_found_some_issues' => 'لقينا شوية مشاكل:',

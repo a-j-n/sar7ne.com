@@ -24,6 +24,9 @@ Route::pattern('username', '[a-z0-9_]+');
 
 Route::get('/', ExplorePage::class)->name('explore');
 
+// Simple Posts page placeholder
+Route::view('/posts', 'posts.index')->name('posts');
+
 Route::get('/login', [EmailLoginController::class, 'show'])->name('login');
 Route::post('/login', [EmailLoginController::class, 'login'])->name('login.attempt');
 

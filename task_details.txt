@@ -1,13 +1,19 @@
 Enhanced Task Details for Next Update
 ====================================
+[] posts
+    - posts tab in the button navbar go to /posts page
+    -
+    - Each post can be text, image, or both, but must include a location.
+    -
+
 [✅] 0.1 public profile
    - Add public profile page with user info, public messages, and copy link option.
-     this page will be accessible at /username of the user 
+     this page will be accessible at /username of the user
      this page will contain public messages of the user and a text area to send a message to the user
      and attach image photo upload option to the message.
      and add a button to send the message.
-     in the profile info card add share option to share the profile link 
-     in profile card when click on the image it will open in full size 
+     in the profile info card add share option to share the profile link
+     in profile card when click on the image it will open in full size
 
 [] 1.  Force all traffic to HTTPS with www. subdomain
    - Implement middleware or web server rules to redirect all HTTP requests to HTTPS.

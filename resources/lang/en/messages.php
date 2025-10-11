@@ -55,6 +55,7 @@ return [
     'no_profiles_found' => 'No profiles found — try another search.',
     'anonymous_vibes_waiting' => 'Anonymous vibes waiting to be discovered.',
     'visit_profile' => 'Visit profile',
+    'posts' => 'Posts',
 
     // Layout / misc
     'we_found_some_issues' => 'We found some issues:',

@@ -170,7 +170,7 @@
 
         {{-- Allow pages to push small head hints (preconnects, critical meta) --}}
         @stack('head')
-        
+
         {{-- Livewire Styles --}}
         @livewireStyles
         {{-- Leaflet is now lazy-loaded on pages that need it --}}
@@ -235,12 +235,13 @@
         </div>
 
         <nav class="fixed inset-x-0 bottom-0 border-t border-primary bg-primary/95 backdrop-blur-lg pb-[env(safe-area-inset-bottom)]">
-            <div class="mx-auto grid w-full max-w-4xl grid-cols-3">
+            <div class="mx-auto grid w-full max-w-4xl grid-cols-4">
                 @php
                     $navItems = [
                         ['label' => __('messages.explore'), 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => __('messages.explore')],
                        // Timeline feature removed
                         ['label' => __('messages.inbox'), 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
+                        ['label' => __('messages.posts'), 'href' => route('posts'), 'active' => request()->routeIs('posts*'), 'icon' => 'posts', 'aria' => __('messages.posts')],
                         ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile*'), 'icon' => 'profile', 'aria' => __('messages.profile')],
                     ];
                 @endphp
@@ -251,7 +252,7 @@
                         @if($item['active'])
                             <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-orange-pink rounded-full glow-brand-orange"></div>
                         @endif
-                        
+
                         <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-2xl transition-all duration-200 {{ $item['active'] ? 'bg-gradient-orange-pink text-white scale-110 glow-brand-orange' : 'bg-gray-100 dark:bg-slate-800/70 text-gray-600 dark:text-gray-300 hover:bg-brand-orange/10 hover:text-brand-orange dark:hover:bg-brand-orange/20 hover:scale-105' }}">
                             @if ($index === 1)
                                 <img src="{{ asset('light-logo.png') }}" alt="sar7ne" class="h-5 w-auto dark:hidden"/>
@@ -282,6 +283,11 @@
                                         </div>
                                     @endif
                                     @break
+                                @case('posts')
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h10" />
+                                    </svg>
+                                    @break
                                 @case('profile')
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -294,7 +300,7 @@
                 @endforeach
             </div>
         </nav>
-        
+
         {{-- Livewire Scripts --}}
         @livewireScripts
         {{-- Reverb / Echo bootstrap (expects window.Echo when configured) --}}
