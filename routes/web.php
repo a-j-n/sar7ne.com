@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\InboxMessageController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicMessageController;
 use App\Http\Controllers\PublicProfileController;
@@ -16,16 +17,29 @@ use App\Livewire\Inbox as InboxPage;
 use App\Livewire\Profile\Info as ProfileInfoPage;
 use App\Livewire\Profile\Settings as ProfileSettingsPage;
 use App\Livewire\PublicProfile as PublicProfilePage;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('username', '[a-z0-9_]+');
+
+// Define rate limiter for posts submissions
+RateLimiter::for('posts-submission', function (\Illuminate\Http\Request $request) {
+    $key = optional($request->user())->id ? 'user:'.$request->user()->id : 'ip:'.$request->ip();
+
+    return Limit::perMinutes(1, 5)->by($key);
+});
 
 Route::get('/', ExplorePage::class)->name('explore');
 
 // Simple Posts page placeholder
 Route::view('/posts', 'posts.index')->name('posts');
+Route::middleware('throttle:posts-submission')->post('/posts', [PostController::class, 'store'])->name('posts.store');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::post('/posts/{post}/share', [PostController::class, 'trackShare'])->name('posts.share');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 Route::get('/login', [EmailLoginController::class, 'show'])->name('login');
 Route::post('/login', [EmailLoginController::class, 'login'])->name('login.attempt');

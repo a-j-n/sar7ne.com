@@ -18,6 +18,7 @@ $variants = [
 ];
 
 $sizes = [
+    'xs' => 'px-2 py-1 text-[11px] rounded-lg',
     'sm' => 'px-3 py-1.5 text-xs rounded-lg',
     'md' => 'px-4 py-2.5 text-sm rounded-xl',
     'lg' => 'px-6 py-3 text-base rounded-xl',

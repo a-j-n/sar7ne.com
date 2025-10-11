@@ -208,6 +208,22 @@
             </header>
 
             @if (session('status'))
+                <div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50">
+                    <div class="rounded-xl bg-white text-black shadow-xl border border-slate-200 px-4 py-3 text-sm max-w-md flex items-start gap-3 animate-fade-in-up">
+                        <svg class="h-5 w-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <div class="flex-1">{{ session('status') }}</div>
+                        <button type="button" onclick="(function(){const t=document.getElementById('toast'); if(t){t.remove();}})()" class="text-slate-500 hover:text-slate-700">✕</button>
+                    </div>
+                </div>
+                <script>
+                    setTimeout(function(){
+                        const t = document.getElementById('toast');
+                        if (t) t.remove();
+                    }, 3500);
+                </script>
+            @endif
+
+            @if (session('status'))
                 <div class="mx-auto mt-4 w-full max-w-2xl px-4">
                     <div class="rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-200">
                         {{ session('status') }}

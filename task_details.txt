@@ -2,8 +2,11 @@ Enhanced Task Details for Next Update
 ====================================
 [] posts
     - posts tab in the button navbar go to /posts page
-    -
-    - Each post can be text, image, or both, but must include a location.
+
+    - Each post can be text, image(up to 4 images), or both, text can be extend to 500 char ,
+    - every post can posted from anonymous user or logged in user the anonymous user will be shown as "Anonymous" with a generic avatar
+    - user can delete his own posts
+
     -
 
 [✅] 0.1 public profile
