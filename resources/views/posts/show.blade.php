@@ -8,7 +8,7 @@
 @section('og_title', 'Post #'.$post->id)
 @section('og_type', 'article')
 @section('canonical', route('posts.show', $post))
-@section('meta_image', (!empty($post->images) && isset($post->images[0])) ? Storage::url($post->images[0]) : asset('opengraph.png'))
+@section('meta_image', (!empty($post->images) && isset($post->images[0])) ? Storage::disk('spaces')->url($post->images[0]) : asset('opengraph.png'))
 
 @section('content')
 <div class="space-y-6 text-black">
@@ -26,13 +26,13 @@
                 <div class="text-xs text-black/70">{{ $post->created_at->diffForHumans() }}</div>
             </div>
             <div class="ml-auto flex items-center gap-2">
-                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" id="share-post" title="Share">
+                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" id="share-post" title="{{ __('messages.posts.share') }}">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 8a3 3 0 10-3-3m0 3v7m0-7a3 3 0 11-3-3m3 10a3 3 0 100 6 3 3 0 000-6z"/></svg>
                 </button>
-                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" id="copy-post" title="Copy link">
+                <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" id="copy-post" title="{{ __('messages.posts.copy_link') }}">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16h8a2 2 0 002-2V8m-6 8H8a2 2 0 01-2-2V8m6-4h6a2 2 0 012 2v6"/></svg>
                 </button>
-                <a href="{{ route('posts') }}" class="text-xs underline text-black/70 hover:text-black">Back to posts</a>
+                <a href="{{ route('posts') }}" class="text-xs underline text-black/70 hover:text-black">{{ __('messages.posts.back_to_posts') }}</a>
             </div>
         </div>
         @if($post->content)
@@ -42,7 +42,7 @@
             <div class="mt-3 grid grid-cols-2 gap-2 md:gap-3">
                 @php($group = 'post-'.$post->id)
                 @foreach($post->images as $img)
-                    @php($src = Storage::url($img))
+                    @php($src = Storage::disk('spaces')->url($img))
                     <div class="overflow-hidden rounded-lg">
                         <img src="{{ $src }}"
                              data-gallery-group="{{ $group }}"
@@ -64,9 +64,9 @@
         async function trackShare(){
             try { await fetch(`/posts/${id}/share`, { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } }); } catch(_) {}
         }
-        function miniToast(target, text){
-            const span = document.createElement('span');
-            span.textContent = text;
+            function miniToast(target, text){
+                const span = document.createElement('span');
+                span.textContent = text;
             span.className = 'ml-2 text-[11px] text-emerald-600';
             target.after(span);
             setTimeout(()=> span.remove(), 1500);
@@ -79,7 +79,7 @@
                 } else {
                     await navigator.clipboard.writeText(url);
                     await trackShare();
-                    miniToast(shareBtn, 'Copied!');
+                    miniToast(shareBtn, '{{ __('messages.posts.copied') }}');
                 }
             } catch(_) {}
         });
@@ -87,7 +87,7 @@
             try {
                 await navigator.clipboard.writeText(url);
                 await trackShare();
-                miniToast(copyBtn, 'Copied!');
+                miniToast(copyBtn, '{{ __('messages.posts.copied') }}');
             } catch(_) {}
         });
     })();

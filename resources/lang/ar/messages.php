@@ -178,4 +178,17 @@ return [
     'bio' => 'نبذة',
     'bio_placeholder' => 'اكتب نبذة قصيرة…',
     'gender' => 'النوع',
+    'posts' => [
+        'whats_happening' => 'إيه الأخبار؟',
+        'add_photos' => 'أضف صورًا',
+        'up_to_images' => 'حتى :count صور',
+        'anonymous' => 'مجهول',
+        'post' => 'نشر',
+        'discard_draft' => 'تجاهل المسودة',
+        'share' => 'مشاركة',
+        'copy_link' => 'نسخ الرابط',
+        'back_to_posts' => 'رجوع للمنشورات',
+        'copied' => 'تم النسخ!',
+    ],
+    'posts_title' => 'المنشورات',
 ];

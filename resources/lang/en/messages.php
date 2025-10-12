@@ -181,4 +181,17 @@ return [
     'bio' => 'Bio',
     'bio_placeholder' => 'Share a short vibe…',
     'gender' => 'Gender',
+    'posts' => [
+        'whats_happening' => 'What’s happening?',
+        'add_photos' => 'Add photos',
+        'up_to_images' => 'Up to :count images',
+        'anonymous' => 'Anonymous',
+        'post' => 'Post',
+        'discard_draft' => 'Discard draft',
+        'share' => 'Share',
+        'copy_link' => 'Copy link',
+        'back_to_posts' => 'Back to posts',
+        'copied' => 'Copied!',
+    ],
+    'posts_title' => 'Posts',
 ];

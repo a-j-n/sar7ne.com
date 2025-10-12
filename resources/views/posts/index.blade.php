@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('messages.posts'))
+@section('title', __('messages.posts_title'))
 
 @section('content')
 <div class="space-y-8">
@@ -10,7 +10,7 @@
             <div class="flex items-start gap-3">
                 <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
                 <div class="flex-1">
-                    <textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[15px] text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="What’s happening?">{{ old('content') }}</textarea>
+                    <textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[15px] text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</textarea>
                     @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
                     <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
                 </div>
@@ -21,24 +21,27 @@
                     <div class="flex items-center gap-2">
                         <label for="imageInput" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
-                            Add photos
+                            {{ __('messages.posts.add_photos') }}
                         </label>
                         <input id="imageInput" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
-                        <span id="imageHelp" class="text-xs text-black/50">Up to 4 images</span>
+                        <span id="imageHelp" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
                         @auth
                             <label class="ml-2 inline-flex items-center gap-2 select-none relative">
                                 <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
                                 <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
-                                <span class="text-sm text-black pl-8">Anonymous</span>
+                                <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
                             </label>
                         @endauth
                     </div>
                     <div class="flex items-center gap-3">
                         <span id="charCount" class="text-xs text-black/50">0/500</span>
                         <x-ui.button id="submitBtn" type="submit" variant="primary" size="sm" disabled>
-                            <span id="submitText">Post</span>
+                            <span id="submitText">{{ __('messages.posts.post') }}</span>
                         </x-ui.button>
                     </div>
+                </div>
+                <div class="mt-2">
+                    <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">{{ __('messages.posts.discard_draft') }}</button>
                 </div>
             </div>
         </form>
@@ -214,7 +217,7 @@
                         <div class="grid grid-cols-2 gap-2 md:gap-3">
                             @foreach($post->images as $img)
                                 <div class="overflow-hidden rounded-lg">
-                                    <img src="{{ Storage::url($img) }}" class="w-full h-36 object-cover transition-transform duration-200 hover:scale-105"/>
+                                    <img src="{{ Storage::disk('spaces')->url($img) }}" class="w-full h-36 object-cover transition-transform duration-200 hover:scale-105"/>
                                 </div>
                             @endforeach
                         </div>
