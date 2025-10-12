@@ -5,26 +5,167 @@
 @section('content')
 <div class="space-y-8">
     <x-ui.card padding="p-6" class="text-black">
-        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="h-8 w-8 rounded-xl bg-gradient-orange-pink flex items-center justify-center">
+                <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+            </div>
+            <div class="text-sm font-semibold">Create a Post</div>
+            <div class="ml-auto text-xs text-black/60">Up to 500 characters, 4 images</div>
+        </div>
+
+        <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
+
             <div>
-                <label class="text-xs font-medium text-black uppercase">Post</label>
-                <textarea name="content" rows="3" maxlength="500" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="Share something... (max 500 chars)"></textarea>
+                <label class="text-xs font-medium text-black uppercase">Text</label>
+                <textarea id="postContent" name="content" rows="3" maxlength="500" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="Share something... (max 500 chars)">{{ old('content') }}</textarea>
+                <div class="mt-1 flex items-center justify-between">
+                    <span id="charCount" class="text-xs text-black/50">0/500</span>
+                    @error('content') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                </div>
             </div>
-            <div>
-                <label class="text-xs font-medium text-black uppercase">Images (up to 4)</label>
-                <input type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20">
+
+            <div id="dropZone" class="rounded-xl">
+                <label class="text-xs font-medium text-black uppercase">Images</label>
+                <input id="imageInput" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20">
+                <div id="imageHelp" class="mt-1 text-xs text-black/60">Up to 4 images (png, jpg, webp)</div>
+                @error('images') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
+                @error('images.*') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
+
+                <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
             </div>
+
             @auth
-            <label class="inline-flex items-center gap-2">
-                <input type="checkbox" name="anonymous" value="1" class="h-4 w-4 rounded border-slate-300 bg-slate-50 text-emerald-500 focus:ring-emerald-400">
-                <span class="text-sm text-black">Post as Anonymous</span>
-            </label>
+                <label class="inline-flex items-center gap-2 select-none relative">
+                    <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
+                    <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
+                    <span class="text-sm text-black pl-8">Post as Anonymous</span>
+                </label>
             @endauth
-            <div class="flex justify-end">
-                <x-ui.button type="submit" variant="primary" size="sm">Post</x-ui.button>
+
+            <div class="flex items-center justify-between gap-3">
+                <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">Discard draft</button>
+                <x-ui.button id="submitBtn" type="submit" variant="primary" size="sm" disabled>
+                    <span id="submitText">Post</span>
+                </x-ui.button>
             </div>
         </form>
+
+        <script>
+            (function () {
+              const content = document.getElementById('postContent');
+              const charCount = document.getElementById('charCount');
+              const imageInput = document.getElementById('imageInput');
+              const imagePreview = document.getElementById('imagePreview');
+              const dropZone = document.getElementById('dropZone');
+              const submitBtn = document.getElementById('submitBtn');
+              const submitText = document.getElementById('submitText');
+              const form = document.getElementById('postForm');
+              const DRAFT_KEY = 'posts:draft';
+
+              function updateCounter() {
+                const len = content.value.length;
+                charCount.textContent = `${len}/500`;
+                charCount.className = len > 450 ? 'text-xs text-yellow-600' : 'text-xs text-black/50';
+                updateSubmitState();
+              }
+
+              function updateSubmitState() {
+                const hasText = content.value.trim().length > 0;
+                const hasImages = imagePreview.children.length > 0 || (imageInput.files && imageInput.files.length > 0);
+                submitBtn.disabled = !(hasText || hasImages);
+              }
+
+              function addPreview(file, index) {
+                const url = URL.createObjectURL(file);
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative overflow-hidden rounded-lg group';
+                wrapper.innerHTML = `
+                  <img src="${url}" class="w-full h-24 md:h-28 object-cover">
+                  <button type="button" class="absolute top-1 right-1 bg-white/90 text-black rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-white" title="Remove">✕</button>
+                `;
+                const btn = wrapper.querySelector('button');
+                btn.addEventListener('click', () => {
+                  const dt = new DataTransfer();
+                  Array.from(imageInput.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
+                  imageInput.files = dt.files;
+                  wrapper.remove();
+                  updateSubmitState();
+                });
+                imagePreview.appendChild(wrapper);
+              }
+
+              function refreshPreviewsFromInput(){
+                imagePreview.innerHTML = '';
+                const files = Array.from(imageInput.files || []).slice(0, 4);
+                files.forEach((f, i) => addPreview(f, i));
+                updateSubmitState();
+              }
+
+              function addFiles(files){
+                const current = Array.from(imageInput.files || []);
+                const dt = new DataTransfer();
+                const combined = current.concat(Array.from(files));
+                combined.slice(0,4).forEach(f => dt.items.add(f));
+                imageInput.files = dt.files;
+                refreshPreviewsFromInput();
+              }
+
+              imageInput?.addEventListener('change', refreshPreviewsFromInput);
+
+              // Drag & drop
+              ['dragenter','dragover'].forEach(ev => dropZone.addEventListener(ev, e => {
+                e.preventDefault(); e.stopPropagation();
+                dropZone.classList.add('ring-2','ring-emerald-400/50','bg-emerald-50');
+              }));
+              ['dragleave','drop'].forEach(ev => dropZone.addEventListener(ev, e => {
+                e.preventDefault(); e.stopPropagation();
+                dropZone.classList.remove('ring-2','ring-emerald-400/50','bg-emerald-50');
+              }));
+              dropZone.addEventListener('drop', e => {
+                if (e.dataTransfer && e.dataTransfer.files?.length){
+                  addFiles(e.dataTransfer.files);
+                }
+              });
+
+              // Draft autosave (content only)
+              function saveDraft(){
+                const data = { content: content.value };
+                try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch(_) {}
+              }
+              function loadDraft(){
+                try {
+                  const raw = localStorage.getItem(DRAFT_KEY);
+                  if (!raw) return;
+                  const data = JSON.parse(raw);
+                  if (data && typeof data.content === 'string' && !content.value){
+                    content.value = data.content;
+                  }
+                } catch(_) {}
+              }
+              function clearDraft(){
+                try { localStorage.removeItem(DRAFT_KEY); } catch(_) {}
+              }
+              loadDraft();
+              updateCounter();
+              content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
+
+              form?.addEventListener('submit', () => {
+                submitBtn.disabled = true;
+                submitText.textContent = 'Posting…';
+                clearDraft();
+              });
+
+              // Discard draft handler
+              document.getElementById('discardDraft')?.addEventListener('click', () => {
+                content.value = '';
+                if (imagePreview){ imagePreview.innerHTML = ''; }
+                if (imageInput){ imageInput.value = ''; }
+                clearDraft();
+                updateCounter();
+              });
+            })();
+        </script>
     </x-ui.card>
 
     @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with('user')->limit(20)->get())

@@ -82,10 +82,10 @@ class PostController extends Controller
 
         // If anon via form, surface token in session flash so user can save it
         if (! $user && $deleteTokenPlain) {
-            return redirect()->route('timeline')->with('status', __('Post created. Save this delete token: :token', ['token' => $deleteTokenPlain]));
+            return redirect()->route('posts')->with('status', __('Post created. Save this delete token: :token', ['token' => $deleteTokenPlain]));
         }
 
-        return redirect()->route('timeline')->with('status', __('Post created.'));
+        return redirect()->route('posts')->with('status', __('Post created.'));
     }
 
     public function destroy(Request $request, Post $post)
