@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
@@ -49,7 +50,23 @@ class SitemapController extends Controller
                 }
             });
 
-        // Timeline feature removed
+        // Posts
+        Post::query()
+            ->select(['id', 'updated_at'])
+            ->whereNull('deleted_at')
+            ->orderByDesc('id')
+            ->limit(10000)
+            ->each(function (Post $post) use (&$urls, $locales, $param) {
+                $locBase = route('posts.show', ['post' => $post->id]);
+                foreach ($locales as $loc) {
+                    $urls[] = [
+                        'loc' => $locBase.'?'.$param.'='.$loc,
+                        'lastmod' => optional($post->updated_at)->toAtomString(),
+                        'changefreq' => 'weekly',
+                        'priority' => '0.6',
+                    ];
+                }
+            });
 
         $xml = view('sitemap.xml', ['urls' => $urls])->render();
 

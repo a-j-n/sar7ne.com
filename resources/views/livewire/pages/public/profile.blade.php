@@ -203,10 +203,12 @@
                                 <!-- Message Image -->
                                 @if($msg->image_path)
                                     <div class="relative overflow-hidden rounded-xl">
-                                        <img src="{{ Storage::url($msg->image_path) }}" 
+                                        @php($src = Storage::url($msg->image_path))
+                                        <img src="{{ $src }}" 
+                                             data-gallery-group="profile-{{ $user->id }}"
+                                             data-gallery-src="{{ $src }}"
                                              alt="Message image" 
-                                             class="w-full h-64 object-cover cursor-pointer transition-all duration-300 hover:scale-105" 
-                                             onclick="openImageModal(this.src)">
+                                             class="w-full h-64 object-cover cursor-zoom-in transition-all duration-300 hover:scale-105">
                                         <!-- Image Overlay -->
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         <!-- Zoom Icon -->

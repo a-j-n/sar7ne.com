@@ -41,7 +41,8 @@
                             
                             @if($message->image_path)
                                 <div class="mt-3">
-                                    <img src="{{ Storage::url($message->image_path) }}" alt="Message image" class="max-w-full h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity" onclick="openImageModal(this.src)">
+                                    @php($src = Storage::url($message->image_path))
+                                    <img src="{{ $src }}" data-gallery-group="inbox" data-gallery-src="{{ $src }}" alt="Message image" class="max-w-full h-48 object-cover rounded-lg cursor-zoom-in hover:opacity-80 transition-opacity">
                                 </div>
                             @endif
                         </div>

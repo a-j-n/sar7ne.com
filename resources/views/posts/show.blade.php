@@ -40,9 +40,15 @@
         @endif
         @if(!empty($post->images))
             <div class="mt-3 grid grid-cols-2 gap-2 md:gap-3">
+                @php($group = 'post-'.$post->id)
                 @foreach($post->images as $img)
+                    @php($src = Storage::url($img))
                     <div class="overflow-hidden rounded-lg">
-                        <img src="{{ Storage::url($img) }}" class="w-full h-64 object-cover"/>
+                        <img src="{{ $src }}"
+                             data-gallery-group="{{ $group }}"
+                             data-gallery-src="{{ $src }}"
+                             class="w-full h-64 object-cover cursor-zoom-in"
+                             alt="Post image"/>
                     </div>
                 @endforeach
             </div>
@@ -85,5 +91,5 @@
             } catch(_) {}
         });
     })();
-    </script>
+</script>
 @endsection
