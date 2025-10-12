@@ -70,7 +70,8 @@
                 @if(!empty($post->images))
                     <div class="mt-3 grid grid-cols-2 gap-2">
                         @foreach($post->images as $img)
-                            <img src="{{ Storage::url($img) }}" class="w-full h-36 object-cover rounded-lg"/>
+                            @php($src = Storage::url($img))
+                            <img src="{{ $src }}" data-gallery-group="timeline-post-{{ $post->id }}" data-gallery-src="{{ $src }}" class="w-full h-36 object-cover rounded-lg cursor-zoom-in"/>
                         @endforeach
                     </div>
                 @endif
