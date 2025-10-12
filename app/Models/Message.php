@@ -57,7 +57,13 @@ class Message extends Model
      */
     public function imageUrl(): ?string
     {
-        return $this->image_path ? asset('storage/'.$this->image_path) : null;
+        if (! $this->image_path) {
+            return null;
+        }
+
+        $disk = config('filesystems.default', 'public');
+
+        return \Illuminate\Support\Facades\Storage::disk($disk)->url($this->image_path);
     }
 
     protected function casts(): array

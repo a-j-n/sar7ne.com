@@ -203,7 +203,7 @@
                                 <!-- Message Image -->
                                 @if($msg->image_path)
                                     <div class="relative overflow-hidden rounded-xl">
-                                        <img src="{{ asset('storage/' . $msg->image_path) }}" 
+                                        <img src="{{ Storage::url($msg->image_path) }}" 
                                              alt="Message image" 
                                              class="w-full h-64 object-cover cursor-pointer transition-all duration-300 hover:scale-105" 
                                              onclick="openImageModal(this.src)">
