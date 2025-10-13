@@ -31,14 +31,14 @@
                 @csrf
                 <div class="text-left">
                     <label for="email" class="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">{{ __('messages.email_label') }}</label>
-                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.email_placeholder', ['example' => 'you@example.com']) }}">
+                    <x-ui.input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="{{ __('messages.email_placeholder', ['example' => 'you@example.com']) }}" />
                     @error('email')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="text-left">
                     <label for="password" class="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">{{ __('messages.password_label') }}</label>
-                    <input id="password" name="password" type="password" required autocomplete="current-password" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="••••••••">
+                    <x-ui.input id="password" name="password" type="password" required autocomplete="current-password" placeholder="••••••••" />
                     @error('password')
                         <p class="mt-1 text-xs text-red-300">{{ $message }}</p>
                     @enderror

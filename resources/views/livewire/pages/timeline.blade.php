@@ -9,15 +9,15 @@
             @csrf
             <div>
                 <label class="text-xs font-medium text-black uppercase">Post</label>
-                <textarea name="content" rows="3" maxlength="500" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="Share something... (max 500 chars)"></textarea>
+                <x-ui.textarea name="content" rows="3" maxlength="500" class="mt-1" placeholder="Share something... (max 500 chars)"></x-ui.textarea>
             </div>
             <div>
                 <label class="text-xs font-medium text-black uppercase">Images (up to 4)</label>
-                <input type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20">
+                <x-ui.input type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="mt-1" />
             </div>
             @auth
             <label class="inline-flex items-center gap-2">
-                <input type="checkbox" name="anonymous" value="1" class="h-4 w-4 rounded border-slate-300 bg-slate-50 text-emerald-500 focus:ring-emerald-400">
+                <input type="checkbox" name="anonymous" value="1" class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400">
                 <span class="text-sm text-black">Post as Anonymous</span>
             </label>
             @endauth

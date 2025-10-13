@@ -4,13 +4,14 @@
 
 @section('content')
 <div class="space-y-8">
-    <x-ui.card padding="p-4 md:p-6" class="text-black">
-        <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
+    <x-ui.card padding="p-0" class="text-black hidden">
+        <!-- Hidden stub so existing JS selectors remain valid; actual UI uses floating button + sheet -->
+        <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3 hidden">
             @csrf
             <div class="flex items-start gap-3">
                 <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
                 <div class="flex-1">
-                    <textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-[15px] text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</textarea>
+                    <x-ui.textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
                     @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
                     <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
                 </div>
@@ -48,6 +49,62 @@
 
         <script>
             (function () {
+              // Sheet open/close behavior
+              function bindSheetEvents(){
+                const sheet = document.getElementById('createPostSheet');
+                const openBtn = document.getElementById('openCreatePost');
+                const closeBtn = document.getElementById('closeCreatePost');
+                const backdropSelector = '[data-sheet-backdrop]';
+                const panel = sheet?.querySelector('[data-sheet-panel]');
+                const backdrop = sheet?.querySelector(backdropSelector);
+                function openSheet(){
+                  if (!sheet) return;
+                  sheet.classList.remove('hidden');
+                  sheet.setAttribute('aria-hidden', 'false');
+                  document.body.style.overflow = 'hidden';
+                  requestAnimationFrame(() => {
+                    panel?.classList.remove('translate-y-full');
+                    panel?.classList.add('translate-y-0');
+                    panel?.classList.remove('opacity-0');
+                    panel?.classList.add('opacity-100');
+                    backdrop?.classList.remove('opacity-0');
+                    backdrop?.classList.add('opacity-100');
+                  });
+                  setTimeout(()=> document.getElementById('postContent')?.focus(), 120);
+                }
+                function closeSheet(){
+                  if (!sheet) return;
+                  panel?.classList.remove('translate-y-0');
+                  panel?.classList.add('translate-y-full');
+                  panel?.classList.remove('opacity-100');
+                  panel?.classList.add('opacity-0');
+                  backdrop?.classList.remove('opacity-100');
+                  backdrop?.classList.add('opacity-0');
+                  setTimeout(() => {
+                    sheet.classList.add('hidden');
+                    sheet.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                  }, 300);
+                }
+                // Direct listeners if elements exist now
+                openBtn?.addEventListener('click', openSheet);
+                closeBtn?.addEventListener('click', closeSheet);
+                sheet?.addEventListener('click', (e) => { if (e.target.matches(backdropSelector)) closeSheet(); });
+                document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+                // Delegated fallback if button gets re-rendered
+                document.addEventListener('click', (e) => {
+                  if (e.target.closest('#openCreatePost')) { openSheet(); }
+                });
+                // Expose for other handlers
+                window.__openCreatePostSheet = openSheet;
+                window.__closeCreatePostSheet = closeSheet;
+              }
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bindSheetEvents);
+              } else {
+                bindSheetEvents();
+              }
+
               const content = document.getElementById('postContent');
               const charCount = document.getElementById('charCount');
               const imageInput = document.getElementById('imageInput');
@@ -149,6 +206,8 @@
                 submitBtn.disabled = true;
                 submitText.textContent = 'Posting…';
                 clearDraft();
+                // After submit, close sheet to feel responsive (server will redirect)
+                setTimeout(() => { closeSheet(); }, 0);
               });
 
               // Discard draft handler
@@ -162,6 +221,12 @@
             })();
         </script>
     </x-ui.card>
+
+    <!-- Floating Create Post Button (Top-Left) -->
+    <button type="button" id="openCreatePost" class="fixed top-7 left-5 z-[9980] h-11 w-11 md:h-12 md:w-12 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-400/30 flex items-center justify-center">
+        <span class="sr-only">{{ __('messages.posts.post') }}</span>
+        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+    </button>
 
     @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with('user')->limit(20)->get())
 
@@ -285,7 +350,7 @@
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="space-y-2">
                             @csrf
                             @method('DELETE')
-                            <input type="text" name="delete_token" placeholder="Delete token" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" required>
+                            <x-ui.input type="text" name="delete_token" placeholder="Delete token" required />
                             <div class="flex justify-end gap-2 pt-1">
                                 <x-ui.button type="button" variant="outline" size="sm" data-close-delete="post-{{ $post->id }}">Cancel</x-ui.button>
                                 <x-ui.button type="submit" variant="danger" size="sm">{{ __('messages.delete') }}</x-ui.button>
@@ -326,3 +391,59 @@
     @endguest
 </div>
 @endsection
+
+@push('body-end')
+<!-- Global bottom sheet mounted at body end -->
+<div id="createPostSheet" class="fixed inset-0 z-[9999] hidden pointer-events-none" aria-hidden="true">
+    <div data-sheet-backdrop class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-200"></div>
+    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-transform duration-300 ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform" data-sheet-panel>
+        <div class="flex items-center justify-between p-4 border-b border-slate-200 rounded-t-2xl md:rounded-t-3xl">
+            <h3 class="text-sm font-semibold">{{ __('messages.posts.post') }}</h3>
+            <button type="button" id="closeCreatePost" class="rounded-md p-1.5 text-slate-600 hover:bg-slate-100">✕</button>
+        </div>
+        <div class="p-4 overflow-y-auto">
+            <!-- We reuse the same form fields by targeting inputs by ID -->
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3" onsubmit="document.getElementById('postForm')?.dispatchEvent(new Event('submit', {cancelable:true}));">
+                @csrf
+                <div class="flex items-start gap-3">
+                    <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
+                    <div class="flex-1">
+                    <x-ui.textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
+                        @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
+                        <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
+                    </div>
+                </div>
+
+                <div id="dropZone" class="pl-13 -mt-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <label for="imageInput" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
+                                {{ __('messages.posts.add_photos') }}
+                            </label>
+                            <input id="imageInput" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
+                            <span id="imageHelp" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
+                            @auth
+                                <label class="ml-2 inline-flex items-center gap-2 select-none relative">
+                                    <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
+                                    <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
+                                    <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
+                                </label>
+                            @endauth
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="charCount" class="text-xs text-black/50">0/500</span>
+                            <x-ui.button id="submitBtn" type="submit" variant="primary" size="sm" disabled>
+                                <span id="submitText">{{ __('messages.posts.post') }}</span>
+                            </x-ui.button>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">{{ __('messages.posts.discard_draft') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endpush

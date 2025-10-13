@@ -42,7 +42,7 @@
             </div>
             <div class="flex-1">
                 <label class="text-xs font-medium uppercase tracking-wide {{ $hasValue ? 'text-emerald-600' : 'text-black' }}">{{ $f['label'] }}</label>
-                <input type="url" wire:model.live.debounce.300ms="social_links.{{ $f['key'] }}" placeholder="{{ $f['placeholder'] }}" class="w-full mt-1 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none {{ $hasValue ? 'border-emerald-300/60' : '' }}" />
+                <x-ui.input type="url" wire:model.live.debounce.300ms="social_links.{{ $f['key'] }}" placeholder="{{ $f['placeholder'] }}" class="w-full mt-1 bg-transparent text-sm {{ $hasValue ? 'border-emerald-300/60' : '' }}" />
             </div>
             <label class="flex items-center">
                 <input type="checkbox" wire:model.defer="social_visibility.{{ $f['key'] }}" class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400" />

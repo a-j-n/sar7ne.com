@@ -322,5 +322,6 @@
         @livewireScripts
         {{-- Reverb / Echo bootstrap (expects window.Echo when configured) --}}
         @vite(['resources/js/app.js'])
+        @stack('body-end')
     </body>
 </html>

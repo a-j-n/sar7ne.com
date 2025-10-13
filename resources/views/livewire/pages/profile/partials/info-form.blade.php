@@ -4,19 +4,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="text-xs font-medium text-black uppercase tracking-wide">{{ __('messages.display_name') }}</label>
-                <input type="text" wire:model.live.debounce.300ms="display_name" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.display_name_placeholder') }}" />
+                <x-ui.input type="text" wire:model.live.debounce.300ms="display_name" class="mt-1" placeholder="{{ __('messages.display_name_placeholder') }}" />
                 @error('display_name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="text-xs font-medium text-black uppercase tracking-wide">{{ __('messages.username') }}</label>
-                <input type="text" wire:model.live.debounce.300ms="username" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.username_placeholder') }}" />
+                <x-ui.input type="text" wire:model.live.debounce.300ms="username" class="mt-1" placeholder="{{ __('messages.username_placeholder') }}" />
                 @error('username') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
 
         <div>
             <label class="text-xs font-medium text-black uppercase tracking-wide">{{ __('messages.bio') }}</label>
-            <textarea wire:model.live.debounce.300ms="bio" rows="3" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-black placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20" placeholder="{{ __('messages.bio_placeholder') }}"></textarea>
+            <x-ui.textarea wire:model.live.debounce.300ms="bio" rows="3" class="mt-1" placeholder="{{ __('messages.bio_placeholder') }}"></x-ui.textarea>
             @error('bio') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
         </div>
 

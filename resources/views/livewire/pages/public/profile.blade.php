@@ -96,10 +96,10 @@
                     
                     <!-- Enhanced Textarea -->
                     <div class="relative">
-                        <textarea id="message" name="message_text" rows="6" maxlength="500" 
-                                  placeholder="{{ __('messages.textarea_placeholder') }}" 
-                                  class="w-full rounded-2xl border-2 border-secondary bg-primary px-5 sm:px-6 py-4 text-sm sm:text-base text-primary placeholder:text-muted focus:border-brand-orange focus:ring-4 focus:ring-brand-orange/10 focus:outline-none transition-all duration-300 resize-none"
-                                  oninput="updateCharCount(this)"></textarea>
+                        <x-ui.textarea id="message" name="message_text" rows="6" maxlength="500" 
+                            placeholder="{{ __('messages.textarea_placeholder') }}"
+                            class="w-full resize-none px-5 sm:px-6 py-4 text-sm sm:text-base"
+                            oninput="updateCharCount(this)"></x-ui.textarea>
                         
                         <!-- Character Counter -->
                         <div class="absolute bottom-3 right-4 text-xs text-muted">
