@@ -17,7 +17,7 @@
             </div>
             @auth
             <label class="inline-flex items-center gap-2">
-                <input type="checkbox" name="anonymous" value="1" class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400">
+                <x-ui.checkbox name="anonymous" value="1" />
                 <span class="text-sm text-black">Post as Anonymous</span>
             </label>
             @endauth

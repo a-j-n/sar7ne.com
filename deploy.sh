@@ -35,7 +35,8 @@ git pull origin main --no-ff
 git reset --hard origin/main
 
 # Install PHP dependencies
-composer install --no-dev --optimize-autoloader
+#composer install --no-dev --optimize-autoloader
+composer update
 
 # Run migrations and seeders
 php artisan migrate --seed --force

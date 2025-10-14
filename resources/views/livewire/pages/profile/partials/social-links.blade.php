@@ -45,7 +45,7 @@
                 <x-ui.input type="url" wire:model.live.debounce.300ms="social_links.{{ $f['key'] }}" placeholder="{{ $f['placeholder'] }}" class="w-full mt-1 bg-transparent text-sm {{ $hasValue ? 'border-emerald-300/60' : '' }}" />
             </div>
             <label class="flex items-center">
-                <input type="checkbox" wire:model.defer="social_visibility.{{ $f['key'] }}" class="h-4 w-4 rounded border-slate-300 dark:border-slate-700/60 bg-slate-50 dark:bg-slate-900/70 text-emerald-500 focus:ring-emerald-400" />
+                <x-ui.checkbox wire:model.defer="social_visibility.{{ $f['key'] }}" />
                 <span class="ml-2 text-xs {{ $hasValue ? 'text-emerald-600' : 'text-black' }}">{{ __('messages.visibility_public') }}</span>
             </label>
         </div>
