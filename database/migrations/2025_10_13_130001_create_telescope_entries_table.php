@@ -21,6 +21,11 @@ return new class extends Migration
     {
         $schema = Schema::connection($this->getConnection());
 
+        // check if the tables already exist to avoid errors
+        if ($schema->hasTable('telescope_entries') || $schema->hasTable('telescope_entries_tags') || $schema->hasTable('telescope_monitoring')) {
+            return;
+        }
+
         $schema->create('telescope_entries', function (Blueprint $table) {
             $table->bigIncrements('sequence');
             $table->uuid('uuid');
