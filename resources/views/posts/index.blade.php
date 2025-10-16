@@ -311,18 +311,24 @@
 
     <div class="grid gap-4">
         @foreach($posts as $post)
-            <x-ui.card id="post-{{ $post->id }}" padding="p-4" class="text-black transition-all duration-200 hover:shadow-lg hover:border-brand-orange/30 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 60 }}ms">
-                <div class="flex items-center gap-3 mb-3">
+            <x-ui.card id="post-{{ $post->id }}" padding="p-0" class="text-black transition-all duration-200 hover:shadow-lg/60 hover:border-emerald-200/60 animate-fade-in-up overflow-hidden" style="animation-delay: {{ ($loop->index % 12) * 60 }}ms">
+                <div class="p-4 md:p-5">
+                <div class="flex items-start gap-3 mb-3">
                     @php($isAnon = $post->is_anonymous || !$post->user)
                     @php($hue = $isAnon ? (crc32((string)$post->id) % 360) : null)
                     @if($isAnon)
-                        <img src="{{ asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200" style="color: hsl({{ $hue }}, 80%, 55%)">
+                        <img src="{{ asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200" style="color: hsl({{ $hue }}, 80%, 55%)">
                     @else
                         <img src="{{ $post->user->avatarUrl() }}" alt="avatar" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200">
                     @endif
-                    <div class="min-w-0">
-                        <div class="text-sm font-semibold truncate">{{ $isAnon ? __('Anonymous') : '@'.$post->user->username }}</div>
-                        <div class="text-xs text-black/60">{{ $post->created_at->diffForHumans() }}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2">
+                            <div class="text-sm font-semibold truncate">{{ $isAnon ? __('Anonymous') : '@'.$post->user->username }}</div>
+                            <span class="text-[11px] text-black/50">· {{ $post->created_at->diffForHumans() }}</span>
+                        </div>
+                        @if(!$isAnon && $post->user?->display_name)
+                            <div class="text-[11px] text-black/60 truncate">{{ $post->user->display_name }}</div>
+                        @endif
                     </div>
                     <div class="ml-auto flex items-center gap-2">
                         @php($liked = auth()->check() ? $post->likes()->where('user_id', auth()->id())->exists() : false)
@@ -333,10 +339,10 @@
                             <span data-like-count>{{ $likeCount }}</span>
                         </button>
                         <!-- Share / Copy actions -->
-                        <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" data-share-post="{{ $post->id }}" title="Share">
+                        <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-share-post="{{ $post->id }}" title="Share">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 8a3 3 0 10-3-3m0 3v7m0-7a3 3 0 11-3-3m3 10a3 3 0 100 6 3 3 0 000-6z"/></svg>
                         </button>
-                        <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" data-copy-post="{{ $post->id }}" title="Copy link">
+                        <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-copy-post="{{ $post->id }}" title="Copy link">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16h8a2 2 0 002-2V8m-6 8H8a2 2 0 01-2-2V8m6-4h6a2 2 0 012 2v6"/></svg>
                         </button>
                         @auth
@@ -344,7 +350,7 @@
                                 <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('{{ __('messages.delete') }}?')" class="inline-flex">
                                     @csrf
                                     @method('DELETE')
-                                    <x-ui.button type="submit" variant="danger" size="xs">
+                                    <x-ui.button type="submit" variant="danger" size="xs" class="!px-2.5 !py-1">
                                         <svg class="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         {{ __('messages.delete') }}
                                     </x-ui.button>
@@ -374,6 +380,19 @@
                         </div>
                     </a>
                 @endif
+                @if($post->content)
+                    <div class="px-4 md:px-5 pb-3 text-[15px] leading-6 text-slate-900">{!! nl2br(e($post->content)) !!}</div>
+                @endif
+                @if(is_array($post->images) && count($post->images))
+                    <div class="px-4 md:px-5 pb-4 grid grid-cols-2 gap-2 md:gap-3">
+                        @foreach($post->images as $img)
+                            <a href="{{ route('posts.show', $post) }}" class="block group overflow-hidden rounded-xl border border-slate-200">
+                                <img src="{{ Storage::url($img) }}" alt="" class="h-36 w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]" />
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+                </div>
             </x-ui.card>
         @endforeach
     </div>
