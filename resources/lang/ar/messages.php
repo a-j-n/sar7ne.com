@@ -103,6 +103,7 @@ return [
     'public_messages_disabled' => 'الرسائل العامة مقفولة من الإعدادات.',
     'message_privacy_updated' => 'تم تحديث خصوصية الرسالة.',
     'settings_saved' => 'تم حفظ الإعدادات.',
+    'save' => 'حفظ',
     'username_label' => 'اسم المستخدم',
     'display_name_label' => 'الاسم الظاهر',
     'bio_label' => 'نبذة',

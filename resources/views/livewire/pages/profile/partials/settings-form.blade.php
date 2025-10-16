@@ -1,4 +1,4 @@
-<div class="space-y-8">
+<form wire:submit.prevent="save" class="space-y-8">
     <div>
         <label class="inline-flex items-center gap-3">
             <x-ui.checkbox wire:model.defer="allow_public_messages" />
@@ -15,4 +15,10 @@
     </div>
 
     @include('livewire.pages.profile.partials.social-links')
-</div>
+
+    <div class="pt-2 flex justify-end">
+        <x-ui.button type="submit" variant="primary">
+            {{ __('messages.save') ?? 'Save' }}
+        </x-ui.button>
+    </div>
+</form>

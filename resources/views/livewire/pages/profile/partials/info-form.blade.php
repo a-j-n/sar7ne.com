@@ -1,6 +1,6 @@
 <div class="space-y-8">
     @php(/** @var \App\Models\User $user */ null)
-    <form wire:submit.prevent="$refresh" class="space-y-6">
+    <form wire:submit.prevent="saveBasic" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="text-xs font-medium text-black uppercase tracking-wide">{{ __('messages.display_name') }}</label>
@@ -30,6 +30,11 @@
                 <option value="other">{{ __('messages.gender_other') }}</option>
                 <option value="prefer_not_to_say">{{ __('messages.gender_prefer_not') }}</option>
             </select>
+        </div>
+        <div class="pt-2 flex justify-end">
+            <x-ui.button type="submit" variant="primary">
+                {{ __('messages.save') ?? 'Save' }}
+            </x-ui.button>
         </div>
     </form>
 </div>

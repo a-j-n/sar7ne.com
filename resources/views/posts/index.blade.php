@@ -72,6 +72,8 @@
                   if (active._bound) { return; }
                   active._bound = true;
                   active.content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
+                  // Bind image input change
+                  active.imageInput?.addEventListener('change', refreshPreviewsFromInput);
                 };
                 function openSheet(){
                   if (!sheet) return;
@@ -214,6 +216,14 @@
               })();
 
               imageInput()?.addEventListener('change', refreshPreviewsFromInput);
+
+              // Delegated safety net for late-bound input
+              document.addEventListener('change', function (e) {
+                const t = e.target;
+                if (t && t.matches && t.matches('#imageInputSheet, #imageInput')) {
+                  refreshPreviewsFromInput();
+                }
+              });
 
               // Drag & drop
               ['dragenter','dragover'].forEach(ev => dropZone()?.addEventListener(ev, e => {

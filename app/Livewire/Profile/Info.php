@@ -11,6 +11,60 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Info extends Component
 {
+    public ?string $display_name = null;
+
+    public ?string $username = null;
+
+    public ?string $bio = null;
+
+    public ?string $gender = null;
+
+    public function mount(): void
+    {
+        /** @var Authenticatable&\App\Models\User $user */
+        $user = Auth::user();
+        $this->display_name = $user->display_name;
+        $this->username = $user->username;
+        $this->bio = $user->bio;
+        $this->gender = $user->gender;
+    }
+
+    public function saveBasic(): void
+    {
+        /** @var Authenticatable&\App\Models\User $user */
+        $user = Auth::user();
+
+        $this->validate([
+            'display_name' => ['nullable', 'string', 'max:60'],
+            'username' => ['required', 'string', 'min:3', 'max:20'],
+            'bio' => ['nullable', 'string', 'max:280'],
+            'gender' => ['nullable', 'in:male,female,non-binary,other,prefer_not_to_say'],
+        ]);
+
+        // Normalize and ensure username uniqueness if changed
+        $normalized = \App\Support\UsernameGenerator::normalize($this->username ?? '');
+        if ($normalized === '') {
+            $this->addError('username', __('messages.username_must_contain_letters_numbers'));
+
+            return;
+        }
+        if ($normalized !== $user->username && $user->newQuery()->where('username', $normalized)->exists()) {
+            $this->addError('username', __('messages.username_already_taken'));
+
+            return;
+        }
+
+        $user->fill([
+            'display_name' => $this->display_name ?: $user->display_name,
+            'username' => $normalized,
+            'bio' => $this->bio ?: null,
+            'gender' => $this->gender ?: null,
+        ])->save();
+
+        Cache::forget("user:counts:{$user->id}");
+        session()->flash('status', __('messages.settings_saved'));
+    }
+
     public function render()
     {
         /** @var Authenticatable&\App\Models\User $user */
