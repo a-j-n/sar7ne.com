@@ -57,6 +57,22 @@
                 const backdropSelector = '[data-sheet-backdrop]';
                 const panel = sheet?.querySelector('[data-sheet-panel]');
                 const backdrop = sheet?.querySelector(backdropSelector);
+                const rebindInputs = () => {
+                  // Re-select active nodes (prefer sheet controls)
+                  active.content = document.getElementById('postContentSheet') ?? document.getElementById('postContent');
+                  active.charCount = document.getElementById('charCountSheet') ?? document.getElementById('charCount');
+                  active.imageInput = document.getElementById('imageInputSheet') ?? document.getElementById('imageInput');
+                  active.imagePreview = document.getElementById('imagePreviewSheet') ?? document.getElementById('imagePreview');
+                  active.dropZone = document.getElementById('dropZoneSheet') ?? document.getElementById('dropZone');
+                  active.submitBtn = document.getElementById('submitBtnSheet') ?? document.getElementById('submitBtn');
+                  active.submitText = document.getElementById('submitTextSheet') ?? document.getElementById('submitText');
+                  active.form = document.getElementById('postFormSheet') ?? document.getElementById('postForm');
+
+                  // Ensure listeners are attached once
+                  if (active._bound) { return; }
+                  active._bound = true;
+                  active.content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
+                };
                 function openSheet(){
                   if (!sheet) return;
                   sheet.classList.remove('hidden');
@@ -70,7 +86,11 @@
                     backdrop?.classList.remove('opacity-0');
                     backdrop?.classList.add('opacity-100');
                   });
-                  setTimeout(()=> document.getElementById('postContent')?.focus(), 120);
+                  setTimeout(()=> {
+                    rebindInputs();
+                    active.content?.focus();
+                    updateCounter();
+                  }, 120);
                 }
                 function closeSheet(){
                   if (!sheet) return;
@@ -105,27 +125,38 @@
                 bindSheetEvents();
               }
 
-              const content = document.getElementById('postContent');
-              const charCount = document.getElementById('charCount');
-              const imageInput = document.getElementById('imageInput');
-              const imagePreview = document.getElementById('imagePreview');
-              const dropZone = document.getElementById('dropZone');
-              const submitBtn = document.getElementById('submitBtn');
-              const submitText = document.getElementById('submitText');
-              const form = document.getElementById('postForm');
+              // Prefer controls inside the sheet; fallback to hidden stub for compatibility
+              // Active control refs container (gets re-bound when sheet opens)
+              const active = {};
+              const content = () => active.content;
+              const charCount = () => active.charCount;
+              const imageInput = () => active.imageInput;
+              const imagePreview = () => active.imagePreview;
+              const dropZone = () => active.dropZone;
+              const submitBtn = () => active.submitBtn;
+              const submitText = () => active.submitText;
+              const form = () => active.form;
               const DRAFT_KEY = 'posts:draft';
 
               function updateCounter() {
-                const len = content.value.length;
-                charCount.textContent = `${len}/500`;
-                charCount.className = len > 450 ? 'text-xs text-yellow-600' : 'text-xs text-black/50';
+                const el = content();
+                const cc = charCount();
+                if (!el || !cc) { return; }
+                const len = el.value.length;
+                cc.textContent = `${len}/500`;
+                cc.className = len > 450 ? 'text-xs text-yellow-600' : 'text-xs text-black/50';
                 updateSubmitState();
               }
 
               function updateSubmitState() {
-                const hasText = content.value.trim().length > 0;
-                const hasImages = imagePreview.children.length > 0 || (imageInput.files && imageInput.files.length > 0);
-                submitBtn.disabled = !(hasText || hasImages);
+                const el = content();
+                const ip = imageInput();
+                const pv = imagePreview();
+                const btn = submitBtn();
+                if (!btn) { return; }
+                const hasText = !!el && el.value.trim().length > 0;
+                const hasImages = (!!pv && pv.children.length > 0) || (!!ip && ip.files && ip.files.length > 0);
+                btn.disabled = !(hasText || hasImages);
               }
 
               function addPreview(file, index) {
@@ -139,42 +170,61 @@
                 const btn = wrapper.querySelector('button');
                 btn.addEventListener('click', () => {
                   const dt = new DataTransfer();
-                  Array.from(imageInput.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
-                  imageInput.files = dt.files;
+                  const ip = imageInput();
+                  Array.from(ip.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
+                  ip.files = dt.files;
                   wrapper.remove();
                   updateSubmitState();
                 });
-                imagePreview.appendChild(wrapper);
+                imagePreview()?.appendChild(wrapper);
               }
 
               function refreshPreviewsFromInput(){
-                imagePreview.innerHTML = '';
-                const files = Array.from(imageInput.files || []).slice(0, 4);
+                const pv = imagePreview();
+                const ip = imageInput();
+                if (!pv || !ip) { return; }
+                pv.innerHTML = '';
+                const files = Array.from(ip.files || []).slice(0, 4);
                 files.forEach((f, i) => addPreview(f, i));
                 updateSubmitState();
               }
 
               function addFiles(files){
-                const current = Array.from(imageInput.files || []);
+                const ip = imageInput();
+                if (!ip) { return; }
+                const current = Array.from(ip.files || []);
                 const dt = new DataTransfer();
                 const combined = current.concat(Array.from(files));
                 combined.slice(0,4).forEach(f => dt.items.add(f));
-                imageInput.files = dt.files;
+                ip.files = dt.files;
                 refreshPreviewsFromInput();
               }
 
-              imageInput?.addEventListener('change', refreshPreviewsFromInput);
+              // Initial bind to existing nodes (if any), will be re-bound on open
+              (function initialBind(){
+                active.content = document.getElementById('postContentSheet') ?? document.getElementById('postContent');
+                active.charCount = document.getElementById('charCountSheet') ?? document.getElementById('charCount');
+                active.imageInput = document.getElementById('imageInputSheet') ?? document.getElementById('imageInput');
+                active.imagePreview = document.getElementById('imagePreviewSheet') ?? document.getElementById('imagePreview');
+                active.dropZone = document.getElementById('dropZoneSheet') ?? document.getElementById('dropZone');
+                active.submitBtn = document.getElementById('submitBtnSheet') ?? document.getElementById('submitBtn');
+                active.submitText = document.getElementById('submitTextSheet') ?? document.getElementById('submitText');
+                active.form = document.getElementById('postFormSheet') ?? document.getElementById('postForm');
+                active.content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
+              })();
+
+              imageInput()?.addEventListener('change', refreshPreviewsFromInput);
 
               // Drag & drop
-              ['dragenter','dragover'].forEach(ev => dropZone.addEventListener(ev, e => {
+              ['dragenter','dragover'].forEach(ev => dropZone()?.addEventListener(ev, e => {
                 e.preventDefault(); e.stopPropagation();
-                dropZone.classList.add('ring-2','ring-emerald-400/50','bg-emerald-50');
+                dropZone()?.classList.add('ring-2','ring-emerald-400/50','bg-emerald-50');
               }));
-              ['dragleave','drop'].forEach(ev => dropZone.addEventListener(ev, e => {
+              ['dragleave','drop'].forEach(ev => dropZone()?.addEventListener(ev, e => {
                 e.preventDefault(); e.stopPropagation();
-                dropZone.classList.remove('ring-2','ring-emerald-400/50','bg-emerald-50');
+                dropZone()?.classList.remove('ring-2','ring-emerald-400/50','bg-emerald-50');
               }));
-              dropZone.addEventListener('drop', e => {
+              dropZone()?.addEventListener('drop', e => {
                 if (e.dataTransfer && e.dataTransfer.files?.length){
                   addFiles(e.dataTransfer.files);
                 }
@@ -200,11 +250,13 @@
               }
               loadDraft();
               updateCounter();
-              content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
+              // Already handled by initialBind and rebindInputs()
 
-              form?.addEventListener('submit', () => {
-                submitBtn.disabled = true;
-                submitText.textContent = 'Posting…';
+              form()?.addEventListener('submit', () => {
+                const btn = submitBtn();
+                const st = submitText();
+                if (btn) { btn.disabled = true; }
+                if (st) { st.textContent = 'Posting…'; }
                 clearDraft();
                 // After submit, close sheet to feel responsive (server will redirect)
                 setTimeout(() => { closeSheet(); }, 0);
@@ -420,26 +472,26 @@
         </div>
         <div class="p-4 overflow-y-auto">
             <!-- We reuse the same form fields by targeting inputs by ID -->
-            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3" onsubmit="document.getElementById('postForm')?.dispatchEvent(new Event('submit', {cancelable:true}));">
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3" onsubmit="document.getElementById('postForm')?.dispatchEvent(new Event('submit', {cancelable:true}));" id="postFormSheet">
                 @csrf
                 <div class="flex items-start gap-3">
                     <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
                     <div class="flex-1">
-                    <x-ui.textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
+                    <x-ui.textarea id="postContentSheet" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
                         @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
-                        <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
+                        <div id="imagePreviewSheet" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
                     </div>
                 </div>
 
-                <div id="dropZone" class="pl-13 -mt-2">
+                <div id="dropZoneSheet" class="pl-13 -mt-2">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <label for="imageInput" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
                                 {{ __('messages.posts.add_photos') }}
                             </label>
-                            <input id="imageInput" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
-                            <span id="imageHelp" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
+                            <input id="imageInputSheet" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
+                            <span id="imageHelpSheet" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
                             @auth
                                 <label class="ml-2 inline-flex items-center gap-2 select-none relative">
                                     <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
@@ -449,9 +501,9 @@
                             @endauth
                         </div>
                         <div class="flex items-center gap-3">
-                            <span id="charCount" class="text-xs text-black/50">0/500</span>
-                            <x-ui.button id="submitBtn" type="submit" variant="primary" size="sm" disabled>
-                                <span id="submitText">{{ __('messages.posts.post') }}</span>
+                            <span id="charCountSheet" class="text-xs text-black/50">0/500</span>
+                            <x-ui.button id="submitBtnSheet" type="submit" variant="primary" size="sm" disabled>
+                                <span id="submitTextSheet">{{ __('messages.posts.post') }}</span>
                             </x-ui.button>
                         </div>
                     </div>
