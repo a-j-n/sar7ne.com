@@ -153,6 +153,8 @@ return [
     'mark_as_read' => 'تحديد كمقروء',
     'mark_as_unread' => 'تحديد كغير مقروء',
     'delete' => 'حذف',
+    'cancel' => 'إلغاء',
+    'confirm_delete_post' => 'سيتم حذف المنشور نهائيًا.',
     'inbox_empty_title' => 'صندوق الوارد بانتظارك',
     'inbox_empty_desc' => 'شارك رابط ملفك لتبدأ باستقبال الرسائل المجهولة.',
     'get_profile_link' => 'احصل على رابط ملفك',

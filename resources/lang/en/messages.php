@@ -154,6 +154,8 @@ return [
     'mark_as_read' => 'Mark as read',
     'mark_as_unread' => 'Mark as unread',
     'delete' => 'Delete',
+    'cancel' => 'Cancel',
+    'confirm_delete_post' => 'This will permanently delete the post.',
     'inbox_empty_title' => 'Your inbox is waiting',
     'inbox_empty_desc' => 'Share your profile link to start collecting anonymous messages.',
     'get_profile_link' => 'Get Your Profile Link',

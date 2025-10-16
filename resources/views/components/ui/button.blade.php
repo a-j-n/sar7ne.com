@@ -12,7 +12,7 @@ $variants = [
     'secondary' => 'btn-brand-secondary text-white focus:ring-electric-blue shadow-lg hover:shadow-xl',
     'outline' => 'border border-brand-orange bg-transparent hover:bg-brand-orange/10 text-brand-orange focus:ring-brand-orange',
     'ghost' => 'bg-transparent hover:bg-brand-orange/10 text-brand-orange focus:ring-brand-orange',
-    'danger' => 'bg-vivid-pink hover:bg-vivid-pink/90 text-white focus:ring-vivid-pink shadow-lg hover:shadow-xl',
+    'danger' => 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-lg hover:shadow-xl',
     'mint' => 'bg-neon-mint hover:bg-neon-mint/90 text-white focus:ring-neon-mint shadow-lg hover:shadow-xl glow-neon-mint',
     'electric' => 'bg-electric-blue hover:bg-electric-blue/90 text-white focus:ring-electric-blue shadow-lg hover:shadow-xl'
 ];

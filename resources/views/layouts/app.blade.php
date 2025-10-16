@@ -323,5 +323,77 @@
         {{-- Reverb / Echo bootstrap (expects window.Echo when configured) --}}
         @vite(['resources/js/app.js'])
         @stack('body-end')
+        <!-- Global Confirm Toast (Sonner-style) -->
+        <div id="confirm-toast-root" class="fixed inset-0 z-[10000] pointer-events-none">
+            <div id="confirm-toast-stack" class="absolute bottom-4 right-4 flex flex-col gap-3"></div>
+            <template id="confirm-toast-template">
+                <div class="pointer-events-auto w-[320px] rounded-xl border border-slate-200 bg-white/95 backdrop-blur shadow-xl overflow-hidden">
+                    <div class="p-3">
+                        <div class="text-sm font-semibold text-slate-900" data-ct-title></div>
+                        <div class="mt-1 text-xs text-slate-600" data-ct-message></div>
+                    </div>
+                    <div class="flex items-center justify-end gap-2 p-3 bg-slate-50 border-t border-slate-200">
+                        <button type="button" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100" data-ct-cancel>{{ __('messages.cancel') }}</button>
+                        <button type="button" class="px-3 py-1.5 text-xs rounded-lg bg-red-600 text-white hover:bg-red-700" data-ct-confirm>{{ __('messages.delete') }}</button>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <script>
+            (function(){
+                const root = document.getElementById('confirm-toast-root');
+                const stack = document.getElementById('confirm-toast-stack');
+                const tpl = document.getElementById('confirm-toast-template');
+                function createToast({ title, message, confirmText, cancelText, onConfirm }){
+                    const node = tpl.content.firstElementChild.cloneNode(true);
+                    node.querySelector('[data-ct-title]').textContent = title || '';
+                    node.querySelector('[data-ct-message]').textContent = message || '';
+                    const btnCancel = node.querySelector('[data-ct-cancel]');
+                    const btnConfirm = node.querySelector('[data-ct-confirm]');
+                    if (cancelText) btnCancel.textContent = cancelText;
+                    if (confirmText) btnConfirm.textContent = confirmText;
+
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'translate-y-4 opacity-0 transition-all duration-200';
+                    wrapper.appendChild(node);
+                    stack.appendChild(wrapper);
+                    requestAnimationFrame(()=>{
+                        wrapper.classList.remove('translate-y-4','opacity-0');
+                        wrapper.classList.add('translate-y-0','opacity-100');
+                    });
+
+                    function close(){
+                        wrapper.classList.add('opacity-0','translate-y-4');
+                        setTimeout(()=>{ wrapper.remove(); }, 180);
+                    }
+                    btnCancel.addEventListener('click', close);
+                    btnConfirm.addEventListener('click', function(){ try { onConfirm && onConfirm(); } finally { close(); } });
+                    // Keyboard accessibility: Esc to close
+                    const keyHandler = (e) => { if (e.key === 'Escape') { close(); } };
+                    document.addEventListener('keydown', keyHandler, { once: true });
+
+                    // Focus management
+                    setTimeout(()=>{ btnCancel.focus(); }, 0);
+                }
+                window.confirmToast = function(opts){
+                    createToast(Object.assign({
+                        title: '{{ __('messages.delete') }}',
+                        message: '{{ __('messages.confirm_delete_post') }}',
+                        confirmText: '{{ __('messages.delete') }}',
+                        cancelText: '{{ __('messages.cancel') }}',
+                    }, opts || {}));
+                };
+
+                // Wire up delete forms that opt in via data-confirm-delete
+                document.addEventListener('click', function(e){
+                    const btn = e.target.closest('[data-confirm-delete]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    const form = btn.closest('form');
+                    window.confirmToast({ onConfirm: () => form?.submit() });
+                });
+            })();
+        </script>
     </body>
 </html>
