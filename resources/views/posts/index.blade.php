@@ -504,9 +504,9 @@
                     @auth
                     <div>
                         <label class="inline-flex items-center gap-2 select-none relative">
-                            <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
-                            <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
-                            <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
+                            <input type="checkbox" name="anonymous" value="1" class="peer h-5 w-10 appearance-none rounded-full bg-slate-300 outline-none transition-colors duration-200 relative peer-checked:bg-emerald-500">
+                            <span class="pointer-events-none absolute ml-[22px] h-5 w-5 rounded-full bg-white shadow -translate-x-5 peer-checked:translate-x-0 transition-transform duration-200"></span>
+                            <span class="text-sm pl-10 text-slate-700 peer-checked:text-emerald-700">{{ __('messages.posts.anonymous') }}</span>
                         </label>
                     </div>
                     @endauth
