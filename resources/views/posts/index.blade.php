@@ -542,7 +542,7 @@
         </div>
         <div class="p-4 overflow-y-auto">
             <!-- We reuse the same form fields by targeting inputs by ID -->
-            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3" onsubmit="document.getElementById('postForm')?.dispatchEvent(new Event('submit', {cancelable:true}));" id="postFormSheet">
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4" id="postFormSheet">
                 @csrf
                 <div class="flex items-start gap-3">
                     <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
@@ -553,31 +553,33 @@
                     </div>
                 </div>
 
-                <div id="dropZoneSheet" class="pl-13 -mt-2">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <label for="imageInput" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
-                                {{ __('messages.posts.add_photos') }}
-                            </label>
-                            <input id="imageInputSheet" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
+                <div id="dropZoneSheet" class="pl-13 -mt-2 space-y-3">
+                    <div>
+                        <label for="imageInputSheet" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
+                            {{ __('messages.posts.add_photos') }}
+                        </label>
+                        <input id="imageInputSheet" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
+                        <div class="mt-1">
                             <span id="imageHelpSheet" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
-                            @auth
-                                <label class="ml-2 inline-flex items-center gap-2 select-none relative">
-                                    <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
-                                    <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
-                                    <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
-                                </label>
-                            @endauth
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span id="charCountSheet" class="text-xs text-black/50">0/500</span>
-                            <x-ui.button id="submitBtnSheet" type="submit" variant="primary" size="sm" disabled>
-                                <span id="submitTextSheet">{{ __('messages.posts.post') }}</span>
-                            </x-ui.button>
                         </div>
                     </div>
-                    <div class="mt-2">
+                    @auth
+                    <div>
+                        <label class="inline-flex items-center gap-2 select-none relative">
+                            <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
+                            <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
+                            <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
+                        </label>
+                    </div>
+                    @endauth
+                    <div class="flex items-center justify-between">
+                        <span id="charCountSheet" class="text-xs text-black/50">0/500</span>
+                        <x-ui.button id="submitBtnSheet" type="submit" variant="primary" size="sm" disabled>
+                            <span id="submitTextSheet">{{ __('messages.posts.post') }}</span>
+                        </x-ui.button>
+                    </div>
+                    <div>
                         <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">{{ __('messages.posts.discard_draft') }}</button>
                     </div>
                 </div>
