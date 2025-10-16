@@ -223,9 +223,26 @@
     </x-ui.card>
 
     <!-- Floating Create Post Button (Top-Left) -->
-    <button type="button" id="openCreatePost" class="fixed top-7 left-5 z-[9980] h-11 w-11 md:h-12 md:w-12 rounded-full bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-400/30 flex items-center justify-center">
-        <span class="sr-only">{{ __('messages.posts.post') }}</span>
-        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+    <button
+        type="button"
+        id="openCreatePost"
+        class="fixed top-7 left-5 z-[9980]
+               h-12 w-12 md:h-14 md:w-14 rounded-full
+               bg-emerald-600 text-white shadow-lg shadow-emerald-600/30
+               hover:bg-emerald-700
+               focus:outline-none focus:ring-4 focus:ring-emerald-400/30
+               flex items-center justify-center group
+               transition-transform duration-200 ease-out
+               hover:scale-[1.04] active:scale-[0.98]
+               before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-emerald-400/0 hover:before:bg-emerald-400/10 before:transition-colors before:duration-200"
+        aria-label="{{ __('messages.posts.post') }}"
+    >
+        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-black/70 bg-white/80 backdrop-blur px-2 py-0.5 rounded-full shadow-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none hidden md:block">
+            {{ __('messages.posts.post') }}
+        </span>
     </button>
 
     @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with('user')->limit(20)->get())
@@ -396,7 +413,7 @@
 <!-- Global bottom sheet mounted at body end -->
 <div id="createPostSheet" class="fixed inset-0 z-[9999] hidden pointer-events-none" aria-hidden="true">
     <div data-sheet-backdrop class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-200"></div>
-    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-transform duration-300 ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform" data-sheet-panel>
+    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-[transform,opacity] duration-300 ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform" data-sheet-panel>
         <div class="flex items-center justify-between p-4 border-b border-slate-200 rounded-t-2xl md:rounded-t-3xl">
             <h3 class="text-sm font-semibold">{{ __('messages.posts.post') }}</h3>
             <button type="button" id="closeCreatePost" class="rounded-md p-1.5 text-slate-600 hover:bg-slate-100">✕</button>

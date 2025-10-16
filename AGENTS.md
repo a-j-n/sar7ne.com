@@ -8,18 +8,19 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.4.12
+- php - 8.4.13
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/reverb (REVERB) - v1
 - laravel/socialite (SOCIALITE) - v5
-- laravel/telescope (TELESCOPE) - v5
 - livewire/livewire (LIVEWIRE) - v3
 - livewire/volt (VOLT) - v1
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
+- laravel/telescope (TELESCOPE) - v5
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
+- laravel-echo (ECHO) - v1
 - tailwindcss (TAILWINDCSS) - v4
 
 
@@ -158,17 +159,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
-
-## Sail Quick Commands
-
-- Start stack: `docker compose up -d`
-- Stop stack: `docker compose down`
-- App shell: `docker compose exec laravel.test bash`
-- Run tests: `docker compose exec laravel.test php artisan test`
-- Run migrations: `docker compose exec laravel.test php artisan migrate`
-- Queue logs: `docker compose logs -f queue`
-- Vite dev server: `http://localhost:5173`
-- Reverb WebSocket: `ws://localhost:8080`
 
 
 === laravel/v12 rules ===
