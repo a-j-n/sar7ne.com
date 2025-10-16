@@ -325,6 +325,13 @@
                         <div class="text-xs text-black/60">{{ $post->created_at->diffForHumans() }}</div>
                     </div>
                     <div class="ml-auto flex items-center gap-2">
+                        @php($liked = auth()->check() ? $post->likes()->where('user_id', auth()->id())->exists() : false)
+                        @php($likeCount = $post->likes()->count())
+                        <button type="button" data-like-post="{{ $post->id }}" aria-pressed="{{ $liked ? 'true' : 'false' }}" class="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[11px] transition-colors {{ $liked ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-black/70 hover:text-black hover:border-slate-300' }}">
+                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.829a4 4 0 010-5.656z"/></svg>
+                            <span data-like-text>{{ $liked ? __('messages.unlike') : __('messages.like') }}</span>
+                            <span data-like-count>{{ $likeCount }}</span>
+                        </button>
                         <!-- Share / Copy actions -->
                         <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300" data-share-post="{{ $post->id }}" title="Share">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 8a3 3 0 10-3-3m0 3v7m0-7a3 3 0 11-3-3m3 10a3 3 0 100 6 3 3 0 000-6z"/></svg>
@@ -468,6 +475,59 @@
             })();
         </script>
     @endguest
+    <script>
+        (function(){
+            async function toggleLike(postId, button){
+                if (!postId || !button) return;
+                if (button.dataset.loading === '1') return;
+                button.dataset.loading = '1';
+                const iconLiked = 'border-emerald-300 bg-emerald-50 text-emerald-700';
+                const iconDefault = 'border-slate-200 text-black/70 hover:text-black hover:border-slate-300';
+                try {
+                    const res = await fetch(`/posts/${postId}/like`, { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } });
+                    const data = await res.json();
+                    if (res.status === 401 && data && data.requires_auth){
+                        const modal = document.getElementById('likeLoginModal');
+                        modal?.classList.remove('hidden');
+                        modal?.classList.add('flex');
+                        return;
+                    }
+                    const liked = !!data.liked;
+                    const count = data.count ?? 0;
+                    const label = button.querySelector('[data-like-text]');
+                    const countEl = button.querySelector('[data-like-count]');
+                    if (liked){
+                        button.classList.remove(...iconDefault.split(' '));
+                        button.classList.add(...iconLiked.split(' '));
+                        label.textContent = '{{ __('messages.unlike') }}';
+                        button.setAttribute('aria-pressed', 'true');
+                    } else {
+                        button.classList.remove(...iconLiked.split(' '));
+                        button.classList.add(...iconDefault.split(' '));
+                        label.textContent = '{{ __('messages.like') }}';
+                        button.setAttribute('aria-pressed', 'false');
+                    }
+                    if (countEl){ countEl.textContent = count; }
+                } catch (e) {
+                    // ignore
+                } finally {
+                    button.dataset.loading = '0';
+                }
+            }
+            document.addEventListener('click', function(e){
+                const btn = e.target.closest('[data-like-post]');
+                if (btn){ e.preventDefault(); toggleLike(btn.getAttribute('data-like-post'), btn); }
+            });
+            document.querySelector('[data-close-like-modal]')?.addEventListener('click', function(){
+                const modal = document.getElementById('likeLoginModal');
+                modal?.classList.add('hidden');
+                modal?.classList.remove('flex');
+            });
+            document.getElementById('likeLoginModal')?.addEventListener('click', function(e){
+                if (e.target === this){ this.classList.add('hidden'); this.classList.remove('flex'); }
+            });
+        })();
+    </script>
 </div>
 @endsection
 
@@ -522,6 +582,15 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+<div id="likeLoginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/60">
+    <div class="bg-white rounded-xl p-4 w-80 shadow-xl text-center">
+        <p class="text-sm text-black mb-3">{{ __('messages.login_to_like') }}</p>
+        <div class="flex items-center justify-center gap-2">
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-lg bg-emerald-600 text-white px-3 py-1.5 text-sm">{{ __('messages.login') }}</a>
+            <button type="button" class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-black" data-close-like-modal>OK</button>
         </div>
     </div>
 </div>

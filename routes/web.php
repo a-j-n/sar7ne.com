@@ -40,6 +40,7 @@ Route::middleware('throttle:posts-submission')->post('/posts', [PostController::
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::post('/posts/{post}/share', [PostController::class, 'trackShare'])->name('posts.share');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('posts.like');
 
 Route::get('/login', [EmailLoginController::class, 'show'])->name('login');
 Route::post('/login', [EmailLoginController::class, 'login'])->name('login.attempt');

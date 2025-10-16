@@ -140,6 +140,9 @@ return [
     'attach_image' => 'أرفق صورة',
     'link_copied' => 'تم نسخ الرابط!',
     'copy_link' => 'انسخ الرابط',
+    'like' => 'إعجاب',
+    'unlike' => 'إلغاء الإعجاب',
+    'login_to_like' => 'يجب تسجيل الدخول لعمل إعجاب على المنشور.',
     // Inbox
     'inbox_subtitle' => 'الرسائل المجهولة التي استلمتها.',
     'inbox_unread_prefix' => 'لديك',

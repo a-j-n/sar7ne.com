@@ -141,6 +141,9 @@ return [
     'attach_image' => 'Attach image',
     'link_copied' => 'Link copied!',
     'copy_link' => 'Copy link',
+    'like' => 'Like',
+    'unlike' => 'Unlike',
+    'login_to_like' => 'You must log in to like a post.',
     // Inbox
     'inbox_subtitle' => 'Anonymous messages you\'ve received.',
     'inbox_unread_prefix' => 'You have',

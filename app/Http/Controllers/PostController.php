@@ -110,4 +110,28 @@ class PostController extends Controller
             ? response()->json(['status' => 'deleted'])
             : back()->with('status', __('Post deleted.'));
     }
+
+    public function toggleLike(Request $request, Post $post)
+    {
+        $user = Auth::user();
+        if (! $user) {
+            return response()->json(['requires_auth' => true, 'message' => __('messages.login_to_like')], 401);
+        }
+
+        $liked = $post->likes()->where('user_id', $user->id)->exists();
+        if ($liked) {
+            $post->likes()->detach($user->id);
+            $state = false;
+        } else {
+            $post->likes()->attach($user->id);
+            $state = true;
+        }
+
+        $count = $post->likes()->count();
+
+        return response()->json([
+            'liked' => $state,
+            'count' => $count,
+        ]);
+    }
 }
