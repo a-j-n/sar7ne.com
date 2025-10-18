@@ -143,6 +143,15 @@ return [
     'like' => 'إعجاب',
     'unlike' => 'إلغاء الإعجاب',
     'login_to_like' => 'يجب تسجيل الدخول لعمل إعجاب على المنشور.',
+    'comments' => [
+        'title' => 'التعليقات',
+        'write_placeholder' => 'اكتب تعليقًا...',
+        'comment' => 'تعليق',
+        'sign_in_to_comment' => 'من فضلك :link لإضافة تعليق.',
+        'no_comments_yet' => 'لا توجد تعليقات بعد. كن أول من يعلّق.',
+        'delete' => 'حذف',
+        'required' => 'التعليق مطلوب.',
+    ],
     // Inbox
     'inbox_subtitle' => 'الرسائل المجهولة التي استلمتها.',
     'inbox_unread_prefix' => 'لديك',

@@ -144,6 +144,15 @@ return [
     'like' => 'Like',
     'unlike' => 'Unlike',
     'login_to_like' => 'You must log in to like a post.',
+    'comments' => [
+        'title' => 'Comments',
+        'write_placeholder' => 'Write a comment...',
+        'comment' => 'Comment',
+        'sign_in_to_comment' => 'Please :link to comment.',
+        'no_comments_yet' => 'No comments yet. Be the first to comment.',
+        'delete' => 'Delete',
+        'required' => 'A comment is required.',
+    ],
     // Inbox
     'inbox_subtitle' => 'Anonymous messages you\'ve received.',
     'inbox_unread_prefix' => 'You have',

@@ -4,7 +4,8 @@
 @php($liked = auth()->check() ? $post->likes()->where('user_id', auth()->id())->exists() : false)
 @php($likeCount = $post->likes()->count())
 
-<x-ui.card id="post-{{ $post->id }}" padding="p-0" class="text-black transition-all duration-200 hover:shadow-lg/60 hover:border-emerald-200/60 overflow-hidden">
+<a href="{{ route('posts.show', $post) }}" class="block focus:outline-none focus:ring-2 focus:ring-emerald-300 rounded-xl">
+<x-ui.card id="post-{{ $post->id }}" padding="p-0" class="text-black transition-all duration-200 hover:shadow-lg/60 hover:border-emerald-200/60 overflow-hidden cursor-pointer">
     <div class="p-4 md:p-5">
         <div class="flex items-start gap-3 mb-3">
             @if($isAnon)
@@ -59,17 +60,20 @@
             @endguest
         </div>
         <div class="flex items-center gap-2">
-            <button type="button" data-like-post="{{ $post->id }}" aria-pressed="{{ $liked ? 'true' : 'false' }}" class="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[11px] transition-colors {{ $liked ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-black/70 hover:text-black hover:border-slate-300' }}">
+            <button type="button" data-like-post="{{ $post->id }}" aria-pressed="{{ $liked ? 'true' : 'false' }}" class="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 text-[11px] transition-colors {{ $liked ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 text-black/70 hover:text-black hover:border-slate-300' }}" title="{{ $liked ? __('messages.unlike') : __('messages.like') }}">
                 <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.829a4 4 0 010-5.656z"/></svg>
-                <span data-like-text>{{ $liked ? __('messages.unlike') : __('messages.like') }}</span>
-                <span data-like-count>{{ $likeCount }}</span>
             </button>
-            <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-share-post="{{ $post->id }}" title="Share">
+            @php($commentCount = isset($post->comments_count) ? $post->comments_count : $post->comments()->count())
+            <a href="{{ route('posts.show', $post) }}#comments" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" title="{{ __('messages.comments.title') }}">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5m7-2a9 9 0 11-18 0 9 0 0118 0z"/></svg>
+            </a>
+            <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-share-post="{{ $post->id }}" title="{{ __('messages.posts.share') }}">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 8a3 3 0 10-3-3m0 3v7m0-7a3 3 0 11-3-3m3 10a3 3 0 100 6 3 3 0 000-6z"/></svg>
             </button>
-            <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-copy-post="{{ $post->id }}" title="Copy link">
+            <button type="button" class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] text-black/70 hover:text-black hover:border-slate-300 focus-visible:outline focus-visible:ring-2 focus-visible:ring-emerald-300" data-copy-post="{{ $post->id }}" title="{{ __('messages.posts.copy_link') }}">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16h8a2 2 0 002-2V8m-6 8H8a2 2 0 01-2-2V8m6-4h6a2 2 0 012 2v6"/></svg>
             </button>
         </div>
     </div>
 </x-ui.card>
+</a>

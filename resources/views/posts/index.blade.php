@@ -307,7 +307,7 @@
         </span>
     </button>
 
-    @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with('user')->limit(20)->get())
+    @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with(['user'])->withCount('comments')->limit(20)->get())
 
     <div class="grid gap-4">
         @foreach($posts as $post)

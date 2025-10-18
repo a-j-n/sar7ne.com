@@ -13,6 +13,53 @@
 @section('content')
 <div class="space-y-6 text-black">
     @include('posts.partials.card', ['post' => $post])
+    <div id="comments" class="space-y-4">
+        <h2 class="text-lg font-semibold">{{ __('messages.comments.title') }}</h2>
+        @auth
+        <form action="{{ route('posts.comments.store', $post) }}" method="POST" class="space-y-2" id="commentForm">
+            @csrf
+            <x-ui.textarea id="commentContent" name="content" rows="3" maxlength="1000" class="w-full resize-y" placeholder="{{ __('messages.comments.write_placeholder') }}"></x-ui.textarea>
+            <div class="flex items-center justify-between">
+                <div class="text-xs text-black/50" id="commentCounter">0/1000</div>
+                <x-ui.button id="commentSubmit" type="submit" variant="primary" disabled>{{ __('messages.comments.comment') }}</x-ui.button>
+            </div>
+            @error('content') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
+        </form>
+        @else
+        <div class="text-sm text-black/70">{!! str_replace(':link', '<a href="'.route('login').'" class="text-emerald-600 underline">'.__('messages.login').'</a>', __('messages.comments.sign_in_to_comment')) !!}</div>
+        @endauth
+
+        @php($comments = $post->comments()->with('user')->latest()->get())
+        <div class="space-y-3">
+            @forelse ($comments as $comment)
+                <x-ui.card padding="p-3 md:p-4" class="text-black">
+                    <div class="flex gap-3">
+                        <img src="{{ $comment->user->avatarUrl() ?? asset('anon-avatar.svg') }}" class="h-8 w-8 rounded-full object-cover ring-1 ring-slate-200" alt="avatar">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <div class="text-sm font-medium truncate">{{ $comment->user->name }}</div>
+                                    <span class="text-[11px] text-black/50">· {{ $comment->created_at->diffForHumans() }}</span>
+                                </div>
+                                @auth
+                                    @can('delete', $comment)
+                                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="shrink-0">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-xs text-red-600 hover:text-red-700 underline">{{ __('messages.comments.delete') }}</button>
+                                        </form>
+                                    @endcan
+                                @endauth
+                            </div>
+                            <div class="mt-1 text-[15px] leading-6 whitespace-pre-line">{{ $comment->content }}</div>
+                        </div>
+                    </div>
+                </x-ui.card>
+            @empty
+                <x-ui.card padding="p-4" class="text-black/70 text-sm">{{ __('messages.comments.no_comments_yet') }}</x-ui.card>
+            @endforelse
+        </div>
+    </div>
 </div>
 <script>
     (function(){
@@ -49,6 +96,29 @@
                 miniToast(copyBtn, '{{ __('messages.posts.copied') }}');
             } catch(_) {}
         });
+    })();
+</script>
+<script>
+    (function(){
+        const hash = window.location.hash;
+        const comments = document.getElementById('comments');
+        if (hash === '#comments' && comments) {
+            comments.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const ta = document.getElementById('commentContent');
+            if (ta) { ta.focus(); }
+        }
+
+        const ta = document.getElementById('commentContent');
+        const counter = document.getElementById('commentCounter');
+        const submit = document.getElementById('commentSubmit');
+        function update() {
+            if (!ta || !counter || !submit) { return; }
+            const len = (ta.value || '').length;
+            counter.textContent = `${len}/1000`;
+            submit.disabled = (len === 0 || len > 1000);
+        }
+        ta?.addEventListener('input', update);
+        update();
     })();
 </script>
 @endsection
