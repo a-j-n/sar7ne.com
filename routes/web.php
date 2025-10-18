@@ -117,6 +117,11 @@ Route::get('/theme/{theme}', [\App\Http\Controllers\ThemeController::class, 'swi
 // Sitemap
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
+// robots.txt
+Route::get('/robots.txt', function () {
+    return response()->view('robots')->header('Content-Type', 'text/plain');
+})->name('robots');
+
 Route::get('/_debug/locale', function (\Illuminate\Http\Request $request) {
     return response()->json([
         'app_locale' => app()->getLocale(),

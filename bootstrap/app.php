@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+use Illuminate\Console\Scheduling\Schedule;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -16,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('web', \App\Http\Middleware\SetLocaleFromRequest::class);
         // Force HTTPS and www. subdomain
         $middleware->prependToGroup('web', \App\Http\Middleware\ForceHttpsWww::class);
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        // Generate posts and profiles sitemaps weekly
+        $schedule->command('sitemaps:generate --disk=public --chunk=50000 --prefix=sitemap')->weeklyOn(0, '2:00');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

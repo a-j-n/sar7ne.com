@@ -59,8 +59,7 @@ yarn build
 php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
-php artisan sitemap:generate
-
+php artisan sitemaps:generate --gzip
 # php artisan test;
 # Log deployment completion
 echo "Deployment completed successfully."
