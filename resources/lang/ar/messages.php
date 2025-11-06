@@ -206,4 +206,23 @@ return [
         'copied' => 'تم النسخ!',
     ],
     'posts_title' => 'المنشورات',
+    // الصفحة الرئيسية / الاستكشاف
+    'homepage_discover_title' => 'اكتشف المبدعين والأصدقاء',
+    'browse_profiles_desc' => 'تصفّح الحسابات، أرسل رسائل لطيفة ومجهولة، وشارك المنشورات.',
+    'top_posts' => 'أفضل المنشورات',
+    'top_profiles' => 'أبرز الحسابات',
+    'view_all' => 'عرض الكل',
+    'no_posts_yet' => 'لا توجد منشورات بعد',
+    'sign_in_to_start' => 'سجّل الدخول للبدء',
+
+    // إجراءات عامة
+    'clear' => 'مسح',
+    'search' => 'بحث',
+    'search_by_username' => 'ابحث بواسطة اسم المستخدم…',
+    'search_results' => 'نتائج البحث',
+    'featured_creators' => 'مبدعون مميزون',
+    'refreshed_on_each_visit' => 'يتم تحديثها في كل زيارة',
+    'visit_profile' => 'زيارة الحساب',
+    'message' => 'رسالة',
+    'no_profiles_found' => 'لم يتم العثور على حسابات',
 ];

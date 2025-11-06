@@ -39,8 +39,11 @@ class Settings extends Component
 
     public function mount(): void
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            return; // Guard against unauthenticated renders in tests
+        }
         $this->username = $user->username;
         $this->display_name = $user->display_name;
         $this->bio = $user->bio;
@@ -72,8 +75,11 @@ class Settings extends Component
 
     public function save(): void
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            abort(403);
+        }
 
         $this->validate([
             'username' => ['required', 'string', 'min:3', 'max:20'],
@@ -131,13 +137,20 @@ class Settings extends Component
 
         $disk = config('filesystems.default', 'spaces');
         if ($this->avatar) {
-            $avatarPath = $this->avatar->store('avatars');
-            if ($avatarPath && $avatarPath !== '0') {
+            try {
+                $converted = \App\Support\ImageConversion::toWebp(
+                    $this->avatar,
+                    (int) config('images.quality', 82),
+                    (int) config('images.avatar.max_width', 512),
+                    (int) config('images.avatar.max_height', 512)
+                );
+                $avatarPath = 'avatars/'.$converted['filename'];
+                Storage::disk($disk)->put($avatarPath, $converted['contents'], ['visibility' => 'public', 'ContentType' => $converted['mime']]);
                 if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
                     Storage::disk($disk)->delete($user->avatar_url);
                 }
                 $updates['avatar_url'] = Storage::disk($disk)->url($avatarPath);
-            } else {
+            } catch (\Throwable $e) {
                 $this->addError('avatar', __('messages.avatar_upload_failed'));
 
                 return;
@@ -151,8 +164,11 @@ class Settings extends Component
 
     public function render()
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            abort(403);
+        }
 
         // Cache message counts briefly to reduce repeated loadCount calls
         $counts = Cache::remember("user:counts:{$user->id}", 60, function () use ($user) {

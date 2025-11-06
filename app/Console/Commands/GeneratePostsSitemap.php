@@ -40,7 +40,7 @@ class GeneratePostsSitemap extends Command
             $buffer .= '</urlset>';
         };
 
-        $writeSitemap = function () use (&$buffer, &$fileIndex, &$indexEntries, $fs, $prefix, $gzip, $disk) {
+        $writeSitemap = function () use (&$buffer, &$fileIndex, &$indexEntries, $fs, $prefix, $gzip) {
             if ($buffer === '') {
                 return;
             }
@@ -121,4 +121,3 @@ class GeneratePostsSitemap extends Command
         return config('app.url').'/'.ltrim($url, '/');
     }
 }
-

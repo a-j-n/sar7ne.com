@@ -45,8 +45,21 @@ class PostController extends Controller
 
         $paths = [];
         if (! empty($validated['images'])) {
+            $disk = config('filesystems.default', 'public');
             foreach ($validated['images'] as $file) {
-                $paths[] = $file->store('posts', ['disk' => config('filesystems.default', 'public')]);
+                try {
+                    $converted = \App\Support\ImageConversion::toWebp(
+                        $file,
+                        (int) config('images.quality', 82),
+                        (int) config('images.max_width', 2048),
+                        (int) config('images.max_height', 2048)
+                    );
+                } catch (\Throwable $e) {
+                    return back()->withErrors(['images' => __('Failed to process one of the images.')]);
+                }
+                $path = 'posts/'.$converted['filename'];
+                \Storage::disk($disk)->put($path, $converted['contents'], ['visibility' => 'public', 'ContentType' => $converted['mime']]);
+                $paths[] = $path;
             }
         }
 

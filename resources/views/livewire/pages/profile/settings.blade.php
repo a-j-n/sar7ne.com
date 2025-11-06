@@ -148,7 +148,10 @@
                             <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.adjust_theme_language_preferences') }}</p>
                         </div>
                         <div class="flex flex-col gap-4 md:flex-row">
-                            @include('partials.theme-switcher')
+                            {{-- Instant theme toggle (Livewire Volt) --}}
+                            <div class="theme-transition">
+                                @livewire('components.theme-toggle')
+                            </div>
                             @include('partials.language-switcher')
                         </div>
                     </div>

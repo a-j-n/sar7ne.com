@@ -47,7 +47,7 @@ class GenerateSitemaps extends Command
         // Generate posts sitemaps
         $this->generateModelSitemaps(
             query: Post::query()->whereNull('deleted_at')->orderBy('id')->select(['id', 'updated_at']),
-            loc: fn($post) => route('posts.show', $post),
+            loc: fn ($post) => route('posts.show', $post),
             partPrefix: $prefix.'-posts',
             chunkSize: $chunkSize,
             writer: $writePart,
@@ -56,7 +56,7 @@ class GenerateSitemaps extends Command
         // Generate profiles sitemaps
         $this->generateModelSitemaps(
             query: User::query()->orderBy('id')->select(['id', 'username', 'updated_at']),
-            loc: fn($user) => route('profiles.show', $user),
+            loc: fn ($user) => route('profiles.show', $user),
             partPrefix: $prefix.'-profiles',
             chunkSize: $chunkSize,
             writer: $writePart,
@@ -91,7 +91,9 @@ class GenerateSitemaps extends Command
             $buffer = '<?xml version="1.0" encoding="UTF-8"?>\n';
             $buffer .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
         };
-        $close = function () use (&$buffer) { $buffer .= '</urlset>'; };
+        $close = function () use (&$buffer) {
+            $buffer .= '</urlset>';
+        };
         $flush = function () use (&$writer, &$buffer, &$fileIndex, $partPrefix) {
             $fileIndex++;
             $writer($partPrefix.'-'.$fileIndex, $buffer);
@@ -128,7 +130,7 @@ class GenerateSitemaps extends Command
         if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
             return $url;
         }
+
         return config('app.url').'/'.ltrim($url, '/');
     }
 }
-

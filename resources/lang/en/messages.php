@@ -208,4 +208,23 @@ return [
         'copied' => 'Copied!',
     ],
     'posts_title' => 'Posts',
+    // Homepage / Explore
+    'homepage_discover_title' => 'Discover creators and friends',
+    'browse_profiles_desc' => 'Browse profiles, send kind anonymous messages, and share posts.',
+    'top_posts' => 'Top Posts',
+    'top_profiles' => 'Top Profiles',
+    'view_all' => 'View all',
+    'no_posts_yet' => 'No posts yet',
+    'sign_in_to_start' => 'Sign in to start',
+
+    // Common actions
+    'clear' => 'Clear',
+    'search' => 'Search',
+    'search_by_username' => 'Search by username…',
+    'search_results' => 'Search results',
+    'featured_creators' => 'Featured creators',
+    'refreshed_on_each_visit' => 'Refreshed on each visit',
+    'visit_profile' => 'Visit profile',
+    'message' => 'Message',
+    'no_profiles_found' => 'No profiles found',
 ];

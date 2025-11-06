@@ -57,6 +57,7 @@
                 const backdropSelector = '[data-sheet-backdrop]';
                 const panel = sheet?.querySelector('[data-sheet-panel]');
                 const backdrop = sheet?.querySelector(backdropSelector);
+                const dur = parseInt(sheet?.getAttribute('data-sheet-duration') || '300', 10);
                 const rebindInputs = () => {
                   // Re-select active nodes (prefer sheet controls)
                   active.content = document.getElementById('postContentSheet') ?? document.getElementById('postContent');
@@ -81,6 +82,8 @@
                   sheet.setAttribute('aria-hidden', 'false');
                   document.body.style.overflow = 'hidden';
                   requestAnimationFrame(() => {
+                    if (panel) panel.style.transitionDuration = dur + 'ms';
+                    if (backdrop) backdrop.style.transitionDuration = dur + 'ms';
                     panel?.classList.remove('translate-y-full');
                     panel?.classList.add('translate-y-0');
                     panel?.classList.remove('opacity-0');
@@ -96,6 +99,8 @@
                 }
                 function closeSheet(){
                   if (!sheet) return;
+                  if (panel) panel.style.transitionDuration = dur + 'ms';
+                  if (backdrop) backdrop.style.transitionDuration = dur + 'ms';
                   panel?.classList.remove('translate-y-0');
                   panel?.classList.add('translate-y-full');
                   panel?.classList.remove('opacity-100');
@@ -106,7 +111,7 @@
                     sheet.classList.add('hidden');
                     sheet.setAttribute('aria-hidden', 'true');
                     document.body.style.overflow = '';
-                  }, 300);
+                  }, dur);
                 }
                 // Direct listeners if elements exist now
                 openBtn?.addEventListener('click', openSheet);
@@ -284,28 +289,86 @@
         </script>
     </x-ui.card>
 
-    <!-- Floating Create Post Button (Top-Left) -->
+    <!-- Floating Create Post Button (Bottom-Right) -->
     <button
         type="button"
         id="openCreatePost"
-        class="fixed top-7 left-5 z-[9980]
+        class="fixed z-[9980]
+               bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))]
+               md:bottom-[calc(2rem+env(safe-area-inset-bottom))] md:right-[calc(2rem+env(safe-area-inset-right))]
                h-12 w-12 md:h-14 md:w-14 rounded-full
                bg-emerald-600 text-white shadow-lg shadow-emerald-600/30
                hover:bg-emerald-700
-               focus:outline-none focus:ring-4 focus:ring-emerald-400/30
-               flex items-center justify-center group
-               transition-transform duration-200 ease-out
-               hover:scale-[1.04] active:scale-[0.98]
-               before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-emerald-400/0 hover:before:bg-emerald-400/10 before:transition-colors before:duration-200"
+                focus:outline-none focus:ring-4 focus:ring-emerald-400/30
+                flex items-center justify-center group
+                transition-transform duration-200 ease-out
+                hover:scale-[1.04] active:scale-[0.98]
+                before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-emerald-400/0 hover:before:bg-emerald-400/10 before:transition-colors before:duration-200"
         aria-label="{{ __('messages.posts.post') }}"
+        data-idle-timeout="{{ config('features.fab_idle_timeout', 1500) }}"
+        data-initial-reveal-delay="{{ config('features.fab_initial_reveal', 800) }}"
     >
         <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
-        <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-black/70 bg-white/80 backdrop-blur px-2 py-0.5 rounded-full shadow-sm opacity-0 translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none hidden md:block">
+        <span class="absolute -top-8 right-1/2 translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-black/70 bg-white/80 backdrop-blur px-2 py-0.5 rounded-full shadow-sm opacity-0 -translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none hidden md:block">
             {{ __('messages.posts.post') }}
         </span>
     </button>
+
+    <script>
+        (function(){
+            const fab = document.getElementById('openCreatePost');
+            if (!fab) return;
+            let lastY = window.scrollY || 0;
+            let ticking = false;
+            let hidden = false;
+            let idleTimer = null;
+            const idleTimeout = parseInt(fab.getAttribute('data-idle-timeout') || '1500', 10);
+            const initialRevealDelay = parseInt(fab.getAttribute('data-initial-reveal-delay') || '800', 10);
+            const minDelta = 6; // ignore tiny jitter
+
+            function setHidden(h){
+                if (hidden === h) return;
+                hidden = h;
+                if (hidden) {
+                    fab.classList.add('opacity-0','translate-y-6','pointer-events-none');
+                    fab.setAttribute('aria-hidden','true');
+                } else {
+                    fab.classList.remove('opacity-0','translate-y-6','pointer-events-none');
+                    fab.removeAttribute('aria-hidden');
+                }
+            }
+
+            function onScroll(){
+                const y = window.scrollY || 0;
+                const delta = y - lastY;
+                if (Math.abs(delta) < minDelta) return;
+                // Hide when scrolling down, show when scrolling up or near top
+                if (delta > 0 && y > 40) {
+                    setHidden(true);
+                } else {
+                    setHidden(false);
+                }
+                lastY = y;
+                ticking = false;
+
+                // Reset idle timer to auto-show after 1.5s of no scroll
+                if (idleTimer) clearTimeout(idleTimer);
+                idleTimer = setTimeout(() => setHidden(false), idleTimeout);
+            }
+
+            window.addEventListener('scroll', function(){
+                if (!ticking) {
+                    window.requestAnimationFrame(onScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // Ensure visible on load after a short delay (in case of SSR class states)
+            idleTimer = setTimeout(() => setHidden(false), initialRevealDelay);
+        })();
+    </script>
 
     @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with(['user'])->withCount('comments')->limit(20)->get())
 
@@ -470,9 +533,9 @@
 
 @push('body-end')
 <!-- Global bottom sheet mounted at body end -->
-<div id="createPostSheet" class="fixed inset-0 z-[9999] hidden pointer-events-none" aria-hidden="true">
+<div id="createPostSheet" class="fixed inset-0 z-[9999] hidden pointer-events-none" aria-hidden="true" data-sheet-duration="300">
     <div data-sheet-backdrop class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-200"></div>
-    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-[transform,opacity] duration-300 ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform" data-sheet-panel>
+    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-[transform,opacity] ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform pb-[env(safe-area-inset-bottom)]" data-sheet-panel>
         <div class="flex items-center justify-between p-4 border-b border-slate-200 rounded-t-2xl md:rounded-t-3xl">
             <h3 class="text-sm font-semibold">{{ __('messages.posts.post') }}</h3>
             <button type="button" id="closeCreatePost" class="rounded-md p-1.5 text-slate-600 hover:bg-slate-100">✕</button>

@@ -56,6 +56,81 @@
         </div>
     </x-ui.card>
 
+    <!-- Top Content Section -->
+    <section class="space-y-8">
+        <div class="grid gap-6 md:grid-cols-2">
+            <!-- Top Profiles Preview -->
+            <x-ui.card class="animate-fade-in-up" padding="p-0">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800/60">
+                    <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.top_profiles') }}</h2>
+                    <a href="{{ route('explore') }}" class="text-xs font-medium text-brand-orange hover:underline">{{ __('messages.view_all') }}</a>
+                </div>
+                @php($topUsers = \App\Models\User::query()->latest()->limit(6)->get())
+                <div class="p-5 grid gap-4 sm:grid-cols-2">
+                    @forelse($topUsers as $u)
+                        <a href="{{ route('profiles.show', $u) }}" class="group flex items-center gap-3 rounded-xl border border-slate-200 dark:border-slate-800/60 p-3 hover:border-brand-orange/40 hover:bg-brand-orange/5 transition">
+                            <img src="{{ $u->avatarUrl() }}" alt="{{ '@'.$u->username }}" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700/60">
+                            <div class="min-w-0">
+                                <div class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ '@'.$u->username }}</div>
+                                @if($u->display_name)
+                                    <div class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ $u->display_name }}</div>
+                                @endif
+                            </div>
+                        </a>
+                    @empty
+                        <div class="p-6 text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_profiles_found') }}</div>
+                    @endforelse
+                </div>
+            </x-ui.card>
+
+            <!-- Top Posts Preview -->
+            <x-ui.card class="animate-fade-in-up" padding="p-0" style="animation-delay: 80ms">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800/60">
+                    <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.top_posts') }}</h2>
+                    <a href="{{ route('posts') }}" class="text-xs font-medium text-brand-orange hover:underline">{{ __('messages.view_all') }}</a>
+                </div>
+                @php($topPosts = \App\Models\Post::query()->with('user')->withCount(['likes','comments'])->latest()->limit(6)->get())
+                <div class="divide-y divide-slate-200 dark:divide-slate-800/60">
+                    @forelse($topPosts as $post)
+                        <a href="{{ route('posts.show', $post) }}" class="block group px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition">
+                            <div class="flex items-start gap-3">
+                                <img src="{{ $post->user?->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="{{ '@'.($post->user?->username ?? 'anon') }}" class="h-9 w-9 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700/60">
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                                        <span class="font-medium text-slate-700 dark:text-slate-200">{{ '@'.($post->user?->username ?? __('Anonymous')) }}</span>
+                                        <span aria-hidden="true">•</span>
+                                        <time datetime="{{ $post->created_at }}">{{ $post->created_at->diffForHumans() }}</time>
+                                    </div>
+                                    @if($post->content)
+                                        <p class="mt-1 text-sm text-slate-800 dark:text-slate-200 line-clamp-2">{{ $post->content }}</p>
+                                    @endif
+                                    <div class="mt-2 flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
+                                        <span class="inline-flex items-center gap-1">❤ {{ $post->likes_count }}</span>
+                                        <span class="inline-flex items-center gap-1">💬 {{ $post->comments_count }}</span>
+                                        @if(is_array($post->images) && count($post->images))
+                                            <span class="ml-2 inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700/60 px-2 py-0.5 text-[10px] text-slate-600 dark:text-slate-300 bg-white/60 dark:bg-slate-800/60">📷 {{ count($post->images) }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <svg class="h-4 w-4 mt-1 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="p-6 text-sm text-slate-500 dark:text-slate-400">{{ __('messages.no_posts_yet') }}</div>
+                    @endforelse
+                </div>
+            </x-ui.card>
+        </div>
+        @guest
+            <div class="flex justify-center">
+                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 3h4a2 2 0 012 2v4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14L21 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 10v10a2 2 0 01-2 2H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {{ __('messages.sign_in_to_start') }}
+                </a>
+            </div>
+        @endguest
+    </section>
+
     <!-- Users Section -->
     <section>
         <div class="mb-6 flex items-center justify-between">

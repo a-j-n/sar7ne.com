@@ -151,6 +151,11 @@ body, html, .font-sans {
     }
 }
 
+/* Smooth theme transition: temporarily reduce paint jank on theme change */
+.theme-transition, .theme-transition * {
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease, fill .25s ease, stroke .25s ease;
+}
+
 /* Force slate text utilities to black inside light cards */
 .text-black-on-white :where([class*="text-slate-"]) {
     color: #000 !important;

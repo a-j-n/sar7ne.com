@@ -60,7 +60,20 @@ class ProfileController extends Controller
 
         $disk = config('filesystems.default', 'spaces');
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars');
+            $disk = config('filesystems.default', 'spaces');
+            $upload = $request->file('avatar');
+            try {
+                $converted = \App\Support\ImageConversion::toWebp(
+                    $upload,
+                    (int) config('images.quality', 82),
+                    (int) config('images.avatar.max_width', 512),
+                    (int) config('images.avatar.max_height', 512)
+                );
+            } catch (\Throwable $e) {
+                return back()->withErrors(['avatar' => __('messages.avatar_upload_failed')])->withInput();
+            }
+            $avatarPath = 'avatars/'.$converted['filename'];
+            \Storage::disk($disk)->put($avatarPath, $converted['contents'], ['visibility' => 'public', 'ContentType' => $converted['mime']]);
             if ($avatarPath && $avatarPath !== '0') {
                 if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
                     Storage::disk($disk)->delete($user->avatar_url);
