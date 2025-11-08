@@ -58,7 +58,7 @@
 
     <!-- Top Content Section -->
     <section class="space-y-8">
-        <div class="grid gap-6 ">
+        <div class="grid gap-6 md:grid-cols-2">
             <!-- Top Profiles Preview -->
             <x-ui.card class="animate-fade-in-up" padding="p-0">
                 <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800/60">
