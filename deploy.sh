@@ -41,6 +41,10 @@ composer update
 # Run migrations and seeders
 php artisan migrate --seed --force
 
+# Install and build frontend assets
+yarn install --frozen-lockfile
+yarn build
+
 # Clear and cache configurations
 php artisan config:clear
 php artisan cache:clear
@@ -51,9 +55,7 @@ php artisan clear
 # Set permissions
 sudo chmod -R 775  public bootstrap/cache
 sudo chmod -R 777 storage public/build
-# Install and build frontend assets
-yarn install --frozen-lockfile
-yarn build
+
 
 # Final cache clear to ensure everything is up-to-date
 php artisan config:clear
