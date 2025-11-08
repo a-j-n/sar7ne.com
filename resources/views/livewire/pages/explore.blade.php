@@ -12,7 +12,7 @@
         <div class="relative">
             <div class="flex items-center gap-3 mb-4">
                 <div class="h-12 w-12 rounded-2xl bg-gradient-orange-pink flex items-center justify-center glow-brand-orange">
-                    <svg class="h-6 w-6 md:hiden text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-6 w-6 md:hidden text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
