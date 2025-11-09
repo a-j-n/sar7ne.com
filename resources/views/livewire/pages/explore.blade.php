@@ -3,7 +3,7 @@
 
 <div class="space-y-12">
     <!-- Hero Section -->
-    <x-ui.card padding="p-6 md:p-8" class="relative overflow-hidden card-brand-gradient animate-fade-in-up">
+    <x-ui.card padding="p-4 sm:p-6 md:p-8" class="relative overflow-hidden card-brand-gradient animate-fade-in-up">
         <!-- Background decoration -->
         <div class="absolute inset-0 bg-gradient-brand-glow opacity-10"></div>
         <div class="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-brand-orange/20 opacity-60 glow-brand-orange"></div>
@@ -16,9 +16,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
                 </div>
-                <div>
-                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{{ __('messages.homepage_discover_title') }}</h1>
-                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">{{ __('messages.browse_profiles_desc') }}</p>
+                <div class="min-w-0">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 truncate">{{ __('messages.homepage_discover_title') }}</h1>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 truncate">{{ __('messages.browse_profiles_desc') }}</p>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                             </div>
                             <x-ui.input type="text" wire:model.live.debounce.300ms="q" placeholder="{{ __('messages.search_by_username') }}" class="px-2 py-2.5 sm:py-3 text-sm sm:text-base w-full" />
                         </div>
-                        <div class="flex items-center gap-2 sm:pl-1">
+                        <div class="flex items-center gap-2 sm:pl-1 shrink-0">
                             @if(!empty($q))
                                 <button wire:click="$set('q', '')" class="inline-flex items-center gap-1 rounded-xl px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
                                     <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,9 +153,9 @@
                 <p class="text-sm text-slate-600 dark:text-slate-400">Try adjusting your search terms or check back later for new profiles.</p>
             </x-ui.card>
         @else
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 @foreach($users as $user)
-                    <x-ui.card class="group bg-black hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 40 }}ms">
+                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 40 }}ms">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="relative">
                                 <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-slate-700/60 group-hover:border-brand-orange/40 transition-colors" />
@@ -178,13 +178,13 @@
                         @endif
                         
                         <div class="flex gap-2">
-                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700/60 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-brand-orange/40 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange">
+                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700/60 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-brand-orange/40 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange min-w-0">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                                 {{ __('messages.visit_profile') }}
                             </a>
-                            <a href="{{ route('profiles.show', $user) }}#message" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-orange-pink px-3 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2">
+                            <a href="{{ route('profiles.show', $user) }}#message" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-orange-pink px-3 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 min-w-0">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                 </svg>
