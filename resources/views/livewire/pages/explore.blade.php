@@ -3,7 +3,7 @@
 
 <div class="space-y-12">
     <!-- Hero Section -->
-    <x-ui.card padding="p-4 sm:p-6 md:p-8" class="relative overflow-hidden card-brand-gradient animate-fade-in-up">
+    <x-ui.card padding="p-4 sm:p-6 lg:p-8" class="relative overflow-hidden card-brand-gradient animate-fade-in-up">
         <!-- Background decoration -->
         <div class="absolute inset-0 bg-gradient-brand-glow opacity-10"></div>
         <div class="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-brand-orange/20 opacity-60 glow-brand-orange"></div>
@@ -17,22 +17,22 @@
                     </svg>
                 </div>
                 <div class="min-w-0">
-                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 truncate">{{ __('messages.homepage_discover_title') }}</h1>
-                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 truncate">{{ __('messages.browse_profiles_desc') }}</p>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{{ __('messages.homepage_discover_title') }}</h1>
+                    <p class="mt-0.5 text-sm sm:text-base text-slate-600 dark:text-slate-400">{{ __('messages.browse_profiles_desc') }}</p>
                 </div>
             </div>
 
             <!-- Enhanced Search Form -->
-            <div class="mt-6 sm:mt-8 animate-slide-in-left">
+            <div class="mt-5 sm:mt-7 lg:mt-8 animate-slide-in-left">
                 <div class="relative">
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 rounded-2xl border border-slate-300 dark:border-slate-700/60  dark:bg-slate-900/70 p-2 sm:p-2.5 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur-sm max-w-full" role="search">
+                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 rounded-2xl border border-slate-300/80 dark:border-slate-700 dark:bg-slate-900/80 p-2 sm:p-2.5 focus-within:ring-2 focus-within:ring-brand-orange focus-within:border-brand-orange transition-all duration-200 shadow-lg backdrop-blur supports-[backdrop-filter]:backdrop-blur-sm max-w-full" role="search" aria-label="{{ __('messages.search') }}">
                         <div class="flex-1 flex items-center gap-2 sm:gap-3 min-w-0">
                             <div class="pl-2 sm:pl-3 shrink-0">
                                 <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
                             </div>
-                            <x-ui.input type="text" wire:model.live.debounce.300ms="q" placeholder="{{ __('messages.search_by_username') }}" class="px-2 py-2.5 sm:py-3 text-sm sm:text-base w-full" />
+                            <x-ui.input type="text" wire:model.live.debounce.300ms="q" placeholder="{{ __('messages.search_by_username') }}" class="px-2 py-2.5 sm:py-3 text-sm sm:text-base w-full placeholder:text-slate-500 dark:placeholder:text-slate-400" aria-label="{{ __('messages.search_by_username') }}" />
                         </div>
                         <div class="flex items-center gap-2 sm:pl-1 shrink-0">
                             @if(!empty($q))
@@ -43,12 +43,14 @@
                                     {{ __('messages.clear') }}
                                 </button>
                             @endif
-                            <div class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 btn-brand-primary">
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <button type="button"
+                                aria-label="{{ __('messages.search') }}"
+                                class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-4 sm:px-6 py-2.5 sm:py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 btn-brand-primary">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                 </svg>
-                                {{ __('messages.search') }}
-                            </div>
+                                <span class="hidden sm:inline">{{ __('messages.search') }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -58,17 +60,17 @@
 
     <!-- Top Content Section -->
     <section class="space-y-8">
-        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-2 2xl:grid-cols-3">
             <!-- Top Profiles Preview -->
             <x-ui.card class="animate-fade-in-up" padding="p-0">
-                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800/60">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200/80 dark:border-slate-800">
                     <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.top_profiles') }}</h2>
                     <a href="{{ route('explore') }}" class="text-xs font-medium text-brand-orange hover:underline">{{ __('messages.view_all') }}</a>
                 </div>
                 @php($topUsers = \App\Models\User::query()->latest()->limit(6)->get())
                 <div class="p-5 grid gap-4 sm:grid-cols-2">
                     @forelse($topUsers as $u)
-                        <a href="{{ route('profiles.show', $u) }}" class="group flex items-center gap-3 rounded-xl border border-slate-200 dark:border-slate-800/60 p-3 hover:border-brand-orange/40 hover:bg-brand-orange/5 transition">
+                        <a href="{{ route('profiles.show', $u) }}" class="group flex items-center gap-3 rounded-xl border border-slate-200/80 dark:border-slate-800 p-3 hover:border-brand-orange/50 hover:bg-brand-orange/10 transition-colors">
                             <img src="{{ $u->avatarUrl() }}" alt="{{ '@'.$u->username }}" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700/60">
                             <div class="min-w-0">
                                 <div class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ '@'.$u->username }}</div>
@@ -85,14 +87,14 @@
 
             <!-- Top Posts Preview -->
             <x-ui.card class="animate-fade-in-up" padding="p-0" style="animation-delay: 80ms">
-                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800/60">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-slate-200/80 dark:border-slate-800">
                     <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.top_posts') }}</h2>
                     <a href="{{ route('posts') }}" class="text-xs font-medium text-brand-orange hover:underline">{{ __('messages.view_all') }}</a>
                 </div>
                 @php($topPosts = \App\Models\Post::query()->with('user')->withCount(['likes','comments'])->latest()->limit(6)->get())
-                <div class="divide-y divide-slate-200 dark:divide-slate-800/60">
+                <div class="divide-y divide-slate-200/80 dark:divide-slate-800">
                     @forelse($topPosts as $post)
-                        <a href="{{ route('posts.show', $post) }}" class="block group px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition">
+                        <a href="{{ route('posts.show', $post) }}" class="block group px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
                             <div class="flex items-start gap-3">
                                 <img src="{{ $post->user?->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="{{ '@'.($post->user?->username ?? 'anon') }}" class="h-9 w-9 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700/60">
                                 <div class="min-w-0 flex-1">
@@ -112,7 +114,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <svg class="h-4 w-4 mt-1 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+                                <svg class="h-4 w-4 mt-1 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
                             </div>
                         </a>
                     @empty
@@ -133,7 +135,7 @@
 
     <!-- Users Section -->
     <section>
-        <div class="mb-6 flex items-center justify-between">
+        <div class="mb-5 sm:mb-6 flex items-center justify-between">
             <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
                 {{ !empty($q) ? __('messages.search_results') : __('messages.featured_creators') }}
             </h2>
@@ -153,12 +155,12 @@
                 <p class="text-sm text-slate-600 dark:text-slate-400">Try adjusting your search terms or check back later for new profiles.</p>
             </x-ui.card>
         @else
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 @foreach($users as $user)
-                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 40 }}ms">
+                    <x-ui.card class="group hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5 animate-fade-in-up" style="animation-delay: {{ ($loop->index % 12) * 40 }}ms">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="relative">
-                                <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200 dark:border-slate-700/60 group-hover:border-brand-orange/40 transition-colors" />
+                                <img src="{{ $user->avatarUrl() }}" alt="{{ '@'.$user->username }} avatar" width="48" height="48" loading="lazy" decoding="async" class="h-12 w-12 rounded-2xl object-cover border border-slate-200/80 dark:border-slate-700 group-hover:border-brand-orange/50 transition-colors" />
                                 <div class="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-green-500 border-2 border-white dark:border-slate-900"></div>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -178,13 +180,13 @@
                         @endif
                         
                         <div class="flex gap-2">
-                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700/60 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-brand-orange/40 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange min-w-0">
+                            <a href="{{ route('profiles.show', $user) }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/80 dark:border-slate-700 px-3 py-2.5 text-sm font-medium text-slate-900 dark:text-white transition-colors hover:border-brand-orange/50 hover:text-brand-orange hover:bg-brand-orange/10 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange min-w-0">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                                 {{ __('messages.visit_profile') }}
                             </a>
-                            <a href="{{ route('profiles.show', $user) }}#message" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-orange-pink px-3 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-105 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 min-w-0">
+                            <a href="{{ route('profiles.show', $user) }}#message" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-orange-pink px-3 py-2.5 text-sm font-semibold text-white shadow-lg transition-transform hover:shadow-lg hover:brightness-110 focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 min-w-0">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                 </svg>
