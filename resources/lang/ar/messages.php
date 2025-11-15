@@ -168,6 +168,16 @@ return [
     'inbox_empty_desc' => 'شارك رابط ملفك لتبدأ باستقبال الرسائل المجهولة.',
     'get_profile_link' => 'احصل على رابط ملفك',
 
+    // Login required inline cards
+    'sign_in' => 'تسجيل الدخول',
+    'sign_in_to_continue' => 'سجّل الدخول للمتابعة',
+    'sign_in_to_view_inbox' => 'سجّل الدخول لعرض صندوق الوارد',
+    'login_required_inbox' => 'صندوق الوارد يحتوي رسائل خاصة. من فضلك سجّل الدخول للوصول إليها.',
+    'sign_in_to_view_profile' => 'سجّل الدخول لعرض ملفك',
+    'login_required_profile' => 'تفاصيل الملف خاصة بك. من فضلك سجّل الدخول لإدارتها.',
+    'sign_in_to_view_settings' => 'سجّل الدخول لعرض الإعدادات',
+    'login_required_settings' => 'يمكنك تعديل التفضيلات والخصوصية والتنبيهات بعد تسجيل الدخول.',
+
     // Error messages
     'username_must_contain_letters_numbers' => 'يجب أن يحتوي اسم المستخدم على حروف أو أرقام.',
     'username_already_taken' => 'اسم المستخدم هذا مُستخدم بالفعل.',

@@ -1,3 +1,10 @@
+@guest
+    <x-auth.login-required 
+        :title="__('messages.sign_in_to_view_inbox') ?? 'Sign in to view your inbox'"
+        :message="__('messages.login_required_inbox') ?? 'Your inbox contains private messages. Please sign in to access them.'"
+        illustration="/illustrations/lock-mail.svg"
+    />
+@else
 <div class="space-y-8" wire:ignore.self>
     <!-- Header Section -->
     <x-ui.card padding="p-8" class="relative overflow-hidden card-brand-gradient">
@@ -102,3 +109,4 @@
         });
     </script>
 </div>
+@endguest

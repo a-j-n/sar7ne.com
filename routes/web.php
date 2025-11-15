@@ -61,16 +61,19 @@ Route::controller(SocialLoginController::class)->group(function () {
     Route::get('/auth/{provider}/callback', 'callback')->name('oauth.callback');
 });
 
+// Allow guests to view pages, actions remain protected below
+Route::get('/inbox', InboxPage::class)->name('inbox');
+Route::get('/profile', ProfileInfoPage::class)->name('profile');
+Route::get('/profile/info', ProfileInfoPage::class)->name('profile.info');
+Route::get('/profile/settings', ProfileSettingsPage::class)->name('profile.settings');
+
+// Auth-only actions for inbox and profile updates
 Route::middleware('auth')->group(function () {
-    Route::get('/inbox', InboxPage::class)->name('inbox');
     Route::patch('/inbox/{message}/read', [InboxMessageController::class, 'markRead'])->name('inbox.messages.read');
     Route::patch('/inbox/{message}/unread', [InboxMessageController::class, 'markUnread'])->name('inbox.messages.unread');
     Route::put('/inbox/{message}/public', [InboxMessageController::class, 'togglePublic'])->name('inbox.messages.toggle-public');
     Route::delete('/inbox/{message}', [InboxMessageController::class, 'destroy'])->name('inbox.messages.destroy');
 
-    Route::get('/profile', ProfileInfoPage::class)->name('profile');
-    Route::get('/profile/info', ProfileInfoPage::class)->name('profile.info');
-    Route::get('/profile/settings', ProfileSettingsPage::class)->name('profile.settings');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/settings', [ProfileController::class, 'update'])->name('profile.settings.update');
 

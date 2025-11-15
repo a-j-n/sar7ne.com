@@ -167,7 +167,17 @@ class Settings extends Component
         /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
         if (! $user) {
-            abort(403);
+            // Guest users see login-required component in the view
+            return view('livewire/pages/profile/settings-page', [
+                'user' => null,
+                'total_messages_count' => 0,
+                'public_messages_count' => 0,
+            ])->title(__('messages.profile').' · sar7ne')
+                ->with([
+                    'meta_description' => __('messages.customise_world_sees_you'),
+                    'og_type' => 'profile',
+                    'canonical' => route('profile.settings'),
+                ]);
         }
 
         // Cache message counts briefly to reduce repeated loadCount calls

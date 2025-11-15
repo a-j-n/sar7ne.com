@@ -1,9 +1,9 @@
 @php
     $items = $items ?? [
         ['label' => __('messages.explore'), 'href' => route('explore'), 'active' => request()->routeIs('explore'), 'icon' => 'explore', 'aria' => __('messages.explore')],
-        ['label' => __('messages.inbox'), 'href' => auth()->check() ? route('inbox') : route('login'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
+        ['label' => __('messages.inbox'), 'href' => route('inbox'), 'active' => request()->routeIs('inbox*'), 'icon' => 'inbox', 'aria' => __('messages.inbox')],
         ['label' => __('messages.posts_title'), 'href' => route('posts'), 'active' => request()->routeIs('posts*'), 'icon' => 'posts', 'aria' => __('messages.posts_title')],
-        ['label' => __('messages.profile'), 'href' => auth()->check() ? route('profile') : route('login'), 'active' => request()->routeIs('profile*'), 'icon' => 'profile', 'aria' => __('messages.profile')],
+        ['label' => __('messages.profile'), 'href' => route('profile'), 'active' => request()->routeIs('profile*'), 'icon' => 'profile', 'aria' => __('messages.profile')],
     ];
 @endphp
 

@@ -169,6 +169,16 @@ return [
     'inbox_empty_desc' => 'Share your profile link to start collecting anonymous messages.',
     'get_profile_link' => 'Get Your Profile Link',
 
+    // Login required inline cards
+    'sign_in' => 'Sign in',
+    'sign_in_to_continue' => 'Sign in to continue',
+    'sign_in_to_view_inbox' => 'Sign in to view your inbox',
+    'login_required_inbox' => 'Your inbox contains private messages. Please sign in to access them.',
+    'sign_in_to_view_profile' => 'Sign in to view your profile',
+    'login_required_profile' => 'Profile details are private to you. Please sign in to manage your information.',
+    'sign_in_to_view_settings' => 'Sign in to view settings',
+    'login_required_settings' => 'Update preferences, privacy, and notifications after you sign in.',
+
     // Error messages
     'username_must_contain_letters_numbers' => 'Usernames must contain letters or numbers.',
     'username_already_taken' => 'That username is already taken.',

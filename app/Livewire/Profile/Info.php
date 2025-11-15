@@ -21,8 +21,11 @@ class Info extends Component
 
     public function mount(): void
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            return; // Guest users will see the login-required component in the view
+        }
         $this->display_name = $user->display_name;
         $this->username = $user->username;
         $this->bio = $user->bio;
@@ -31,8 +34,11 @@ class Info extends Component
 
     public function saveBasic(): void
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            abort(403);
+        }
 
         $this->validate([
             'display_name' => ['nullable', 'string', 'max:60'],
@@ -67,8 +73,21 @@ class Info extends Component
 
     public function render()
     {
-        /** @var Authenticatable&\App\Models\User $user */
+        /** @var (Authenticatable&\App\Models\User)|null $user */
         $user = Auth::user();
+        if (! $user) {
+            // Render minimal view context for guests (view handles guest state)
+            return view('livewire/pages/profile/info', [
+                'user' => null,
+                'total_messages_count' => 0,
+                'public_messages_count' => 0,
+            ])->title(__('messages.profile').' · sar7ne')
+                ->with([
+                    'meta_description' => __('messages.customise_world_sees_you'),
+                    'og_type' => 'profile',
+                    'canonical' => route('profile.info'),
+                ]);
+        }
 
         $counts = Cache::remember("user:counts:{$user->id}", 60, function () use ($user) {
             $userCounts = $user->loadCount([

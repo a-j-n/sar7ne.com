@@ -1,3 +1,10 @@
+@guest
+    <x-auth.login-required 
+        :title="__('messages.sign_in_to_view_settings') ?? 'Sign in to view settings'"
+        :message="__('messages.login_required_settings') ?? 'Update preferences, privacy, and notifications after you sign in.'"
+        illustration="/illustrations/lock-settings.svg"
+    />
+@else
 <div class="space-y-6" wire:ignore.self>
     <!-- Profile Header Card -->
     <x-ui.card class="border border-slate-200 dark:border-slate-700/60 shadow-none" padding="p-0">
@@ -392,3 +399,4 @@
         </a>
     </div>
 </div>
+@endguest
