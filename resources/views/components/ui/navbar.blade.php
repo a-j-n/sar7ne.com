@@ -7,9 +7,9 @@
     ];
 @endphp
 
-<nav class="fixed inset-x-0 top-0 z-50 bg-primary/90 backdrop-blur supports-[backdrop-filter]:bg-primary/70 pt-[env(safe-area-inset-top)] shadow-sm">
+<nav class="fixed inset-x-0 top-0 z-50 bg-primary pt-[env(safe-area-inset-top)] shadow-sm">
     <div class="mx-auto flex w-full max-w-4xl items-center justify-center px-3">
-        <div class="grid grid-cols-4 w-full max-w-md  bg-primary/70 overflow-hidden">
+        <div class="grid grid-cols-4 w-full max-w-md bg-primary overflow-hidden">
             @foreach ($items as $index => $item)
                 <a href="{{ $item['href'] }}" aria-label="{{ $item['aria'] }}" class="relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium transition-all duration-200 {{ $item['active'] ? 'text-brand-orange bg-brand-orange/5' : 'text-gray-600 hover:text-brand-orange dark:text-gray-400 dark:hover:text-brand-orange' }}">
                     @if($item['active'])
