@@ -9,9 +9,9 @@
     <div class="p-4 md:p-5">
         <div class="flex items-start gap-3 mb-3">
             @if($isAnon)
-                <img src="{{ asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200" style="color: hsl({{ $hue }}, 80%, 55%)">
+                <img src="{{ asset('anon-avatar.svg') }}" alt="avatar" loading="lazy" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200" style="color: hsl({{ $hue }}, 80%, 55%)">
             @else
-                <img src="{{ $post->user->avatarUrl() }}" alt="avatar" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200">
+                <img src="{{ $post->user->avatarUrl() }}" alt="avatar" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('default-avatar.svg') }}';" class="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200">
             @endif
             <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2">
@@ -25,14 +25,16 @@
         </div>
 
         @if($post->content)
-            <div class="text-[15px] leading-6 text-slate-900 px-0 md:px-0">{!! nl2br(e($post->content)) !!}</div>
+            <div class="text-[15px] leading-6 text-slate-900 px-0 md:px-0 whitespace-pre-line break-words">
+                {{ $post->content }}
+            </div>
         @endif
 
         @if(is_array($post->images) && count($post->images))
             <div class="mt-3 grid grid-cols-2 gap-2 md:gap-3">
                 @foreach($post->images as $img)
                     <a href="{{ route('posts.show', $post) }}" class="block group overflow-hidden rounded-xl border border-slate-200">
-                        <img src="{{ Storage::url($img) }}" alt="" class="h-36 w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]" />
+                        <img src="{{ Storage::url($img) }}" alt="" loading="lazy" class="h-36 w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]" />
                     </a>
                 @endforeach
             </div>

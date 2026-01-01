@@ -3,7 +3,65 @@
 @section('title', __('messages.posts_title'))
 
 @section('content')
+@php
+    $postsQuery = \App\Models\Post::query()->whereNull('deleted_at');
+    $posts = (clone $postsQuery)->latest()->with(['user'])->withCount('comments')->limit(20)->get();
+    $postCount = (clone $postsQuery)->count();
+    $todayCount = (clone $postsQuery)->whereDate('created_at', now()->toDateString())->count();
+@endphp
+
 <div class="space-y-8">
+    <x-ui.card padding="p-5 sm:p-7" class="relative overflow-hidden card-brand-gradient">
+        <div class="absolute inset-0 bg-gradient-brand-glow opacity-10"></div>
+        <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-orange/20 blur-2xl"></div>
+        <div class="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-neon-mint/20 blur-2xl"></div>
+
+        <div class="relative grid gap-6 lg:grid-cols-[1.1fr,0.9fr] items-start">
+            <div class="space-y-4">
+                <div class="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/40 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-orange shadow-sm dark:border-slate-700/70 dark:bg-slate-900/60">
+                    <span class="h-2 w-2 rounded-full bg-brand-orange animate-pulse"></span>
+                    {{ __('messages.posts_title') }}
+                </div>
+                <div class="space-y-2">
+                    <h1 class="text-3xl sm:text-4xl font-black leading-tight text-slate-900 dark:text-white">{{ __('messages.posts_title') }}</h1>
+                    <p class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-2xl break-words">
+                        Share updates or anonymous drops. Long posts wrap cleanly on every device, and media stays contained.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl">
+                    <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Total posts</p>
+                        <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($postCount) }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">across the community</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Today</p>
+                        <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($todayCount) }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">new drops</p>
+                    </div>
+                    <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Stay kind</p>
+                        <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">🧡</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Keep it thoughtful</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative rounded-2xl border border-white/60 bg-white/80 p-4 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Quick tip</p>
+                        <p class="text-base font-semibold text-slate-900 dark:text-white">Pin your best post</p>
+                    </div>
+                    <span class="rounded-full bg-brand-orange/10 px-2 py-1 text-[10px] font-semibold text-brand-orange">Soon</span>
+                </div>
+                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed break-words">
+                    Dropping multiple images? Keep captions short—long text is wrapped and clamped in the feed so your message stays readable on mobile.
+                </p>
+            </div>
+        </div>
+    </x-ui.card>
+
     <x-ui.card padding="p-0" class="text-black hidden">
         <!-- Hidden stub so existing JS selectors remain valid; actual UI uses floating button + sheet -->
         <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3 hidden">
@@ -370,9 +428,7 @@
         })();
     </script>
 
-    @php($posts = \App\Models\Post::query()->latest()->whereNull('deleted_at')->with(['user'])->withCount('comments')->limit(20)->get())
-
-    <div class="grid gap-4">
+    <div class="grid gap-4 md:gap-5">
         @foreach($posts as $post)
             @include('posts.partials.card', ['post' => $post])
         @endforeach
