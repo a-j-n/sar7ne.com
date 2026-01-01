@@ -5,12 +5,17 @@ namespace App\Livewire\Profile;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app')]
 class Info extends Component
 {
+    use WithFileUploads;
+
     public ?string $display_name = null;
 
     public ?string $username = null;
@@ -18,6 +23,8 @@ class Info extends Component
     public ?string $bio = null;
 
     public ?string $gender = null;
+
+    public $avatar;
 
     public function mount(): void
     {
@@ -45,6 +52,7 @@ class Info extends Component
             'username' => ['required', 'string', 'min:3', 'max:20'],
             'bio' => ['nullable', 'string', 'max:280'],
             'gender' => ['nullable', 'in:male,female,non-binary,other,prefer_not_to_say'],
+            'avatar' => ['nullable', 'image', 'max:5120'],
         ]);
 
         // Normalize and ensure username uniqueness if changed
@@ -60,12 +68,36 @@ class Info extends Component
             return;
         }
 
-        $user->fill([
+        $updates = [
             'display_name' => $this->display_name ?: $user->display_name,
             'username' => $normalized,
             'bio' => $this->bio ?: null,
             'gender' => $this->gender ?: null,
-        ])->save();
+        ];
+
+        $disk = config('filesystems.default', 'spaces');
+        if ($this->avatar) {
+            try {
+                $converted = \App\Support\ImageConversion::toWebp(
+                    $this->avatar,
+                    (int) config('images.quality', 82),
+                    (int) config('images.avatar.max_width', 512),
+                    (int) config('images.avatar.max_height', 512)
+                );
+                $avatarPath = 'avatars/'.$converted['filename'];
+                Storage::disk($disk)->put($avatarPath, $converted['contents'], ['visibility' => 'public', 'ContentType' => $converted['mime']]);
+                if ($user->avatar_url && ! Str::startsWith($user->avatar_url, ['http://', 'https://'])) {
+                    Storage::disk($disk)->delete($user->avatar_url);
+                }
+                $updates['avatar_url'] = Storage::disk($disk)->url($avatarPath);
+            } catch (\Throwable $e) {
+                $this->addError('avatar', __('messages.avatar_upload_failed'));
+
+                return;
+            }
+        }
+
+        $user->fill($updates)->save();
 
         Cache::forget("user:counts:{$user->id}");
         session()->flash('status', __('messages.settings_saved'));
