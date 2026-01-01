@@ -37,6 +37,7 @@ Route::get('/', ExplorePage::class)->name('explore');
 
 // Simple Posts page placeholder
 Route::view('/posts', 'posts.index')->name('posts');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::middleware('throttle:posts-submission')->post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->middleware('auth')->name('posts.comments.store');

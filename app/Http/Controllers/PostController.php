@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,6 +11,11 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    public function create(): ViewContract
+    {
+        return view('posts.create');
+    }
+
     public function show(Post $post)
     {
         // Count unique view per session

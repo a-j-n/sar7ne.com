@@ -58,381 +58,53 @@
                 <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed break-words">
                     Dropping multiple images? Keep captions short—long text is wrapped and clamped in the feed so your message stays readable on mobile.
                 </p>
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <a href="{{ route('posts.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        {{ __('messages.posts.post') }}
+                    </a>
+                    <a href="#feed" class="inline-flex items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Jump to feed
+                    </a>
+                </div>
             </div>
         </div>
     </x-ui.card>
 
-    <x-ui.card padding="p-0" class="text-black hidden">
-        <!-- Hidden stub so existing JS selectors remain valid; actual UI uses floating button + sheet -->
-        <form id="postForm" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-3 hidden">
-            @csrf
-            <div class="flex items-start gap-3">
-                <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
-                <div class="flex-1">
-                    <x-ui.textarea id="postContent" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
-                    @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
-                    <div id="imagePreview" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
-                </div>
-            </div>
-
-            <div id="dropZone" class="pl-13 -mt-2">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <label for="imageInput" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
-                            {{ __('messages.posts.add_photos') }}
-                        </label>
-                        <input id="imageInput" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
-                        <span id="imageHelp" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
-                        @auth
-                            <label class="ml-2 inline-flex items-center gap-2 select-none relative">
-                                <input type="checkbox" name="anonymous" value="1" class="peer h-4 w-7 appearance-none rounded-full bg-slate-200 outline-none transition-colors duration-200 peer-checked:bg-emerald-500 relative">
-                                <span class="pointer-events-none absolute ml-[18px] h-4 w-4 rounded-full bg-white shadow -translate-x-4 peer-checked:translate-x-0 transition-transform duration-200"></span>
-                                <span class="text-sm text-black pl-8">{{ __('messages.posts.anonymous') }}</span>
-                            </label>
-                        @endauth
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span id="charCount" class="text-xs text-black/50">0/500</span>
-                        <x-ui.button id="submitBtn" type="submit" variant="primary" size="sm" disabled>
-                            <span id="submitText">{{ __('messages.posts.post') }}</span>
-                        </x-ui.button>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">{{ __('messages.posts.discard_draft') }}</button>
-                </div>
-            </div>
-        </form>
-
-        <script>
-            (function () {
-              // Sheet open/close behavior
-              function bindSheetEvents(){
-                const sheet = document.getElementById('createPostSheet');
-                const openBtn = document.getElementById('openCreatePost');
-                const closeBtn = document.getElementById('closeCreatePost');
-                const backdropSelector = '[data-sheet-backdrop]';
-                const panel = sheet?.querySelector('[data-sheet-panel]');
-                const backdrop = sheet?.querySelector(backdropSelector);
-                const dur = parseInt(sheet?.getAttribute('data-sheet-duration') || '300', 10);
-                const rebindInputs = () => {
-                  // Re-select active nodes (prefer sheet controls)
-                  active.content = document.getElementById('postContentSheet') ?? document.getElementById('postContent');
-                  active.charCount = document.getElementById('charCountSheet') ?? document.getElementById('charCount');
-                  active.imageInput = document.getElementById('imageInputSheet') ?? document.getElementById('imageInput');
-                  active.imagePreview = document.getElementById('imagePreviewSheet') ?? document.getElementById('imagePreview');
-                  active.dropZone = document.getElementById('dropZoneSheet') ?? document.getElementById('dropZone');
-                  active.submitBtn = document.getElementById('submitBtnSheet') ?? document.getElementById('submitBtn');
-                  active.submitText = document.getElementById('submitTextSheet') ?? document.getElementById('submitText');
-                  active.form = document.getElementById('postFormSheet') ?? document.getElementById('postForm');
-
-                  // Ensure listeners are attached once
-                  if (active._bound) { return; }
-                  active._bound = true;
-                  active.content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
-                  // Bind image input change
-                  active.imageInput?.addEventListener('change', refreshPreviewsFromInput);
-                };
-                function openSheet(){
-                  if (!sheet) return;
-                  sheet.classList.remove('hidden');
-                  sheet.setAttribute('aria-hidden', 'false');
-                  document.body.style.overflow = 'hidden';
-                  requestAnimationFrame(() => {
-                    if (panel) panel.style.transitionDuration = dur + 'ms';
-                    if (backdrop) backdrop.style.transitionDuration = dur + 'ms';
-                    panel?.classList.remove('translate-y-full');
-                    panel?.classList.add('translate-y-0');
-                    panel?.classList.remove('opacity-0');
-                    panel?.classList.add('opacity-100');
-                    backdrop?.classList.remove('opacity-0');
-                    backdrop?.classList.add('opacity-100');
-                  });
-                  setTimeout(()=> {
-                    rebindInputs();
-                    active.content?.focus();
-                    updateCounter();
-                  }, 120);
-                }
-                function closeSheet(){
-                  if (!sheet) return;
-                  if (panel) panel.style.transitionDuration = dur + 'ms';
-                  if (backdrop) backdrop.style.transitionDuration = dur + 'ms';
-                  panel?.classList.remove('translate-y-0');
-                  panel?.classList.add('translate-y-full');
-                  panel?.classList.remove('opacity-100');
-                  panel?.classList.add('opacity-0');
-                  backdrop?.classList.remove('opacity-100');
-                  backdrop?.classList.add('opacity-0');
-                  setTimeout(() => {
-                    sheet.classList.add('hidden');
-                    sheet.setAttribute('aria-hidden', 'true');
-                    document.body.style.overflow = '';
-                  }, dur);
-                }
-                // Direct listeners if elements exist now
-                openBtn?.addEventListener('click', openSheet);
-                closeBtn?.addEventListener('click', closeSheet);
-                sheet?.addEventListener('click', (e) => { if (e.target.matches(backdropSelector)) closeSheet(); });
-                document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
-                // Delegated fallback if button gets re-rendered
-                document.addEventListener('click', (e) => {
-                  if (e.target.closest('#openCreatePost')) { openSheet(); }
-                });
-                // Expose for other handlers
-                window.__openCreatePostSheet = openSheet;
-                window.__closeCreatePostSheet = closeSheet;
-              }
-              if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', bindSheetEvents);
-              } else {
-                bindSheetEvents();
-              }
-
-              // Prefer controls inside the sheet; fallback to hidden stub for compatibility
-              // Active control refs container (gets re-bound when sheet opens)
-              const active = {};
-              const content = () => active.content;
-              const charCount = () => active.charCount;
-              const imageInput = () => active.imageInput;
-              const imagePreview = () => active.imagePreview;
-              const dropZone = () => active.dropZone;
-              const submitBtn = () => active.submitBtn;
-              const submitText = () => active.submitText;
-              const form = () => active.form;
-              const DRAFT_KEY = 'posts:draft';
-
-              function updateCounter() {
-                const el = content();
-                const cc = charCount();
-                if (!el || !cc) { return; }
-                const len = el.value.length;
-                cc.textContent = `${len}/500`;
-                cc.className = len > 450 ? 'text-xs text-yellow-600' : 'text-xs text-black/50';
-                updateSubmitState();
-              }
-
-              function updateSubmitState() {
-                const el = content();
-                const ip = imageInput();
-                const pv = imagePreview();
-                const btn = submitBtn();
-                if (!btn) { return; }
-                const hasText = !!el && el.value.trim().length > 0;
-                const hasImages = (!!pv && pv.children.length > 0) || (!!ip && ip.files && ip.files.length > 0);
-                btn.disabled = !(hasText || hasImages);
-              }
-
-              function addPreview(file, index) {
-                const url = URL.createObjectURL(file);
-                const wrapper = document.createElement('div');
-                wrapper.className = 'relative overflow-hidden rounded-lg group';
-                wrapper.innerHTML = `
-                  <img src="${url}" class="w-full h-24 md:h-28 object-cover">
-                  <button type="button" class="absolute top-1 right-1 bg-white/90 text-black rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-white" title="Remove">✕</button>
-                `;
-                const btn = wrapper.querySelector('button');
-                btn.addEventListener('click', () => {
-                  const dt = new DataTransfer();
-                  const ip = imageInput();
-                  Array.from(ip.files).forEach((f, i) => { if (i !== index) dt.items.add(f); });
-                  ip.files = dt.files;
-                  wrapper.remove();
-                  updateSubmitState();
-                });
-                imagePreview()?.appendChild(wrapper);
-              }
-
-              function refreshPreviewsFromInput(){
-                const pv = imagePreview();
-                const ip = imageInput();
-                if (!pv || !ip) { return; }
-                pv.innerHTML = '';
-                const files = Array.from(ip.files || []).slice(0, 4);
-                files.forEach((f, i) => addPreview(f, i));
-                updateSubmitState();
-              }
-
-              function addFiles(files){
-                const ip = imageInput();
-                if (!ip) { return; }
-                const current = Array.from(ip.files || []);
-                const dt = new DataTransfer();
-                const combined = current.concat(Array.from(files));
-                combined.slice(0,4).forEach(f => dt.items.add(f));
-                ip.files = dt.files;
-                refreshPreviewsFromInput();
-              }
-
-              // Initial bind to existing nodes (if any), will be re-bound on open
-              (function initialBind(){
-                active.content = document.getElementById('postContentSheet') ?? document.getElementById('postContent');
-                active.charCount = document.getElementById('charCountSheet') ?? document.getElementById('charCount');
-                active.imageInput = document.getElementById('imageInputSheet') ?? document.getElementById('imageInput');
-                active.imagePreview = document.getElementById('imagePreviewSheet') ?? document.getElementById('imagePreview');
-                active.dropZone = document.getElementById('dropZoneSheet') ?? document.getElementById('dropZone');
-                active.submitBtn = document.getElementById('submitBtnSheet') ?? document.getElementById('submitBtn');
-                active.submitText = document.getElementById('submitTextSheet') ?? document.getElementById('submitText');
-                active.form = document.getElementById('postFormSheet') ?? document.getElementById('postForm');
-                active.content?.addEventListener('input', () => { updateCounter(); saveDraft(); });
-              })();
-
-              imageInput()?.addEventListener('change', refreshPreviewsFromInput);
-
-              // Delegated safety net for late-bound input
-              document.addEventListener('change', function (e) {
-                const t = e.target;
-                if (t && t.matches && t.matches('#imageInputSheet, #imageInput')) {
-                  refreshPreviewsFromInput();
-                }
-              });
-
-              // Drag & drop
-              ['dragenter','dragover'].forEach(ev => dropZone()?.addEventListener(ev, e => {
-                e.preventDefault(); e.stopPropagation();
-                dropZone()?.classList.add('ring-2','ring-emerald-400/50','bg-emerald-50');
-              }));
-              ['dragleave','drop'].forEach(ev => dropZone()?.addEventListener(ev, e => {
-                e.preventDefault(); e.stopPropagation();
-                dropZone()?.classList.remove('ring-2','ring-emerald-400/50','bg-emerald-50');
-              }));
-              dropZone()?.addEventListener('drop', e => {
-                if (e.dataTransfer && e.dataTransfer.files?.length){
-                  addFiles(e.dataTransfer.files);
-                }
-              });
-
-              // Draft autosave (content only)
-              function saveDraft(){
-                const data = { content: content.value };
-                try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch(_) {}
-              }
-              function loadDraft(){
-                try {
-                  const raw = localStorage.getItem(DRAFT_KEY);
-                  if (!raw) return;
-                  const data = JSON.parse(raw);
-                  if (data && typeof data.content === 'string' && !content.value){
-                    content.value = data.content;
-                  }
-                } catch(_) {}
-              }
-              function clearDraft(){
-                try { localStorage.removeItem(DRAFT_KEY); } catch(_) {}
-              }
-              loadDraft();
-              updateCounter();
-              // Already handled by initialBind and rebindInputs()
-
-              form()?.addEventListener('submit', () => {
-                const btn = submitBtn();
-                const st = submitText();
-                if (btn) { btn.disabled = true; }
-                if (st) { st.textContent = 'Posting…'; }
-                clearDraft();
-                // After submit, close sheet to feel responsive (server will redirect)
-                setTimeout(() => { closeSheet(); }, 0);
-              });
-
-              // Discard draft handler
-              document.getElementById('discardDraft')?.addEventListener('click', () => {
-                content.value = '';
-                if (imagePreview){ imagePreview.innerHTML = ''; }
-                if (imageInput){ imageInput.value = ''; }
-                clearDraft();
-                updateCounter();
-              });
-            })();
-        </script>
-    </x-ui.card>
-
-    <!-- Floating Create Post Button (Bottom-Right) -->
-    <button
-        type="button"
-        id="openCreatePost"
-        class="fixed z-[9980]
-               bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))]
-               md:bottom-[calc(2rem+env(safe-area-inset-bottom))] md:right-[calc(2rem+env(safe-area-inset-right))]
-               h-12 w-12 md:h-14 md:w-14 rounded-full
-               bg-emerald-600 text-white shadow-lg shadow-emerald-600/30
-               hover:bg-emerald-700
-                focus:outline-none focus:ring-4 focus:ring-emerald-400/30
-                flex items-center justify-center group
-                transition-transform duration-200 ease-out
-                hover:scale-[1.04] active:scale-[0.98]
-                before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-emerald-400/0 hover:before:bg-emerald-400/10 before:transition-colors before:duration-200"
-        aria-label="{{ __('messages.posts.post') }}"
-        data-idle-timeout="{{ config('features.fab_idle_timeout', 1500) }}"
-        data-initial-reveal-delay="{{ config('features.fab_initial_reveal', 800) }}"
-    >
-        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-        <span class="absolute -top-8 right-1/2 translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-black/70 bg-white/80 backdrop-blur px-2 py-0.5 rounded-full shadow-sm opacity-0 -translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none hidden md:block">
+    <div class="flex items-center justify-between">
+        <div class="text-sm text-slate-600 dark:text-slate-400">
+            {{ number_format($posts->count()) }} {{ __('messages.posts_title') }} · {{ number_format($postCount) }} total
+        </div>
+        <a href="{{ route('posts.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             {{ __('messages.posts.post') }}
-        </span>
-    </button>
+        </a>
+    </div>
 
-    <script>
-        (function(){
-            const fab = document.getElementById('openCreatePost');
-            if (!fab) return;
-            let lastY = window.scrollY || 0;
-            let ticking = false;
-            let hidden = false;
-            let idleTimer = null;
-            const idleTimeout = parseInt(fab.getAttribute('data-idle-timeout') || '1500', 10);
-            const initialRevealDelay = parseInt(fab.getAttribute('data-initial-reveal-delay') || '800', 10);
-            const minDelta = 6; // ignore tiny jitter
-
-            function setHidden(h){
-                if (hidden === h) return;
-                hidden = h;
-                if (hidden) {
-                    fab.classList.add('opacity-0','translate-y-6','pointer-events-none');
-                    fab.setAttribute('aria-hidden','true');
-                } else {
-                    fab.classList.remove('opacity-0','translate-y-6','pointer-events-none');
-                    fab.removeAttribute('aria-hidden');
-                }
-            }
-
-            function onScroll(){
-                const y = window.scrollY || 0;
-                const delta = y - lastY;
-                if (Math.abs(delta) < minDelta) return;
-                // Hide when scrolling down, show when scrolling up or near top
-                if (delta > 0 && y > 40) {
-                    setHidden(true);
-                } else {
-                    setHidden(false);
-                }
-                lastY = y;
-                ticking = false;
-
-                // Reset idle timer to auto-show after 1.5s of no scroll
-                if (idleTimer) clearTimeout(idleTimer);
-                idleTimer = setTimeout(() => setHidden(false), idleTimeout);
-            }
-
-            window.addEventListener('scroll', function(){
-                if (!ticking) {
-                    window.requestAnimationFrame(onScroll);
-                    ticking = true;
-                }
-            }, { passive: true });
-
-            // Ensure visible on load after a short delay (in case of SSR class states)
-            idleTimer = setTimeout(() => setHidden(false), initialRevealDelay);
-        })();
-    </script>
-
-    <div class="grid gap-4 md:gap-5">
+    <div id="feed" class="grid gap-4 md:gap-5">
         @foreach($posts as $post)
             @include('posts.partials.card', ['post' => $post])
         @endforeach
     </div>
+
+    <a
+        href="{{ route('posts.create') }}"
+        class="fixed z-[9980]
+               bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))]
+               md:bottom-[calc(1.75rem+env(safe-area-inset-bottom))] md:right-[calc(1.75rem+env(safe-area-inset-right))]
+               h-12 w-12 md:h-14 md:w-14 rounded-full
+               bg-gradient-orange-pink text-white shadow-lg shadow-brand-orange/30
+               hover:shadow-xl hover:translate-y-[-2px]
+               focus-visible:outline focus-visible:ring-4 focus-visible:ring-brand-orange/40
+               flex items-center justify-center transition-transform duration-200 ease-out"
+        aria-label="{{ __('messages.posts.post') }}"
+    >
+        <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        <span class="sr-only">{{ __('messages.posts.post') }}</span>
+    </a>
 
     <script>
         (function(){
@@ -494,7 +166,7 @@
                             @method('DELETE')
                             <x-ui.input type="text" name="delete_token" placeholder="Delete token" required />
                             <div class="flex justify-end gap-2 pt-1">
-                                <x-ui.button type="button" variant="outline" size="sm" data-close-delete="post-{{ $post->id }}">Cancel</x-ui.button>
+                                <x-ui.button type="button" variant="outline" size="sm" data-close-delete="post-{{ $post->id }}">{{ __('messages.cancel') }}</x-ui.button>
                                 <x-ui.button type="submit" variant="danger" size="sm">{{ __('messages.delete') }}</x-ui.button>
                             </div>
                         </form>
@@ -525,7 +197,6 @@
                 });
                 document.addEventListener('click', function(e){
                     const modal = e.target.closest('[id^="modal-post-"]');
-                    // Close when clicking backdrop (element itself, not the inner card)
                     if (modal && e.target === modal){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
                 });
             })();
@@ -555,17 +226,16 @@
                     if (liked){
                         button.classList.remove(...iconDefault.split(' '));
                         button.classList.add(...iconLiked.split(' '));
-                        label.textContent = '{{ __('messages.unlike') }}';
+                        if (label) { label.textContent = '{{ __('messages.unlike') }}'; }
                         button.setAttribute('aria-pressed', 'true');
                     } else {
                         button.classList.remove(...iconLiked.split(' '));
                         button.classList.add(...iconDefault.split(' '));
-                        label.textContent = '{{ __('messages.like') }}';
+                        if (label) { label.textContent = '{{ __('messages.like') }}'; }
                         button.setAttribute('aria-pressed', 'false');
                     }
                     if (countEl){ countEl.textContent = count; }
                 } catch (e) {
-                    // ignore
                 } finally {
                     button.dataset.loading = '0';
                 }
@@ -574,82 +244,7 @@
                 const btn = e.target.closest('[data-like-post]');
                 if (btn){ e.preventDefault(); toggleLike(btn.getAttribute('data-like-post'), btn); }
             });
-            document.querySelector('[data-close-like-modal]')?.addEventListener('click', function(){
-                const modal = document.getElementById('likeLoginModal');
-                modal?.classList.add('hidden');
-                modal?.classList.remove('flex');
-            });
-            document.getElementById('likeLoginModal')?.addEventListener('click', function(e){
-                if (e.target === this){ this.classList.add('hidden'); this.classList.remove('flex'); }
-            });
         })();
     </script>
 </div>
 @endsection
-
-@push('body-end')
-<!-- Global bottom sheet mounted at body end -->
-<div id="createPostSheet" class="fixed inset-0 z-[9999] hidden pointer-events-none" aria-hidden="true" data-sheet-duration="300">
-    <div data-sheet-backdrop class="absolute inset-0 bg-black/60 opacity-0 transition-opacity duration-200"></div>
-    <div class="absolute inset-x-0 bottom-0 w-full max-h-[85vh] bg-white shadow-2xl border-t border-slate-200 flex flex-col translate-y-full opacity-0 transition-[transform,opacity] ease-out pointer-events-auto rounded-t-2xl md:rounded-t-3xl md:max-w-2xl md:mx-auto will-change-transform pb-[env(safe-area-inset-bottom)]" data-sheet-panel>
-        <div class="flex items-center justify-between p-4 border-b border-slate-200 rounded-t-2xl md:rounded-t-3xl">
-            <h3 class="text-sm font-semibold">{{ __('messages.posts.post') }}</h3>
-            <button type="button" id="closeCreatePost" class="rounded-md p-1.5 text-slate-600 hover:bg-slate-100">✕</button>
-        </div>
-        <div class="p-4 overflow-y-auto">
-            <!-- We reuse the same form fields by targeting inputs by ID -->
-            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4" id="postFormSheet">
-                @csrf
-                <div class="flex items-start gap-3">
-                    <img src="{{ optional(auth()->user())->avatarUrl() ?? asset('anon-avatar.svg') }}" alt="avatar" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
-                    <div class="flex-1">
-                    <x-ui.textarea id="postContentSheet" name="content" rows="1" maxlength="500" class="w-full resize-none rounded-2xl px-4 py-3 text-[15px]" placeholder="{{ __('messages.posts.whats_happening') }}">{{ old('content') }}</x-ui.textarea>
-                        @error('content') <div class="mt-1 text-xs text-red-600">{{ $message }}</div> @enderror
-                        <div id="imagePreviewSheet" class="mt-3 grid grid-cols-2 gap-2 md:gap-3"></div>
-                    </div>
-                </div>
-
-                <div id="dropZoneSheet" class="pl-13 -mt-2 space-y-3">
-                    <div>
-                        <label for="imageInputSheet" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-emerald-700 bg-emerald-50 hover:bg-emerald-100 cursor-pointer border border-emerald-100">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4l2-3h6l2 3h4v12H3z"/></svg>
-                            {{ __('messages.posts.add_photos') }}
-                        </label>
-                        <input id="imageInputSheet" type="file" name="images[]" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
-                        <div class="mt-1">
-                            <span id="imageHelpSheet" class="text-xs text-black/50">{{ __('messages.posts.up_to_images', ['count' => 4]) }}</span>
-                        </div>
-                    </div>
-                    @auth
-                    <div>
-                        <label class="inline-flex items-center gap-2 select-none relative">
-                            <input type="checkbox" name="anonymous" value="1" class="peer h-5 w-10 appearance-none rounded-full bg-slate-300 outline-none transition-colors duration-200 relative peer-checked:bg-emerald-500">
-                            <span class="pointer-events-none absolute ml-[22px] h-5 w-5 rounded-full bg-white shadow -translate-x-5 peer-checked:translate-x-0 transition-transform duration-200"></span>
-                            <span class="text-sm pl-10 text-slate-700 peer-checked:text-emerald-700">{{ __('messages.posts.anonymous') }}</span>
-                        </label>
-                    </div>
-                    @endauth
-                    <div class="flex items-center justify-between">
-                        <span id="charCountSheet" class="text-xs text-black/50">0/500</span>
-                        <x-ui.button id="submitBtnSheet" type="submit" variant="primary" size="sm" disabled>
-                            <span id="submitTextSheet">{{ __('messages.posts.post') }}</span>
-                        </x-ui.button>
-                    </div>
-                    <div>
-                        <button type="button" id="discardDraft" class="text-xs text-black/60 hover:text-black underline">{{ __('messages.posts.discard_draft') }}</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div id="likeLoginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/60">
-    <div class="bg-white rounded-xl p-4 w-80 shadow-xl text-center">
-        <p class="text-sm text-black mb-3">{{ __('messages.login_to_like') }}</p>
-        <div class="flex items-center justify-center gap-2">
-            <a href="{{ route('login') }}" class="inline-flex items-center justify-center rounded-lg bg-emerald-600 text-white px-3 py-1.5 text-sm">{{ __('messages.login') }}</a>
-            <button type="button" class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-black" data-close-like-modal>OK</button>
-        </div>
-    </div>
-</div>
-@endpush
