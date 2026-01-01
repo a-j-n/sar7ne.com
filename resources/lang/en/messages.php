@@ -262,4 +262,10 @@ return [
     'profiles_live' => 'profiles live',
     'shared_stories' => 'shared stories',
     'anonymous_drops' => 'anonymous drops',
+    'feature_instant_setup' => 'Instant setup',
+    'feature_instant_setup_body' => 'Search, message, and go live with your profile link in seconds.',
+    'feature_stay_anonymous' => 'Stay anonymous',
+    'feature_stay_anonymous_body' => 'Safety tools and rate limits keep conversations kind and spam-free.',
+    'feature_share_anywhere' => 'Share anywhere',
+    'feature_share_anywhere_body' => 'Drop your link across socials, collect replies, and feature the best ones.',
 ];

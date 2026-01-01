@@ -1,3 +1,21 @@
+@push('head')
+    @php
+        $profileUrl = route('profiles.show', $user);
+        $profileImage = $user->avatarUrl();
+        $profileDescription = $user->bio ?: __('messages.drop_anonymous_message');
+    @endphp
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Person',
+            'name' => '@'.$user->username,
+            'description' => $profileDescription,
+            'image' => $profileImage,
+            'url' => $profileUrl,
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+    </script>
+@endpush
+
 <div class="space-y-10 sm:space-y-12 animate-fade-in-up" wire:ignore.self>
     @php
         $messageRoute = route('profiles.message', $user);
@@ -18,6 +36,7 @@
                     <div class="absolute -inset-2 sm:-inset-3 rounded-3xl bg-gradient-orange-pink opacity-75 blur-lg"></div>
                     <img src="{{ $user->avatarUrl() }}" alt="{{ $user->username }} avatar" 
                          class="relative h-28 w-28 sm:h-32 sm:w-32 md:h-40 md:w-40 rounded-3xl object-cover cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl border-4 border-white/20" 
+                         onerror="this.onerror=null;this.src='{{ asset('default-avatar.svg') }}';"
                          data-profile-image />
                     <!-- Online Status Indicator -->
                     <div class="absolute -bottom-2 -right-2 h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full bg-brand-mint border-4 border-primary shadow-xl">

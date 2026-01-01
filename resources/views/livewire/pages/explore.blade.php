@@ -169,8 +169,8 @@
             <div class="flex items-start gap-3">
                 <div class="h-11 w-11 rounded-xl bg-brand-orange/15 text-brand-orange flex items-center justify-center shadow-inner">⚡</div>
                 <div class="space-y-1">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Instant setup</p>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">Search, message, and go live with your profile link in seconds.</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('messages.feature_instant_setup') }}</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.feature_instant_setup_body') }}</p>
                 </div>
             </div>
         </div>
@@ -178,8 +178,8 @@
             <div class="flex items-start gap-3">
                 <div class="h-11 w-11 rounded-xl bg-neon-mint/15 text-emerald-600 flex items-center justify-center shadow-inner">🔐</div>
                 <div class="space-y-1">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Stay anonymous</p>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">Safety tools and rate limits keep conversations kind and spam-free.</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('messages.feature_stay_anonymous') }}</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.feature_stay_anonymous_body') }}</p>
                 </div>
             </div>
         </div>
@@ -187,8 +187,8 @@
             <div class="flex items-start gap-3">
                 <div class="h-11 w-11 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center shadow-inner dark:bg-indigo-900/40 dark:text-indigo-200">📣</div>
                 <div class="space-y-1">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Share anywhere</p>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">Drop your link across socials, collect replies, and feature the best ones.</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('messages.feature_share_anywhere') }}</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.feature_share_anywhere_body') }}</p>
                 </div>
             </div>
         </div>

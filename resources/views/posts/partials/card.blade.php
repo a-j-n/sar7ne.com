@@ -33,8 +33,8 @@
         @if(is_array($post->images) && count($post->images))
             <div class="mt-3 grid grid-cols-2 gap-2 md:gap-3">
                 @foreach($post->images as $img)
-                    <a href="{{ route('posts.show', $post) }}" class="block group overflow-hidden rounded-xl border border-slate-200">
-                        <img src="{{ Storage::url($img) }}" alt="" loading="lazy" class="h-36 w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]" />
+                    <a href="{{ Storage::url($img) }}" target="_blank" rel="noopener" class="block group overflow-hidden rounded-xl border border-slate-200">
+                        <img src="{{ Storage::url($img) }}" alt="Post image" loading="lazy" class="h-36 w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]" />
                     </a>
                 @endforeach
             </div>

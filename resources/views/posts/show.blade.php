@@ -1,14 +1,45 @@
 @extends('layouts.app')
 
-@section('title', 'Post #'.$post->id)
-@php(
-    $summary = trim(Str::limit((string) $post->content, 140)) ?: 'Post #'.$post->id
-)
+@php
+    $authorUsername = $post->user?->username;
+    $isAnonymous = $post->is_anonymous || !$authorUsername;
+    $title = $isAnonymous
+        ? __('messages.posts_title').' · '.__('messages.posts.anonymous')
+        : __('messages.posts_title').' · @'.$authorUsername;
+    $summary = trim((string) \Illuminate\Support\Str::limit((string) ($post->content ?? __('messages.meta_description')), 160));
+    $metaImage = (!empty($post->images) && isset($post->images[0]))
+        ? Storage::url($post->images[0])
+        : asset('opengraph.png');
+    $published = optional($post->created_at)->toAtomString();
+    $updated = optional($post->updated_at)->toAtomString();
+    $canonicalUrl = route('posts.show', $post);
+@endphp
+
+@section('title', $title)
 @section('meta_description', $summary)
-@section('og_title', 'Post #'.$post->id)
+@section('og_title', $title)
 @section('og_type', 'article')
-@section('canonical', route('posts.show', $post))
-@section('meta_image', (!empty($post->images) && isset($post->images[0])) ? Storage::disk('spaces')->url($post->images[0]) : asset('opengraph.png'))
+@section('canonical', $canonicalUrl)
+@section('meta_image', $metaImage)
+
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => $title,
+            'description' => $summary,
+            'datePublished' => $published,
+            'dateModified' => $updated,
+            'url' => $canonicalUrl,
+            'image' => $metaImage,
+            'author' => [
+                '@type' => 'Person',
+                'name' => $isAnonymous ? __('messages.posts.anonymous') : '@'.$authorUsername,
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+    </script>
+@endpush
 
 @section('content')
 <div class="space-y-6 text-black">
