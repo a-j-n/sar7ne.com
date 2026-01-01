@@ -27,26 +27,26 @@
                 </div>
 
                 <div class="flex flex-wrap gap-2 sm:gap-3">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">🔒 Anonymous by default</span>
-                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">✨ Shareable profile link</span>
-                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">🛡️ Protected from spam</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">🔒 {{ __('messages.anonymous_by_default') }}</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">✨ {{ __('messages.shareable_profile_link') }}</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm ring-1 ring-white/60 dark:bg-slate-800/70 dark:text-slate-100 dark:ring-slate-700">🛡️ {{ __('messages.protected_from_spam') }}</span>
                 </div>
 
                 <div class="grid max-w-2xl grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Creators</p>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.trending_profiles') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['users'] ?? 0) }}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">profiles live</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.profiles_live') }}</p>
                     </div>
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
                         <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.posts_title') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['posts'] ?? 0) }}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">shared stories</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.shared_stories') }}</p>
                     </div>
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
                         <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.inbox') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($stats['messages'] ?? 0) }}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">anonymous drops</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.anonymous_drops') }}</p>
                     </div>
                 </div>
 
@@ -105,17 +105,17 @@
 
             <div class="relative">
                 <div class="absolute -inset-6 rounded-[32px] bg-gradient-to-br from-white/60 via-brand-orange/10 to-slate-900/10 blur-2xl dark:from-slate-800/30 dark:via-brand-orange/10 dark:to-slate-900/60"></div>
-                <div class="relative rounded-3xl border border-white/50 bg-white/80 p-6 shadow-2xl backdrop-blur-lg dark:border-slate-800 dark:bg-slate-900/70">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Spotlight</p>
-                            <p class="text-lg font-semibold text-slate-900 dark:text-white">People receiving new drops</p>
-                        </div>
-                        <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-200">
-                            <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-                            Live
-                        </span>
+            <div class="relative rounded-3xl border border-white/50 bg-white/80 p-6 shadow-2xl backdrop-blur-lg dark:border-slate-800 dark:bg-slate-900/70">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.spotlight') }}</p>
+                        <p class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('messages.people_receiving_drops') }}</p>
                     </div>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700 dark:bg-green-900/40 dark:text-green-200">
+                        <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                        {{ __('messages.live_now') }}
+                    </span>
+                </div>
 
                     <div class="mt-5 space-y-4">
                         @forelse($topUsers->take(3) as $u)
@@ -130,7 +130,7 @@
                                 <svg class="h-4 w-4 text-slate-400 transition group-hover:text-slate-700 dark:group-hover:text-slate-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707A1 1 0 118.707 5.293l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
                             </a>
                         @empty
-                            <p class="text-sm text-slate-600 dark:text-slate-400">Stay tuned — new profiles drop soon.</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.stay_tuned_profiles') }}</p>
                         @endforelse
                     </div>
 

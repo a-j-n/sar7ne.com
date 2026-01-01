@@ -30,19 +30,19 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-2xl">
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Total posts</p>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.posts.total_posts') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($postCount) }}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">across the community</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.posts.across_community') }}</p>
                     </div>
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Today</p>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.posts.today_posts') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{{ number_format($todayCount) }}</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">new drops</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.posts.new_drops') }}</p>
                     </div>
                     <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
-                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Stay kind</p>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.posts.stay_kind') }}</p>
                         <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white">🧡</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Keep it thoughtful</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.posts.keep_it_thoughtful') }}</p>
                     </div>
                 </div>
             </div>
@@ -50,13 +50,13 @@
             <div class="relative rounded-2xl border border-white/60 bg-white/80 p-4 shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/70">
                 <div class="flex items-center justify-between mb-3">
                     <div>
-                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">Quick tip</p>
-                        <p class="text-base font-semibold text-slate-900 dark:text-white">Pin your best post</p>
+                        <p class="text-xs uppercase text-slate-500 dark:text-slate-400">{{ __('messages.posts.quick_tip') }}</p>
+                        <p class="text-base font-semibold text-slate-900 dark:text-white">{{ __('messages.posts.pin_best_post') }}</p>
                     </div>
-                    <span class="rounded-full bg-brand-orange/10 px-2 py-1 text-[10px] font-semibold text-brand-orange">Soon</span>
+                    <span class="rounded-full bg-brand-orange/10 px-2 py-1 text-[10px] font-semibold text-brand-orange">{{ __('messages.live_now') }}</span>
                 </div>
                 <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed break-words">
-                    Dropping multiple images? Keep captions short—long text is wrapped and clamped in the feed so your message stays readable on mobile.
+                    {{ __('messages.posts.tip_body') }}
                 </p>
                 <div class="mt-4 flex flex-wrap items-center gap-2">
                     <a href="{{ route('posts.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-orange-pink px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl focus-visible:outline focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2">
@@ -65,7 +65,7 @@
                     </a>
                     <a href="#feed" class="inline-flex items-center gap-2 rounded-xl border border-white/60 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-md transition hover:-translate-y-0.5 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        Jump to feed
+                        {{ __('messages.posts.jump_to_feed') }}
                     </a>
                 </div>
             </div>
