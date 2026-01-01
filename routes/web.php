@@ -64,9 +64,12 @@ Route::controller(SocialLoginController::class)->group(function () {
 
 // Allow guests to view pages, actions remain protected below
 Route::get('/inbox', InboxPage::class)->name('inbox');
-Route::get('/profile', ProfileInfoPage::class)->name('profile');
-Route::get('/profile/info', ProfileInfoPage::class)->name('profile.info');
-Route::get('/profile/settings', ProfileSettingsPage::class)->name('profile.settings');
+Route::get('/me', ProfileInfoPage::class)->name('profile');
+Route::get('/me/info', ProfileInfoPage::class)->name('profile.info');
+Route::get('/me/settings', ProfileSettingsPage::class)->name('profile.settings');
+Route::redirect('/profile', '/me')->name('profile.legacy');
+Route::redirect('/profile/info', '/me/info')->name('profile.info.legacy');
+Route::redirect('/profile/settings', '/me/settings')->name('profile.settings.legacy');
 
 // Auth-only actions for inbox and profile updates
 Route::middleware('auth')->group(function () {

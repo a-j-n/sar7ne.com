@@ -24,6 +24,9 @@ it('shows the public profile at /{username}', function () {
 it('can send a message with image to public profile', function () {
     $user = User::factory()->create(['username' => 'testuser3']);
 
+    Storage::fake('public');
+    config(['filesystems.default' => 'public']);
+
     // Create a fake image file
     $image = \Illuminate\Http\UploadedFile::fake()->image('test.jpg', 100, 100);
 

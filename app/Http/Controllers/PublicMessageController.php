@@ -31,9 +31,10 @@ class PublicMessageController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $disk = config('filesystems.default', 'public');
+            $file = $request->file('image');
             try {
                 $converted = \App\Support\ImageConversion::toWebp(
-                    $request->file('image'),
+                    $file,
                     (int) config('images.quality', 82),
                     (int) config('images.max_width', 2048),
                     (int) config('images.max_height', 2048)
@@ -42,7 +43,8 @@ class PublicMessageController extends Controller
                 \Storage::disk($disk)->put($path, $converted['contents'], ['visibility' => 'public', 'ContentType' => $converted['mime']]);
                 $imagePath = $path;
             } catch (\Throwable $e) {
-                return back()->withErrors(['image' => __('messages.avatar_upload_failed')]);
+                $fallbackPath = $file->storePublicly('message-images', $disk);
+                $imagePath = $fallbackPath;
             }
         }
 
