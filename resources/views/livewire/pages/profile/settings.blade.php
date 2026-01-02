@@ -148,88 +148,89 @@
 
             <!-- Settings Tab Content -->
             <x-ui.tab-content value="settings" class="px-4 md:px-8 pb-6 md:pb-8">
-                <section class="mb-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-gradient-to-br from-white via-white to-[#f8fbff] dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 p-6 shadow-inner">
-                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                        <div class="max-w-xl space-y-1">
-                            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('messages.experience_preferences') }}</h3>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.adjust_theme_language_preferences') }}</p>
-                        </div>
-                        <div class="flex flex-col gap-4 md:flex-row">
-                            {{-- Instant theme toggle (Livewire Volt) --}}
-                            <div class="theme-transition">
-                                @livewire('components.theme-toggle')
+                <div class="grid gap-6 lg:grid-cols-[1.1fr,0.9fr] items-start">
+                    <div class="space-y-6">
+                        <section class="rounded-3xl border border-slate-200/80 dark:border-white/10 bg-gradient-to-br from-white via-white to-[#f8fbff] dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 p-6 shadow-inner">
+                            <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                                <div class="max-w-xl space-y-1">
+                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ __('messages.experience_preferences') }}</h3>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">{{ __('messages.adjust_theme_language_preferences') }}</p>
+                                </div>
+                                <div class="flex flex-col gap-4 md:flex-row">
+                                    <div class="theme-transition">
+                                        @livewire('components.theme-toggle')
+                                    </div>
+                                    @include('partials.language-switcher')
+                                </div>
                             </div>
-                            @include('partials.language-switcher')
-                        </div>
-                    </div>
-                </section>
+                        </section>
 
-                <form wire:submit.prevent="save" class="space-y-6">
-                    <div>
-                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('messages.profile_settings') }}</h3>
-                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">{{ __('messages.customise_world_sees_you') }}</p>
-                        
-                        <div class="grid gap-6 md:grid-cols-2">
-                            <x-ui.input 
-                                id="username" 
-                                wire:model.live.debounce.300ms="username" 
-                                :label="__('messages.username_label')"
-                                :error="$errors->first('username')"
-                                required 
-                                pattern="^[A-Za-z0-9_]+$"
-                            />
-                            
-                            <x-ui.input 
-                                id="display_name" 
-                                wire:model.live.debounce.300ms="display_name" 
-                                :label="__('messages.display_name_label')"
-                            />
-                        </div>
+                        <form wire:submit.prevent="save" class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">{{ __('messages.profile_settings') }}</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">{{ __('messages.customise_world_sees_you') }}</p>
+                                
+                                <div class="grid gap-6 md:grid-cols-2">
+                                    <x-ui.input 
+                                        id="username" 
+                                        wire:model.live.debounce.300ms="username" 
+                                        :label="__('messages.username_label')"
+                                        :error="$errors->first('username')"
+                                        required 
+                                        pattern="^[A-Za-z0-9_]+$"
+                                    />
+                                    
+                                    <x-ui.input 
+                                        id="display_name" 
+                                        wire:model.live.debounce.300ms="display_name" 
+                                        :label="__('messages.display_name_label')"
+                                    />
+                                </div>
 
-                        <x-ui.textarea 
-                            id="bio" 
-                            wire:model.live.debounce.300ms="bio" 
-                            :label="__('messages.bio_label')"
-                            :help="__('messages.bio_help', ['max' => 280])"
-                            rows="4" 
-                            maxlength="280"
-                        />
+                                <x-ui.textarea 
+                                    id="bio" 
+                                    wire:model.live.debounce.300ms="bio" 
+                                    :label="__('messages.bio_label')"
+                                    :help="__('messages.bio_help', ['max' => 280])"
+                                    rows="4" 
+                                    maxlength="280"
+                                />
 
-                        <div class="space-y-2">
-                            <label for="avatar" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.avatar_label') }}</label>
-                            <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
-                            @if ($avatar)
-                                <img src="{{ $avatar->temporaryUrl() }}" alt="{{ __('messages.avatar_preview_alt') }}" loading="lazy" class="mt-3 h-16 w-16 rounded-full object-cover" />
-                            @endif
-                            @error('avatar') <p class="text-xs text-red-500 dark:text-red-400 flex items-center gap-1">
-                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                                {{ $message }}
-                            </p> @enderror
-                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.avatar_help', ['size' => '2MB']) }}</p>
-                        </div>
+                                <div class="space-y-2">
+                                    <label for="avatar" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.avatar_label') }}</label>
+                                    <input id="avatar" type="file" wire:model="avatar" accept="image/*" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-black focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
+                                    @if ($avatar)
+                                        <img src="{{ $avatar->temporaryUrl() }}" alt="{{ __('messages.avatar_preview_alt') }}" loading="lazy" class="mt-3 h-16 w-16 rounded-full object-cover" />
+                                    @endif
+                                    @error('avatar') <p class="text-xs text-red-500 dark:text-red-400 flex items-center gap-1">
+                                        <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        {{ $message }}
+                                    </p> @enderror
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.avatar_help', ['size' => '2MB']) }}</p>
+                                </div>
 
-                        <div class="space-y-2">
-                            <label for="gender" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.gender_label') }}</label>
-                            <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
-                                <option value="">{{ __('messages.not_specified') }}</option>
-                                <option value="male">{{ __('messages.gender_male') }}</option>
-                                <option value="female">{{ __('messages.gender_female') }}</option>
-                                <option value="non-binary">{{ __('messages.gender_non_binary') }}</option>
-                                <option value="other">{{ __('messages.gender_other') }}</option>
-                                <option value="prefer_not_to_say">{{ __('messages.gender_prefer_not') }}</option>
-                            </select>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.optional_choose_gender') }}</p>
-                        </div>
-                    </div>
+                                <div class="space-y-2">
+                                    <label for="gender" class="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 font-medium">{{ __('messages.gender_label') }}</label>
+                                    <select id="gender" wire:model.defer="gender" class="w-full rounded-xl border border-slate-300 dark:border-slate-700/60 bg-white dark:bg-slate-900/60 px-4 py-3 text-sm text-slate-900 dark:text-white focus:border-emerald-400 dark:focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/20 transition-all duration-200">
+                                        <option value="">{{ __('messages.not_specified') }}</option>
+                                        <option value="male">{{ __('messages.gender_male') }}</option>
+                                        <option value="female">{{ __('messages.gender_female') }}</option>
+                                        <option value="non-binary">{{ __('messages.gender_non_binary') }}</option>
+                                        <option value="other">{{ __('messages.gender_other') }}</option>
+                                        <option value="prefer_not_to_say">{{ __('messages.gender_prefer_not') }}</option>
+                                    </select>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.optional_choose_gender') }}</p>
+                                </div>
+                            </div>
 
-                    <!-- Social Media Links -->
-                    <div class="border-t border-slate-200 dark:border-slate-700/60 pt-6">
-                        <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('messages.social_media_links') }}</h4>
-                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">{{ __('messages.social_media_links_help') }}</p>
-                        
-                        <div class="space-y-4">
+                            <!-- Social Media Links -->
+                            <div class="border-t border-slate-200 dark:border-slate-700/60 pt-6">
+                                <h4 class="text-md font-semibold text-slate-900 dark:text-white mb-4">{{ __('messages.social_media_links') }}</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6">{{ __('messages.social_media_links_help') }}</p>
+                                
+                                <div class="space-y-4">
                             <!-- Twitter -->
                             <div class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600/60 transition-colors">
                                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-500">
