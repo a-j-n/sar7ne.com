@@ -41,8 +41,16 @@ class Inbox extends Component
     public function destroy(int $id): void
     {
         $message = $this->findOwned($id);
+        $wasUnread = $message->status === Message::STATUS_UNREAD;
         $message->delete();
-        session()->flash('status', 'Message deleted.');
+
+        if ($wasUnread && $this->unreadCount > 0) {
+            $this->unreadCount--;
+        }
+
+        $this->resetPage();
+        $this->dispatch('$refresh');
+        session()->flash('status', __('messages.delete'));
     }
 
     public function togglePublic(int $id): void

@@ -56,6 +56,10 @@ return [
     'anonymous_vibes_waiting' => 'أجواء مجهولة مستنياك تكتشفها.',
     'visit_profile' => 'زيارة الملف',
     'posts' => 'المنشورات',
+    'spotlight' => 'الأضواء',
+    'people_receiving_drops' => 'أشخاص يستقبلون رسائل جديدة',
+    'live_now' => 'مباشر الآن',
+    'stay_tuned_profiles' => 'ترقّب — ملفات جديدة قريبًا.',
 
     // Layout / misc
     'we_found_some_issues' => 'لقينا شوية مشاكل:',
@@ -167,6 +171,7 @@ return [
     'inbox_empty_title' => 'صندوق الوارد بانتظارك',
     'inbox_empty_desc' => 'شارك رابط ملفك لتبدأ باستقبال الرسائل المجهولة.',
     'get_profile_link' => 'احصل على رابط ملفك',
+    'inbox_cta' => 'احصل على رابط ملفك',
 
     // Login required inline cards
     'sign_in' => 'تسجيل الدخول',

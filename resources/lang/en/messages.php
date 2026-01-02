@@ -268,4 +268,7 @@ return [
     'feature_stay_anonymous_body' => 'Safety tools and rate limits keep conversations kind and spam-free.',
     'feature_share_anywhere' => 'Share anywhere',
     'feature_share_anywhere_body' => 'Drop your link across socials, collect replies, and feature the best ones.',
+    'inbox_empty_title' => 'Your inbox is waiting',
+    'inbox_empty_desc' => 'Share your profile link to start collecting anonymous messages.',
+    'inbox_cta' => 'Get your profile link',
 ];
